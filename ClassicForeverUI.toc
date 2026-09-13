@@ -1,0 +1,36 @@
+## Interface: 120000
+## Title: ClassicForeverUI
+## Notes: A compatibility-first Classic-inspired UI test harness.
+## Author: Videocat
+## Version: 0.1.0-dev
+## X-Website: https://github.com/
+## X-Compatibility: Retail development target; WoW Forever unverified.
+
+Core/Init.lua
+Core/Environment.lua
+Core/Compat.lua
+Core/API.lua
+Core/Events.lua
+Core/Assets.lua
+Core/Diagnostics.lua
+Data/AssetCatalogue.lua
+Data/AtlasCatalogue.lua
+Data/APIManifest.lua
+Data/FrameManifest.lua
+Data/EventManifest.lua
+Modules/ActionBars.lua
+Modules/PlayerFrame.lua
+Modules/TargetFrame.lua
+Modules/FocusFrame.lua
+Modules/Minimap.lua
+Modules/MicroMenu.lua
+Modules/Bags.lua
+Modules/ExperienceBar.lua
+Modules/ReputationBar.lua
+Modules/CastBar.lua
+Modules/Buffs.lua
+Modules/Debuffs.lua
+Modules/Tooltips.lua
+Modules/QuestTracker.lua
+Modules/Panels.lua
+Tests/SmokeTests.lua

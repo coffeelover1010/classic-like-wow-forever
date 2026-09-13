@@ -1,0 +1,2 @@
+-- Run manually in a client after PLAYER_LOGIN: /run ClassicForeverUI.Diagnostics:Full()
+-- Expected conditions are maintained in DiagnosticExpectations.md.
