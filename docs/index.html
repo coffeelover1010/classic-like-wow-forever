@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="ClassicForeverUI is a compatibility-first Classic-style World of Warcraft UI addon and future-client diagnostic harness.">
+  <title>ClassicForeverUI</title>
+  <style>
+    :root { color-scheme: dark; --gold:#f4ca66; --ink:#0c1420; --panel:#162234; --text:#e7edf4; --muted:#a9b8c8; }
+    * { box-sizing:border-box; } body { margin:0; font:16px/1.6 system-ui,sans-serif; color:var(--text); background:radial-gradient(circle at 50% -10%,#31486a,var(--ink) 52rem); }
+    main { max-width:900px; margin:auto; padding:5rem 1.5rem; } h1,h2 { color:var(--gold); line-height:1.15; } h1 { font-size:clamp(2.8rem,8vw,5.8rem); margin:0; letter-spacing:-.06em; } .lead { max-width:45rem; font-size:1.25rem; color:var(--muted); }
+    .grid { display:grid; gap:1rem; grid-template-columns:repeat(auto-fit,minmax(14rem,1fr)); margin:2.5rem 0; } .card { padding:1.3rem; background:color-mix(in srgb,var(--panel) 93%,transparent); border:1px solid #40536b; border-radius:.75rem; } .card strong { display:block; color:var(--gold); font-size:1.1rem; }
+    code { padding:.12rem .35rem; background:#07101a; border-radius:.25rem; color:#d6e5f7; } a { color:var(--gold); } footer { color:var(--muted); margin-top:4rem; font-size:.9rem; }
+  </style>
+</head>
+<body>
+  <main>
+    <p>WORLD OF WARCRAFT UI RESEARCH</p>
+    <h1>ClassicForeverUI</h1>
+    <p class="lead">A clean-room, Classic-inspired UI addon built as a Retail/Classic test harness today and a diagnostic launchpad for WoW Forever when addon access arrives.</p>
+    <div class="grid">
+      <section class="card"><strong>Compatibility first</strong>Client flavour, API, frame, and asset assumptions are isolated and reported at runtime.</section>
+      <section class="card"><strong>No extracted artwork</strong>Visuals resolve through Blizzard-resident texture paths and atlases whenever available.</section>
+      <section class="card"><strong>Forever-ready</strong>Run <code>/cf diagnostic</code>, <code>/cf assets</code>, and <code>/cf frames</code> to identify an unknown client quickly.</section>
+    </div>
+    <h2>Current status</h2>
+    <p>The project has a modular addon scaffold, diagnostics, asset/API/frame manifests, and reproducible scans of pinned Retail and Classic UI-source revisions. Visual replacement modules are intentionally not enabled until their assets and protected-frame constraints are verified.</p>
+    <h2>Get involved</h2>
+    <p>Read the <a href="../README.md">README</a>, review the <a href="../Research/ForeverUnknowns.md">Forever Day One checklist</a>, or open an issue with client build information and diagnostic output.</p>
+    <footer>Unofficial community project. Not affiliated with Blizzard Entertainment or WoW Forever.</footer>
+  </main>
+</body>
+</html>

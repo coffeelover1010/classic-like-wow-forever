@@ -1,0 +1,15 @@
+name: Bug report
+description: Report an addon or diagnostic problem.
+title: "bug: "
+labels: [bug]
+body:
+  - type: textarea
+    attributes:
+      label: What happened?
+      description: Include expected and actual behaviour.
+    validations: { required: true }
+  - type: textarea
+    attributes:
+      label: Client details and diagnostics
+      description: Include game flavour, build/interface version, and relevant `/cf diagnostic` output. Do not include account details.
+    validations: { required: true }

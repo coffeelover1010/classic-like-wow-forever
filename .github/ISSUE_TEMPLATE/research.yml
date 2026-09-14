@@ -1,0 +1,13 @@
+name: UI research finding
+description: Record a verified Blizzard UI source or client finding.
+title: "research: "
+labels: [research]
+body:
+  - type: input
+    attributes: { label: Client and revision/build }
+    validations: { required: true }
+  - type: textarea
+    attributes:
+      label: Evidence
+      description: Give source URL/path, exact file/line or runtime diagnostic output, and the compatibility impact.
+    validations: { required: true }
