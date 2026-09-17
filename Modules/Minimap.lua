@@ -12,6 +12,7 @@ function M:Enable()
   -- Preserve native map, mask, clicks, tracking, zoom and minimap buttons.
   j:Alpha(_G.MinimapCompassTexture,0)
   j:Alpha(_G.MinimapBorder,0)
+  local ratio = self.Frame:GetWidth()/140
   if not self.Visual then
     self.Visual = CreateFrame("Frame",nil,self.Frame)
     self.Visual:EnableMouse(false)
@@ -19,8 +20,11 @@ function M:Enable()
     self.Visual:SetFrameLevel(self.Frame:GetFrameLevel()+3)
     -- Original sheet ring is centered at (168,104); this crop's center is (160,128).
     self.Visual.Border = CF.Visuals:Texture(self.Visual,"CLASSIC_MINIMAP_BORDER","OVERLAY",
-      264,264,"CENTER",self.Frame,"CENTER",-11,-33)
+      192*ratio,192*ratio,"CENTER",self.Frame,"CENTER",-8*ratio,-24*ratio)
   end
+  self.Visual.Border:SetSize(192*ratio,192*ratio)
+  self.Visual.Border:ClearAllPoints()
+  self.Visual.Border:SetPoint("CENTER",self.Frame,"CENTER",-8*ratio,-24*ratio)
   self.Visual:Show()
   return true,"Original round minimap border; native map and controls retained"
 end
