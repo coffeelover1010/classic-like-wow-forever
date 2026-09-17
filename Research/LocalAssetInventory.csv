@@ -67,3 +67,7 @@ build,product,path,status,bytes,sha256,error
 1.15.9.69722,wow_classic_era,Interface\QuestFrame\UI-QuestGreeting-TopRight.blp,extracted,44900,f858fd4fb92ea13a187ea77201fb9139e4ec36c407678e7b7024b8059a59c1c8,
 1.15.9.69722,wow_classic_era,Interface\QuestFrame\UI-QuestGreeting-BotLeft.blp,extracted,88580,d5bcb93fab8806cf3a7d95c4ecac690ccaafd92290bf0ea2864d5ef0267b9b98,
 1.15.9.69722,wow_classic_era,Interface\QuestFrame\UI-QuestGreeting-BotRight.blp,extracted,44900,54942b22098ba5b38382cd64e5e0b3bba93a7f5c2b6427b4f6d5950122bdb534,
+1.15.9.69722,wow_classic_era,Interface\PaperDollInfoFrame\UI-Character-CharacterTab-L1.blp,extracted,88580,93eb2676be31b726a4cb64f915f2838f728158434da7fad719bb0eabc3439e7b,
+1.15.9.69722,wow_classic_era,Interface\PaperDollInfoFrame\UI-Character-CharacterTab-R1.blp,extracted,44900,df19d3f6caa6af8cbfb8b3816ca8207214e6165107bd31b9da539d6bc0ebf085,
+1.15.9.69722,wow_classic_era,Interface\PaperDollInfoFrame\UI-Character-CharacterTab-BottomLeft.blp,extracted,88580,53655353ef9803ecdab93dbfc5751b7a659a3eb30b4699010bd3cc895907938c,
+1.15.9.69722,wow_classic_era,Interface\PaperDollInfoFrame\UI-Character-CharacterTab-BottomRight.blp,extracted,44900,2996fb4f70d0f7088866323feba13e69348720a8528cbdaca6d4412728b3d4e6,

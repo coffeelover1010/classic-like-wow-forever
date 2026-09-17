@@ -8,6 +8,15 @@ local function art(path, usage, coords, width, height)
     forever = "FOREVER_VALIDATION_REQUIRED", fallback = nil }
 end
 CF.AssetCatalogue = {
+  CLASSIC_CHARACTER_BACKGROUND = art("PaperDollInfoFrame\\UI-Character-CharacterTab-L1", "original dark character background", {80/256,240/256,100/256,240/256},240,320),
+  CLASSIC_CHARACTER_TL = art("PaperDollInfoFrame\\UI-Character-CharacterTab-L1", "character inset corner", {58/256,66/256,72/256,80/256},8,8),
+  CLASSIC_CHARACTER_TR = art("PaperDollInfoFrame\\UI-Character-CharacterTab-R1", "character inset corner", {38/128,46/128,72/256,80/256},8,8),
+  CLASSIC_CHARACTER_BL = art("PaperDollInfoFrame\\UI-Character-CharacterTab-BottomLeft", "character inset corner", {58/256,66/256,136/256,144/256},8,8),
+  CLASSIC_CHARACTER_BR = art("PaperDollInfoFrame\\UI-Character-CharacterTab-BottomRight", "character inset corner", {38/128,46/128,136/256,144/256},8,8),
+  CLASSIC_CHARACTER_TOP = art("PaperDollInfoFrame\\UI-Character-CharacterTab-L1", "character inset top", {66/256,240/256,72/256,80/256},240,8),
+  CLASSIC_CHARACTER_BOTTOM = art("PaperDollInfoFrame\\UI-Character-CharacterTab-BottomLeft", "character inset bottom", {66/256,108/256,136/256,144/256},240,8),
+  CLASSIC_CHARACTER_LEFT = art("PaperDollInfoFrame\\UI-Character-CharacterTab-L1", "character inset left", {58/256,66/256,80/256,240/256},8,320),
+  CLASSIC_CHARACTER_RIGHT = art("PaperDollInfoFrame\\UI-Character-CharacterTab-R1", "character inset right", {38/128,46/128,80/256,240/256},8,320),
   CLASSIC_QUEST_PAPER = art("QuestFrame\\UI-QuestGreeting-TopLeft", "original quest paper", {32/256,240/256,100/256,240/256},240,180),
   CLASSIC_QUEST_TL = art("QuestFrame\\UI-QuestGreeting-TopLeft", "original quest tl", {16/256,32/256,76/256,92/256},16,16),
   CLASSIC_QUEST_TR = art("QuestFrame\\UI-QuestGreeting-TopRight", "original quest tr", {56/128,72/128,76/256,92/256},16,16),

@@ -27,6 +27,21 @@ Actual client procedure: BETA-TEST.md.
 - Native health indicators remain owned by Blizzard. Their presence in the mock is not proof of correct rendering or secure behavior.
 
 - FocusFrame applies only to the full-size pinned Retail hierarchy; compact focus reports UNAVAILABLE and stays native. PetFrame and TargetOfTarget report APPLIED_UNVERIFIED for passive trim only. Missing or changed small-frame structures report UNAVAILABLE.
+# 0.8 character diagnostics
+
+- CharacterWindow is independent of deferred Panels. Missing roots, inset ownership,
+  artwork or secure hooks produce UNAVAILABLE without changing the native window.
+- A supported hierarchy reports APPLIED_UNVERIFIED and its supported slot count
+  out of eighteen. Changed or missing slots remain native. A custom/restricted
+  background reports that native artwork is retained, even if the module is active.
+- Applying artwork is not proof of rendered pixels. Four new character-sheet
+  paths have Era 1.15.9.69722 extraction evidence only. Retail and Forever remain
+  unverified. Buttons retain their native original art; no new button extraction
+  or renderer is claimed.
+- Character appears as the twentieth settings choice. Combat changes queue;
+  Edit Mode suspends; creation/update failures hide partial art independently.
+- No equipment, stat, model, health or prediction values are read by this module.
+
 # 0.7 dialogue diagnostics
 
 QuestDialogue and GossipDialogue are independent implemented modules. Missing

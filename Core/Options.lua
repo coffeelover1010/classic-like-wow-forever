@@ -14,6 +14,7 @@ O.Groups = {
     {"CastBar", "Cast bar", "Classic border and bar placement."},
     {"Buffs", "Buffs", "Classic borders around your buffs."},
     {"Debuffs", "Debuffs", "Classic borders. Dispel colors stay."},
+    {"CharacterWindow", "Character", "Classic background and gear trim."},
   }},
   { title = "Bars & panels", items = {
     {"TargetOfTarget", "Target of target", "Classic trim. Native bars stay."},

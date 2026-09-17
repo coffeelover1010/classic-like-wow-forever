@@ -1,6 +1,6 @@
 # ClassicForeverUI
 
-A Retail addon that puts original Blizzard Classic artwork around a Classic-style layout. Version **0.7.0-alpha** adds parchment, inset borders and quest reward trim for standard quest and NPC dialogue windows. It has **not been tested inside WoW**. Forever support is unverified.
+A Retail addon that puts original Blizzard Classic artwork around a Classic-style layout. Version **0.8.0-alpha** adds original dark artwork and metal trim to the character equipment page. It has **not been tested inside WoW**. Forever support is unverified.
 
 ## Install
 
@@ -22,6 +22,7 @@ Read [BETA-TEST.md](BETA-TEST.md) for the test session. Start with `/cf diagnost
 - Pet and target-of-target get thin Classic metal trim above health and below power. Their native borders, portraits, bars, masks, text, prediction indicators and positions stay in place. This is a limited trim pass.
 - Buffs and debuffs get original slot borders. Native timers, counts, dispel colors, enchant borders and right-click controls stay in place. Private aura anchors remain unchanged.
 - Tooltips use the original dark background and a gray border. Links, comparisons and native content stay in place. The border is gray even for rare items; item names keep their native colors.
+- The character equipment page gets its original dark background, inset trim and thin metal borders around supported gear slots. Native buttons, model, stats, titles and equipment sets stay in place.
 - Standard NPC quest and gossip windows get original parchment and inset borders. Quest item rewards get slot trim. Text, choices, scrolling, tooltips and native buttons stay in place.
 - The quest tracker gets a Classic header and metal trim. Its rows, quest items, filters and collapse controls stay native.
 - The minimap uses the original round border.
@@ -36,9 +37,11 @@ Open the spellbook once to load its skin. Before that, its module can report `UN
 
 Standard quest and gossip buttons already use original Blizzard red-button artwork; their native states stay in charge. Quest maps, popup quest details, custom gossip, spell-reward pools and changed hierarchies remain native. Special material and accessibility backgrounds are retained. The outer portrait frame is unchanged; this pass changes the inner border. Use `/cf module QuestDialogue off` or `/cf module GossipDialogue off` to switch off either skin.
 
+The character skin is limited to the standard Retail paper-doll hierarchy. Its art follows the equipment page, so reputation and currency pages keep their own look. Original red buttons and native Quickslot button states are retained. The outer portrait border, model and class backgrounds, stats, outfits, titles, tabs, flyouts and sockets stay native. Changed slots are skipped and reported as a supported count out of eighteen. Custom or restricted backgrounds reveal native art. Use `/cf module CharacterWindow off` to turn it off. Bag windows remain a later pass.
+
 ## Controls
 
-Type **`/cf`** to open settings. There is one main switch and nineteen feature checkboxes. Click anywhere on a feature row to change it. Choices save automatically and apply outside combat. Turning the main switch off keeps your feature choices for next time.
+Type **`/cf`** to open settings. There is one main switch and twenty feature checkboxes. Click anywhere on a feature row to change it. Choices save automatically and apply outside combat. Turning the main switch off keeps your feature choices for next time.
 
 The window shows which features have applied, which are off, and which need attention. **Open book** means the spellbook must be opened once to load. **View textures**, **Open report**, and **Retry changes** give quick access to troubleshooting. The report provides text to copy with Ctrl+A, Ctrl+C.
 
@@ -77,7 +80,7 @@ python Tests/run_tests.py
 python Tools/package_addon.py
 ```
 
-Output: `dist/ClassicForeverUI/` and `dist/ClassicForeverUI-0.7.0-alpha.zip`. Packaging uses the TOC and a small document allowlist. It excludes research checkouts, test tools, previews, extracted images and native libraries.
+Output: `dist/ClassicForeverUI/` and `dist/ClassicForeverUI-0.8.0-alpha.zip`. Packaging uses the TOC and a small document allowlist. It excludes research checkouts, test tools, previews, extracted images and native libraries.
 
 If the beta rejects the TOC, first read its actual Interface number. Then build a separate package:
 

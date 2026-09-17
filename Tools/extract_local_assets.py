@@ -10,6 +10,8 @@ import json
 from pathlib import Path
 
 ASSETS = {
+    "PaperDollInfoFrame": ["UI-Character-CharacterTab-L1", "UI-Character-CharacterTab-R1",
+                           "UI-Character-CharacterTab-BottomLeft", "UI-Character-CharacterTab-BottomRight"],
     "QuestFrame": ["UI-QuestGreeting-TopLeft", "UI-QuestGreeting-TopRight",
                    "UI-QuestGreeting-BotLeft", "UI-QuestGreeting-BotRight"],
     "Tooltips": ["UI-Tooltip-Background", "UI-Tooltip-Border"],

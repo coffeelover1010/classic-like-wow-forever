@@ -68,3 +68,15 @@ $py = 'C:\Users\Z68\.cache\codex-runtimes\codex-primary-runtime\dependencies\pyt
 A new product/build needs its own metadata and output directory. This tool refuses to write extracted art inside the addon repository.
 
 The 0.5 pass added two Era tooltip paths: UI-Tooltip-Background and UI-Tooltip-Border. Both extracted successfully and were decoded locally; their size/hash evidence is appended to LocalAssetInventory.csv. The Anniversary inventory remains the earlier 31-path run.
+
+## 0.8 character extraction
+
+On 17 September 2026, four UI-Character-CharacterTab sheets (L1, R1,
+BottomLeft and BottomRight) were extracted from local wow_classic_era
+1.15.9.69722 with the existing read-only tool. All decoded successfully and were
+inspected as a combined sheet and catalogue-crop composition. L1/BottomLeft are
+256x256; R1/BottomRight are 128x256. Their byte sizes and SHA-256 hashes are in
+LocalAssetInventory.csv. Outputs are in cf-ui-research/character-art-era-69722,
+outside the repository and ZIP. The tool also rechecked its previous allowlist;
+no new Anniversary extraction is claimed. Native red-button paths remain
+source-confirmed, not newly extracted. No running game was used.

@@ -135,6 +135,32 @@ function Mock.Native(name,parent)
   return f
 end
 function Mock.Child(parent,key) local f=Mock.Native(nil,parent); parent[key]=f; return f end
+function Mock.Character()
+  local f=Mock.Native("CharacterFrame"); f:SetSize(540,424)
+  Mock.Child(f,"CloseButton"); Mock.Child(f,"Background"):SetAtlas("character-panel-background")
+  local nine=Mock.Child(Mock.Child(f,"Inset"),"NineSlice")
+  for _,key in ipairs({"TopLeftCorner","TopRightCorner","BottomLeftCorner","BottomRightCorner",
+      "TopEdge","BottomEdge","LeftEdge","RightEdge"}) do
+    Mock.Child(nine,key):SetAlpha(.7)
+  end
+  local p=Mock.Native("PaperDollFrame",f)
+  local items=Mock.Native("PaperDollItemsFrame",p)
+  for _,name in ipairs({"Head","Neck","Shoulder","Back","Chest","Shirt","Tabard","Wrist",
+      "Hands","Waist","Legs","Feet","Finger0","Finger1","Trinket0","Trinket1","MainHand","SecondaryHand"}) do
+    local b=Mock.Native("Character"..name.."Slot",items)
+    for _,key in ipairs({"icon","IconBorder","Cooldown","popoutButton","SocketDisplay","NormalTexture"}) do
+      Mock.Child(b,key):SetTexture("native-"..key)
+    end
+    b.secureToken="native"
+    b:SetScript("OnClick",function() Mock.equipped=b end)
+    b:SetScript("OnEnter",function() Mock.tooltip=b end)
+    b:SetScript("OnDragStart",function() Mock.dragged=b end)
+  end
+  for _,name in ipairs({"CharacterModelScene","CharacterStatsPane","PaperDollEquipmentManagerPane","CharacterFrameTab1"}) do
+    local b=Mock.Native(name,p); b:SetScript("OnClick",function() end)
+    Mock.Child(b,"Background"):SetTexture("native-content")
+  end
+end
 function hooksecurefunc(object, method, callback)
   local original=object[method]
   object[method]=function(self,...)

@@ -1,5 +1,5 @@
 local _, CF = ...
--- Shared only by the two standard NPC windows. No catch-all panel scanning.
+-- Scoped NPC visual helpers; Queue also serves the character module's safe refresh.
 local D = {}
 CF.DialogueSkin = D
 local pieces = {TopLeftCorner="TL", TopRightCorner="TR", BottomLeftCorner="BL",

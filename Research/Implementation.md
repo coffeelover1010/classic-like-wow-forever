@@ -1,4 +1,56 @@
-# Implementation and source evidence: 0.7 alpha
+# Implementation and source evidence: 0.8 alpha
+
+## 0.8 character equipment page
+
+Both pinned source HEADs below were rechecked. Retail source is under
+Blizzard_UIPanels_Game/Mainline, not Blizzard_CharacterFrame/Mainline.
+CharacterFrame.xml defines Background (character-panel-background), Inset from
+ButtonFrameTemplate, InsetRight and CharacterStatsPane. PaperDollFrame.xml defines
+PaperDollFrame under CharacterFrame and PaperDollItemsFrame directly under it.
+The eighteen named item slots inherit the intrinsic ItemButton from
+Blizzard_ItemButton/Shared/ItemButtonTemplate.xml: its icon key is lowercase
+`icon`, its icon is BORDER, counts are ARTWORK and quality/context overlays are
+OVERLAY. Slot cooldowns, popoutButton and SocketDisplay are separate children.
+
+CharacterWindow only creates passive textures. It overwrites no native character
+property, scripts, secure attributes, parents, hit rectangles or item values.
+Background and inset overlays belong to PaperDollFrame and follow its visibility;
+slot edges belong to each validated item button at ARTWORK sublevel -2, outside
+the icon. The native Quickslot normal/pushed/highlight states and existing
+Char-Paperdoll-Parts slot artwork stay in charge. Insets use existing anchors,
+so native expand/collapse and other-page geometry remain Blizzard-owned.
+
+Only the known character-panel-background atlas is covered. Secure post-hooks
+on its SetAtlas/SetTexture/Show/Hide hide addon art immediately when it changes;
+all creation/refresh still uses combat deferral and isolated error handling.
+Unknown or restricted backgrounds get no overlays. No character accessibility
+setting or CVar is changed. Missing roots fail closed; changed slots are skipped
+and the detail reports the supported count. A changed hierarchy needs a fresh
+source review; it is not automatically classified as supported.
+
+CharacterFrame.lua defines ShowSubFrame and dynamic width/Inset placement.
+The character overlays disappear with PaperDollFrame when reputation/currency
+pages open. The outer portrait frame, class/stat background, model scene and
+its race/background overlays, stats, titles, equipment sets/outfits, sockets,
+flyouts, tab state and buttons are untouched. PaperDollFrame.xml's EquipSet and
+SaveSet inherit UIPanelButtonTemplate. SecureUIPanelTemplates.xml/.lua retains
+original UI-Panel-Button-Up/Down/Disabled art. Those button paths are source
+evidence, not newly extracted evidence. No new button renderer is claimed.
+
+Classic Blizzard_CharacterFrame/Vanilla/PaperDollFrame.xml references the four
+UI-Character-CharacterTab sheets. All four were extracted from Era 1.15.9.69722,
+decoded and inspected outside the repository. Catalogue crops use their dark
+paper and metal inset edges. Anniversary was not extracted for this pass.
+The ZIP includes only client paths, never extracted artwork or research tools.
+
+Thirteen new regressions bring the suite to 77 cases and 36 TOC Lua files.
+They cover native state preservation, page visibility, anchors and reuse, theme
+changes during combat, missing/changed structures, late load, settings, Edit Mode,
+partial creation/hooks, deferred failure, stale callbacks, missing art/APIs and
+opaque atlas values. Twenty settings choices fit ten per column at 700x870.
+The settings tree preview and character crop composition were inspected; the
+latter omits native controls/model and uses approximate inset geometry. Neither
+is a game screenshot. No running client is tested; Forever remains unverified.
 
 ## 0.7 standard quest and gossip pass
 
@@ -56,8 +108,8 @@ nineteen rows across two columns and no measured text overflow. The artwork crop
 composition uses catalogue coordinates and approximate inset geometry, not native
 atlas dimensions. Both previews were inspected; neither is an in-game screenshot.
 
-CustomGossipFrameBase, quest map/popups, spell-reward pools, character and bag
-windows remain unsupported. The generic Panels module stays deferred. Actual
+CustomGossipFrameBase, quest map/popups, spell-reward pools and bag
+windows remain unsupported. Character support was added in 0.8 as described above. The generic Panels module stays deferred. Actual
 client rendering, secure hook/taint behavior, reward event coverage and all
 accessibility settings still need the beta checklist. Forever remains unverified.
 

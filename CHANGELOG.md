@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.8.0-alpha - 17 September 2026
+
+- Added the character equipment-page skin: original dark background, inset overlays and thin metal trim outside supported gear icons.
+- Retained native original buttons, equipment actions, quality/cooldowns, stats, model, titles, equipment sets/outfits, tabs and accessibility/theme backgrounds. Other pages, outer portrait frame, flyouts, custom hierarchies and bag windows remain native.
+- Added Character settings, bringing the fitted 700x870 window to twenty choices. Kept combat deferral, Edit Mode suspension, exact rollback and failure isolation.
+- Extracted and inspected four character sheets from Era 1.15.9.69722 outside the repository; no artwork is bundled.
+- Passed 77 offline Lua 5.1 cases and 36 TOC Lua files; inspected character and settings previews. No running client tested; Forever remains unverified.
+
 ## 0.7.0-alpha - 17 September 2026
 
 - Added separate standard quest and NPC dialogue skins: original parchment, inset borders and quest item/currency reward-slot trim. Native buttons already use original red-button artwork and remain unchanged.

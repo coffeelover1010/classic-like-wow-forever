@@ -42,3 +42,7 @@ end
 for _,name in ipairs({"QuestFrame","QuestFrameDetailPanel","QuestFrameProgressPanel","QuestFrameRewardPanel","QuestFrameGreetingPanel","QuestInfoRewardsFrame","GossipFrame"}) do
   CF.FrameManifest[#CF.FrameManifest+1] = {name=name, use="scoped NPC parchment/inset/reward art; native controls retained", protected="runtime-probed"}
 end
+
+for _,name in ipairs({"CharacterFrame","PaperDollFrame","PaperDollItemsFrame"}) do
+  CF.FrameManifest[#CF.FrameManifest+1] = {name=name, use="paper-doll-only passive background and trim; native controls retained", protected="runtime-probed"}
+end

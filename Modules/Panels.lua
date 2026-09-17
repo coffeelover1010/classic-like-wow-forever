@@ -1,2 +1,2 @@
 local _, CF = ...
-CF:RegisterModule("Panels", { Deferred = "Other native panels retained; SpellBook, QuestDialogue and GossipDialogue are separate scoped modules" })
+CF:RegisterModule("Panels", { Deferred = "Other native panels retained; SpellBook, QuestDialogue GossipDialogue and CharacterWindow are separate scoped modules" })
