@@ -1,4 +1,4 @@
-# 0.8.0-alpha engineering handoff
+# 0.9.0-alpha engineering handoff
 
 ## Repository and package
 
@@ -8,7 +8,7 @@ The Git repository is classic-like-wow-forever. The install folder is **ClassicF
 classic-like-wow-forever/
   ClassicForeverUI.toc
   Core/             lifecycle, environment, rollback, assets, visual helpers, settings, reports
-  Modules/          twenty implemented modules; one explicit deferred module
+  Modules/          23 implemented modules; one explicit deferred module
   Data/             asset/API/frame/event catalogues
   Research/         pinned sources, licensing, local asset inventory and implementation
   Tests/            Lua 5.1 mock regression suite and diagnostic expectations
@@ -18,23 +18,50 @@ classic-like-wow-forever/
   LICENSE / LICENSE-NOTES.md
   dist/             generated; ignored by Git
     ClassicForeverUI/
-    ClassicForeverUI-0.8.0-alpha.zip
-    ClassicForeverUI-0.8.0-alpha.zip.sha256
+    ClassicForeverUI-0.9.0-alpha.zip
+    ClassicForeverUI-0.9.0-alpha.zip.sha256
 ```
 
 ## Implemented
 
 Original stone action bar, original mirrored gryphons, classic action-slot borders, player/target visual skins, original minimap border, native XP/reputation fill and trim, native micro menu/bag placement, original cast border, and original parchment/trim/icon/slot borders for the native spellbook. Full-size focus uses the target-style skin at its native position and scale. Pet and target-of-target have passive Classic metal trim outside their native bars; their modern artwork remains. Compact focus and focus-target are unchanged. Classic tooltip backdrops, buff/debuff slot borders and quest-tracker header trim are also implemented. Player/target/focus health stays native, including incoming heals, shields, masks and health text. The real action buttons, unit buttons, casting engine and tracking logic remain Blizzard-owned.
 
-Module failures are isolated and partially applied changes roll back. Missing combat API blocks writes. Edit Mode temporarily suspends the layout. The /cf settings window has a main switch, twenty feature toggles, saved choices and live status. It shares the slash-command apply path and includes texture, report and retry buttons. An optional Blizzard Settings > AddOns entry opens the same window. Unknown-client trials remain explicit and session-only.
+Module failures are isolated and partially applied changes roll back. Missing combat API blocks writes. Edit Mode temporarily suspends the layout. The /cf settings window has a main switch, 23 feature toggles, saved choices and live status. It shares the slash-command apply path and includes texture, report and retry buttons. An optional Blizzard Settings > AddOns entry opens the same window. Unknown-client trials remain explicit and session-only.
 
 ## What works versus what is untested
 
-The implemented behaviors passed 77 offline Lua 5.1 regression cases, including thirteen new character cases and all previous dialogue, unit-frame, UI, spellbook and settings regressions. All 36 packaged Lua files load in the mock, and the ZIP is checked against the exact TOC/document allowlist.
+The implemented behaviors passed 91 offline Lua 5.1 regression cases, including fourteen new window cases and all previous regressions. All 40 packaged Lua files load in the mock, and the ZIP is checked against the exact TOC/document allowlist.
 
 **Nothing is claimed tested in a running Retail, Classic or Forever client.** Original artwork was freshly extracted from Era 1.15.9.69722 and Anniversary 2.5.6.69795, decoded and inspected locally. The gryphon is EndCap-Dwarf; EndCap-Human is a lion.
 
 Retail and beta executables were not found in the inspected locations. The user's first beta session remains necessary. Micro and bag button art, advanced class visuals and native tracking details retain Retail styling.
+
+## 0.9 combined window pass
+
+BagWindows, BankWindow and MerchantWindow are separate implemented modules using
+Core/WindowTrim.lua. Six individual bags (including reagent) and combined bags get
+four-pixel side/bottom strips. BankFrame.BankPanel's shared character/account inset
+and MerchantFrame.Inset get eight original metal overlays. Exact source atlas and
+ownership checks fail closed; theme changes immediately hide addon art, including
+in combat. All creation/refresh defers as before. No native property is overwritten.
+Items/pools, backgrounds, corners/portraits, tabs, sorting, search, tooltips,
+comparisons, quality/count/cooldown/quest overlays and all transaction controls stay
+native. No purchase, sale, repair or inventory move was performed.
+
+Unsupported: guild banks, legacy bank/reagent layouts, custom hierarchies, changed
+border themes, bag top/corners, item-slot reskins and full Vanilla window recreation.
+Panels remains deferred. Original character-sheet crops are reused; there was no new
+extraction and no bag/bank/merchant sheet extraction claim. See Implementation.md.
+
+The 91-case Lua 5.1 suite loads 40 TOC files. Settings have 23 choices across three
+columns (8/8/7) at 1034x758, fitted to the screen. Settings and approximate crop
+previews were inspected offline. ZIP payload is 45 files (40 Lua, TOC, four documents),
+checked byte-for-byte against the allowlist, with no extracted art or research tools.
+No running client is tested. Next: BETA-TEST.md, especially layer overlap, actual
+reagent/account behavior, item interactions, theme transitions, taint and UI scaling.
+
+The sections below describe historical feature passes; 0.9 supersedes their settings
+counts and their old statement that bag windows were deferred.
 
 ## 0.8 character scope
 
@@ -70,7 +97,7 @@ Project code is MIT. Blizzard artwork rights are separate. No blanket redistribu
 
 ## Exact Day One procedure
 
-Follow [BETA-TEST.md](BETA-TEST.md): install the correctly named folder, record build/Interface, run all five required diagnostic commands, inspect every gallery page, test settings and saved choices, clicks/bindings/targets/bags/casts and the spellbook in both sizes, exercise combat deferral and vehicles, test Edit Mode, reload, and copy /cf report. Allow 95 minutes, including the new character checks. Disable the addon if it blocks controls.
+Follow [BETA-TEST.md](BETA-TEST.md): install the correctly named folder, record build/Interface, run all five required diagnostic commands, inspect every gallery page, test settings and saved choices, clicks/bindings/targets/bags/casts and the spellbook in both sizes, exercise combat deferral and vehicles, test Edit Mode, reload, and copy /cf report. Allow 110 minutes, including the window checks. Disable the addon if it blocks controls.
 
 ## Next ten engineering tasks
 

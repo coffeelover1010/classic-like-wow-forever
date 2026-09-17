@@ -1,4 +1,58 @@
-# Implementation and source evidence: 0.8 alpha
+# Implementation and source evidence: 0.9 alpha
+
+## 0.9 bag, bank and merchant borders
+
+Rechecked Retail 4e3cbb8c5609e4bfc332c0aebbfa4d79731fab59 and Classic
+ecadf9d3326fa87828cacca7f13c0ab5f41840a6. All following paths are under
+Interface/AddOns. No third-party addon code was used.
+
+- Retail Blizzard_UIPanels_Game/Mainline/ContainerFrame.xml defines ContainerFrame1-6
+  and ContainerFrameCombinedBags with HeldBagLayout. ContainerFrame.lua reparents
+  these windows for fullscreen modes and owns the itemButtonPool, resizing, background
+  colors, search, sorting and item states. We validate child ownership rather than
+  requiring UIParent ownership. Only LeftEdge, RightEdge and BottomEdge are skinned:
+  narrow four-pixel strips follow the original edges. Portrait corners and header remain.
+- Retail Blizzard_UIPanels_Game/Mainline/BankFrame.xml defines BankFrame.BankPanel
+  with a directly owned NineSlice, InsetFrameTemplate layout, AutoSortButton and
+  AutoDepositFrame. BankFrame.lua GenerateBankTypeTabs assigns both Character and
+  Account to that same BankPanel. Eight passive inset overlays follow its border.
+  There is no legacy BankFrame item grid or separate ReagentBankFrame adaptation.
+- Retail Blizzard_UIPanels_Game/Mainline/MerchantFrame.xml inherits ButtonFrameTemplate.
+  Its Inset.NineSlice receives eight passive overlays. Twelve native merchant rows,
+  buyback, money/currency insets, filters, repair, junk-sale controls and outer portrait
+  are excluded. No transaction or inventory API is called.
+- Retail Blizzard_SharedXML/Mainline/SharedUIPanelTemplates.xml defines the inherited
+  structures; NineSliceLayouts.lua defines exact HeldBagLayout and InsetFrameTemplate
+  region atlases. Core/WindowTrim.lua checks those atlas names and ownership before
+  drawing. Bag art uses OVERLAY sublevel 1 over native OVERLAY edges; inset art uses
+  BORDER sublevel -4 above native BORDER -5. No native alpha, atlas, anchor, parent,
+  script, secure attribute or item property is written.
+
+Secure post-hooks on SetAtlas/SetTexture/Show/Hide hide addon art immediately on
+border theme changes, including in combat. Creation and refresh use the existing
+combat-safe queue and module failure isolation. All art is tracked before risky
+application; disabling hides it. Hooks are inert when disabled and registration
+retries after partial failure. Events rediscover replaced borders after native handlers;
+ADDON_LOADED retries missing windows through the core. Item pools are never traversed
+or decorated, so pooled reuse cannot carry addon item art. Native visibility and
+resize anchors control the overlays. Changed structures and themes are counted as
+unsupported, without altering the window. No accessibility setting or background is
+changed. Unknown client structures still require source review and real-client checks.
+
+Artwork reuses the four inventoried UI-Character-CharacterTab sheets from 0.8;
+Classic Blizzard_CharacterFrame/Vanilla/PaperDollFrame.xml references those paths.
+This is a deliberate cross-window reuse of original Blizzard metal, not original bag,
+bank or merchant sheet extraction or full Vanilla parity. No extraction was done for
+0.9. No art files enter the package. Generic Panels remains deferred; guild banks,
+legacy bank/reagent hierarchies, item-slot skins, bag corners and themed borders remain
+native. The new modules are BagWindows, BankWindow and MerchantWindow.
+
+Settings now use 1034x758 with three columns of 8, 8 and 7 choices. Offline settings
+and approximate trim crop previews were inspected. Fourteen new regressions bring the
+suite to 91 cases and 40 TOC files. They include failure isolation, partial hooks,
+missing art/APIs, late loading, replaced borders, theme changes in combat, visibility,
+anchors, untouched controls/item pools, settings, Edit Mode and stale callbacks.
+No running Retail, Classic or Forever client has been tested.
 
 ## 0.8 character equipment page
 

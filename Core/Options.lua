@@ -10,23 +10,28 @@ O.Groups = {
     {"TargetFrame", "Target frame", "Classic borders and target details."},
     {"FocusFrame", "Focus frame", "Classic skin for full-size focus."},
     {"PetFrame", "Pet frame", "Classic trim. Native bars stay."},
+    {"TargetOfTarget", "Target of target", "Classic trim. Native bars stay."},
     {"Minimap", "Minimap", "The original round minimap border."},
     {"CastBar", "Cast bar", "Classic border and bar placement."},
-    {"Buffs", "Buffs", "Classic borders around your buffs."},
-    {"Debuffs", "Debuffs", "Classic borders. Dispel colors stay."},
-    {"CharacterWindow", "Character", "Classic background and gear trim."},
   }},
-  { title = "Bars & panels", items = {
-    {"TargetOfTarget", "Target of target", "Classic trim. Native bars stay."},
-    {"SpellBook", "Spellbook", "Parchment, metal trim and spell slots."},
+  { title = "Bars & tracking", items = {
     {"ExperienceBar", "Experience bar", "Classic fill and trim for the XP bar."},
     {"ReputationBar", "Reputation bar", "Classic fill for your tracked faction."},
     {"MicroMenu", "Menu buttons", "Move the menu into the bottom bar."},
     {"Bags", "Bag buttons", "Move bag buttons into the bottom bar."},
+    {"Buffs", "Buffs", "Classic borders around your buffs."},
+    {"Debuffs", "Debuffs", "Classic borders. Dispel colors stay."},
     {"Tooltips", "Tooltips", "Classic background and gray border."},
+    {"QuestTracker", "Quest tracker", "Classic trim for the tracker header."},
+  }},
+  { title = "Windows", items = {
+    {"SpellBook", "Spellbook", "Parchment, metal trim and spell slots."},
+    {"CharacterWindow", "Character", "Classic background and gear trim."},
     {"QuestDialogue", "Quest windows", "Classic paper, trim and reward slots."},
     {"GossipDialogue", "NPC dialogue", "Classic paper and dialogue trim."},
-    {"QuestTracker", "Quest tracker", "Classic trim for the tracker header."},
+    {"BagWindows", "Bag windows", "Classic side and bottom trim."},
+    {"BankWindow", "Bank", "Classic trim inside the bank."},
+    {"MerchantWindow", "Merchant", "Classic trim inside shop windows."},
   }},
 }
 local colors = {
@@ -159,13 +164,13 @@ function O:Refresh()
 end
 
 function O:Fit()
-  self.Frame:SetScale(math.max(0.1,math.min(1,(UIParent:GetWidth()-32)/700,(UIParent:GetHeight()-32)/870)))
+  self.Frame:SetScale(math.max(0.1,math.min(1,(UIParent:GetWidth()-32)/1034,(UIParent:GetHeight()-32)/758)))
 end
 
 function O:Build()
   local f = CreateFrame("Frame","ClassicForeverUIOptions",UIParent)
   self.Frame = f
-  f:Hide(); f:SetSize(700,870); f:SetPoint("CENTER",UIParent,"CENTER",0,0)
+  f:Hide(); f:SetSize(1034,758); f:SetPoint("CENTER",UIParent,"CENTER",0,0)
   f:SetFrameStrata("DIALOG"); f:SetClampedToScreen(true)
   f:EnableMouse(true); f:SetMovable(true); f:RegisterForDrag("LeftButton")
   f:SetScript("OnDragStart",f.StartMoving); f:SetScript("OnDragStop",f.StopMovingOrSizing)
@@ -178,7 +183,7 @@ function O:Build()
   label(f,"A familiar look. Your choice.",nil,24,50,520,18,"muted")
   f.Close = button(f,"Close",64,function() f:Hide() end)
   f.Close:SetPoint("TOPRIGHT",f,"TOPRIGHT",-24,-20)
-  f.Master = choice(f,"Enable ClassicForeverUI","Turn off to restore Blizzard's layout. Your choices stay saved.",652)
+  f.Master = choice(f,"Enable ClassicForeverUI","Turn off to restore Blizzard's layout. Your choices stay saved.",986)
   f.Master:SetPoint("TOPLEFT",f,"TOPLEFT",24,-84)
   f.Master:SetScript("OnClick",function(b) CF:SetEnabled(b:GetChecked()) end)
   f.Notice = label(f,"",nil,24,154,490,36,"muted")
@@ -199,10 +204,10 @@ function O:Build()
   f.Report = button(f,"Open report",144,function() CF.Diagnostics:Report() end)
   f.Retry = button(f,"Retry changes",144,function() CF:RetryModules() end)
   for index,b in ipairs({f.Gallery,f.Report,f.Retry}) do
-    b:SetPoint("TOPLEFT",f,"TOPLEFT",24+(index-1)*158,-804)
+    b:SetPoint("TOPLEFT",f,"TOPLEFT",24+(index-1)*158,-692)
   end
-  label(f,"Saved automatically. Alpha: in-game checks are still needed.",nil,24,846,560,16,"muted")
-  label(f,CF.Version,nil,575,846,101,16,"muted"):SetJustifyH("RIGHT")
+  label(f,"Saved automatically. Alpha: in-game checks are still needed.",nil,24,734,560,16,"muted")
+  label(f,CF.Version,nil,909,734,101,16,"muted"):SetJustifyH("RIGHT")
   if type(UISpecialFrames) == "table" then UISpecialFrames[#UISpecialFrames+1] = "ClassicForeverUIOptions" end
   f:SetScript("OnShow",function() self:Fit(); CF:RefreshOptions() end)
   f:SetScript("OnEvent",function() self:Fit() end)

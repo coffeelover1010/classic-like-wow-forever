@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.9.0-alpha - 17 September 2026
+
+- Added independent Bag windows, Bank and Merchant settings. Individual/reagent/combined bags get side and bottom strips; the shared character/account bank panel and merchant main inset get Classic metal trim.
+- Kept backgrounds, portraits, items, pooled states, controls, accessibility settings and game actions native. Unknown borders/themes and legacy or custom windows stay native.
+- Used existing inventoried Classic character-sheet crops. No new extraction or bundled artwork.
+- Changed settings to three columns at 1034x758 with 23 choices and screen fitting.
+- Passed 91 offline Lua 5.1 cases and 40 TOC files. Inspected settings and trim previews. No running client tested; Forever compatibility remains unverified.
+
 ## 0.8.0-alpha - 17 September 2026
 
 - Added the character equipment-page skin: original dark background, inset overlays and thin metal trim outside supported gear icons.

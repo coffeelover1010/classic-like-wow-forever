@@ -80,3 +80,11 @@ LocalAssetInventory.csv. Outputs are in cf-ui-research/character-art-era-69722,
 outside the repository and ZIP. The tool also rechecked its previous allowlist;
 no new Anniversary extraction is claimed. Native red-button paths remain
 source-confirmed, not newly extracted. No running game was used.
+
+## 0.9 window trim reuse
+
+No new extraction was performed. Bag, bank and merchant borders reuse the existing
+four Era 1.15.9.69722 character-sheet crops inventoried for 0.8. A new approximate
+crop composition was inspected offline. This does not establish native Retail or
+Forever rendering, nor extraction of original bag/bank/merchant sheets. No extracted
+art is bundled. No game was launched and no game action was performed.

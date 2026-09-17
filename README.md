@@ -1,6 +1,6 @@
 # ClassicForeverUI
 
-A Retail addon that puts original Blizzard Classic artwork around a Classic-style layout. Version **0.8.0-alpha** adds original dark artwork and metal trim to the character equipment page. It has **not been tested inside WoW**. Forever support is unverified.
+A Retail addon that puts original Blizzard Classic artwork around a Classic-style layout. Version **0.9.0-alpha** adds separate bag, bank and merchant window trim. It has **not been tested inside WoW**. Forever support is unverified.
 
 ## Install
 
@@ -37,15 +37,19 @@ Open the spellbook once to load its skin. Before that, its module can report `UN
 
 Standard quest and gossip buttons already use original Blizzard red-button artwork; their native states stay in charge. Quest maps, popup quest details, custom gossip, spell-reward pools and changed hierarchies remain native. Special material and accessibility backgrounds are retained. The outer portrait frame is unchanged; this pass changes the inner border. Use `/cf module QuestDialogue off` or `/cf module GossipDialogue off` to switch off either skin.
 
-The character skin is limited to the standard Retail paper-doll hierarchy. Its art follows the equipment page, so reputation and currency pages keep their own look. Original red buttons and native Quickslot button states are retained. The outer portrait border, model and class backgrounds, stats, outfits, titles, tabs, flyouts and sockets stay native. Changed slots are skipped and reported as a supported count out of eighteen. Custom or restricted backgrounds reveal native art. Use `/cf module CharacterWindow off` to turn it off. Bag windows remain a later pass.
+The character skin is limited to the standard Retail paper-doll hierarchy. Its art follows the equipment page, so reputation and currency pages keep their own look. Original red buttons and native Quickslot button states are retained. The outer portrait border, model and class backgrounds, stats, outfits, titles, tabs, flyouts and sockets stay native. Changed slots are skipped and reported as a supported count out of eighteen. Custom or restricted backgrounds reveal native art. Use `/cf module CharacterWindow off` to turn it off. Bag window trim has its own setting.
+
+Bag windows get thin Classic metal strips along their native sides and bottom. This covers the six individual bag frames (including the reagent bag) and combined bags when their expected border structure is present. The bank gets inset trim on its shared character/account panel. The merchant gets trim around its main inset. These are limited border skins, using original character-sheet artwork, not full Vanilla window recreations.
+
+Backgrounds, bag portrait corners, item slots and all item overlays remain native. Search, sorting, dragging, tooltips, comparisons, bank tabs, reagent rules, buying, selling, buyback and repair controls are not changed. Legacy bank/reagent frames, guild banks, custom windows and changed border themes stay native. Use `/cf module BagWindows off`, `/cf module BankWindow off` or `/cf module MerchantWindow off` independently. Missing hierarchies report unavailable; changed themes report zero supported borders.
 
 ## Controls
 
-Type **`/cf`** to open settings. There is one main switch and twenty feature checkboxes. Click anywhere on a feature row to change it. Choices save automatically and apply outside combat. Turning the main switch off keeps your feature choices for next time.
+Type **`/cf`** to open settings. There is one main switch and 23 feature checkboxes. Click anywhere on a feature row to change it. Choices save automatically and apply outside combat. Turning the main switch off keeps your feature choices for next time.
 
 The window shows which features have applied, which are off, and which need attention. **Open book** means the spellbook must be opened once to load. **View textures**, **Open report**, and **Retry changes** give quick access to troubleshooting. The report provides text to copy with Ctrl+A, Ctrl+C.
 
-Drag the window to move it. Close it with **Close** or **Escape**. It scales down to fit smaller screens. On clients with Blizzard's Settings API, **Settings > AddOns > ClassicForeverUI** also has an **Open settings** button. `/cf` works without that API.
+Drag the window to move it. Close it with **Close** or **Escape**. Its 1034x758 layout has three columns (8, 8 and 7 choices) and scales down to fit smaller screens. On clients with Blizzard's Settings API, **Settings > AddOns > ClassicForeverUI** also has an **Open settings** button. `/cf` works without that API.
 
 | Command | Use |
 |---|---|
@@ -80,7 +84,7 @@ python Tests/run_tests.py
 python Tools/package_addon.py
 ```
 
-Output: `dist/ClassicForeverUI/` and `dist/ClassicForeverUI-0.8.0-alpha.zip`. Packaging uses the TOC and a small document allowlist. It excludes research checkouts, test tools, previews, extracted images and native libraries.
+Output: `dist/ClassicForeverUI/` and `dist/ClassicForeverUI-0.9.0-alpha.zip`. Packaging uses the TOC and a small document allowlist. It excludes research checkouts, test tools, previews, extracted images and native libraries.
 
 If the beta rejects the TOC, first read its actual Interface number. Then build a separate package:
 

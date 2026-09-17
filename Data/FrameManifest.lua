@@ -46,3 +46,7 @@ end
 for _,name in ipairs({"CharacterFrame","PaperDollFrame","PaperDollItemsFrame"}) do
   CF.FrameManifest[#CF.FrameManifest+1] = {name=name, use="paper-doll-only passive background and trim; native controls retained", protected="runtime-probed"}
 end
+
+for _,name in ipairs({"ContainerFrame1","ContainerFrame2","ContainerFrame3","ContainerFrame4","ContainerFrame5","ContainerFrame6","ContainerFrameCombinedBags","BankFrame","MerchantFrame"}) do
+  CF.FrameManifest[#CF.FrameManifest+1] = {name=name, use="scoped passive window border trim; native items and controls retained", protected="runtime-probed"}
+end

@@ -2,7 +2,7 @@
 ## Title: ClassicForeverUI
 ## Notes: Original Classic artwork and layout for Retail. Alpha; Forever unverified.
 ## Author: Videocat
-## Version: 0.8.0-alpha
+## Version: 0.9.0-alpha
 ## SavedVariables: ClassicForeverUIDB
 ## X-Website: https://github.com/coffeelover1010/classic-like-wow-forever
 ## X-Compatibility: Retail development target; in-game testing pending; Forever unverified.
@@ -20,6 +20,7 @@ Data/FrameManifest.lua
 Data/EventManifest.lua
 Core/Visuals.lua
 Core/DialogueSkin.lua
+Core/WindowTrim.lua
 Core/Options.lua
 Core/Diagnostics.lua
 Modules/ActionBars.lua
@@ -42,4 +43,7 @@ Modules/QuestTracker.lua
 Modules/QuestDialogue.lua
 Modules/GossipDialogue.lua
 Modules/CharacterWindow.lua
+Modules/BagWindows.lua
+Modules/BankWindow.lua
+Modules/MerchantWindow.lua
 Modules/Panels.lua

@@ -52,3 +52,11 @@ NOT_IMPLEMENTED. Custom dialogue, map/popups and spell rewards stay native.
 Contrast/themed backgrounds may show native art while the module is applied.
 Native red buttons are retained because the pinned source already uses original
 paths. Four new quest sheet entries have Era extraction evidence only.
+
+## 0.9 window diagnostics
+
+BagWindows, BankWindow and MerchantWindow are independent of Bags (button placement)
+and deferred Panels. Missing structures/hooks/art report UNAVAILABLE. Successful
+application reports APPLIED_UNVERIFIED, with supported border counts up to 7/1/1.
+A changed or opaque border theme reports zero supported borders and retains native art.
+Reports do not certify item interactions, pixels, taint or Forever compatibility.

@@ -1,4 +1,27 @@
-# Forever beta test: 0.8.0-alpha
+# Forever beta test: 0.9.0-alpha
+
+## New 0.9 bag, bank and merchant checks (15 minutes)
+
+- Open individual bags, the reagent bag and combined bags. Resize through native bag
+  changes, switch modes, move/close/reopen windows and try fullscreen UI modes. Only
+  side/bottom trim should change; portrait corners, backgrounds and items stay native.
+- Check search/filtering, sort controls, drag targets, tooltips/comparisons, quality,
+  counts, cooldowns, quest marks, new-item glow, junk and upgrade indicators. Verify
+  that reused item buttons have no addon art attached.
+- Open the character bank and account bank. Switch tabs, including locked/unpurchased
+  tabs, and inspect deposit/reagent settings, sorting, money and prompts. Check trim
+  follows the shared panel and never blocks a tab or control. Legacy reagent banks
+  and guild banks must retain their native appearance.
+- Open a merchant, change pages and switch buyback. Inspect buy/sell, repair, junk,
+  currency and filters. This release's automated validation performs no purchases,
+  sales, repairs or inventory moves; actual-client interaction remains a user test.
+- Toggle Bag windows, Bank and Merchant separately, then during combat where allowed.
+  Check exact native restoration, saved choices after reload, Edit Mode suspension,
+  late loading and unsupported-theme fallback. Collect screenshots and taint/errors.
+- Check all 23 settings choices and the bottom buttons at small and large UI scales.
+  The three-column window should fit the screen. Inspect /cf report supported border
+  counts (up to seven bag windows, one bank inset, one merchant inset).
+
 
 ## New 0.8 character checks (15 minutes)
 
@@ -8,7 +31,7 @@
 - Change available accessibility/theme settings. Custom backgrounds must remain native. Capture overlap or contrast problems; hooks and actual rendered layers require client checks.
 - Toggle Character separately and through the main switch, including during combat. Verify queued changes, no blocked-action errors, saved choice after reload and exact restoration after Edit Mode. Check health, shields and incoming heals still work.
 - Check `/cf report` for the character module's supported slot count out of eighteen. Record missing slots or an unavailable hierarchy; do not force a changed hierarchy into the skin.
-- Check all twenty settings rows and bottom buttons fit. Bag windows remain unchanged.
+- Check all 23 settings rows and bottom buttons fit. Check the new window toggles independently.
 
 ## New 0.7 quest and NPC dialogue checks (15 minutes)
 
@@ -31,12 +54,12 @@
   Special quest materials and themed gossip must keep their own background.
 - Toggle Quest windows and NPC dialogue separately, then toggle in combat.
   Check queued changes apply after combat, exact border restoration, saved choices
-  after reload and suspension/recovery through Edit Mode. All twenty settings
+  after reload and suspension/recovery through Edit Mode. All 23 settings
   choices and bottom buttons should fit the screen and remain readable.
 - Capture /cf report, taint/errors and screenshots with other UI addons disabled.
   Mocks cannot establish protected behavior, native hook support or rendered pixels.
 
-Allow about 95 minutes. This is the first in-game test, not a confirmed compatible release.
+Allow about 110 minutes. This is the first in-game test, not a confirmed compatible release.
 
 ## 1. Install and collect the build (5 minutes)
 
@@ -80,7 +103,7 @@ This opts into visual trials for the current session. Unknown and Classic client
 
 ## 3. Settings window (5 minutes)
 
-1. Type `/cf`. Check the main switch and twenty feature rows. Labels should be readable at your UI scale.
+1. Type `/cf`. Check the main switch and 23 feature rows. Labels should be readable at your UI scale.
 2. Turn the minimap off and on using its row. Check both the saved checkbox and the visible border. Turn another feature off, then turn the main switch off and on; your individual choices should stay saved.
 3. Type `/cf module Minimap off` while settings is open. Its checkbox and status should update. Turn it back on in the window.
 4. Drag the window, close it with Escape, and reopen it with `/cf config`. Check that it fits your screen.
@@ -196,7 +219,7 @@ After collecting errors you can restore your previous script-error setting, usua
   appear outside health/power; all native small-frame artwork remains.
 - Toggle Focus frame, Pet frame and Target of target in settings during combat.
   Verify queued changes apply after combat and survive reload as saved choices.
-  At small UI sizes, check all twenty rows and the bottom buttons are readable.
+  At small UI sizes, check all 23 rows and the bottom buttons are readable.
 - Check each module separately with other UI addons disabled. Capture screenshots
   at several scales, especially for trim overlap and focus heal/absorb glows.
   Mocks cannot verify these pixels, secure behavior, event delivery or taint.
