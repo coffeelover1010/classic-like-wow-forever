@@ -2,6 +2,8 @@
 
 Research date: 17 September 2026. Scope: exact Blizzard UI artwork in a free WoW addon, with Retail as the development target and Forever still unverified.
 
+**Later local inspection:** [LocalClientInspection.md](LocalClientInspection.md) records actual extraction and pixel inspection on this date. It corrects one candidate identification below: EndCap-Human is a lion; **EndCap-Dwarf is the original gryphon** and is used by 0.2.0-alpha. The historical research below is preserved; its no-extraction limitation describes the earlier investigation only.
+
 ## Finding
 
 There is strong technical evidence that a substantial Classic UI can be built using original Blizzard artwork without AI-generated replacements. Current Retail addons reference original action-bar, gryphon, minimap, unit-frame and cast-bar textures through client paths. Some also distribute texture files. The earlier assertion that these addons only reference installed artwork was incorrect.

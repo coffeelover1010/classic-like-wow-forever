@@ -1,0 +1,58 @@
+# Local client and artwork inspection
+
+Date: 17 September 2026. This is fresh filesystem/archive evidence, not an in-game test.
+
+## Installed clients
+
+The standard installation at `C:\Program Files (x86)\World of Warcraft` has these active products in `.build.info`:
+
+| Product | Executable | File version |
+|---|---|---|
+| wow_classic_era | _classic_era_/WowClassic.exe | 1.15.9.69722 |
+| wow_anniversary | _anniversary_/WowClassic.exe | 2.5.6.69795 |
+
+The `_retail_` folder contains an Interface folder but no WoW executable. The `_classic_` and copied WoW installation do not provide another executable. Focused discovery in the standard Program Files locations, Downloads, Documents and C:/dev found no Retail executable or Forever/beta executable/build metadata. This does not prove there is no installation anywhere else.
+
+No game process was launched. No account credentials were read. No archives were modified.
+
+## Read-only extraction
+
+Built [CascLib](https://github.com/ladislav-zezula/CascLib/tree/2a280f5a231966dc5d1b534978dd9f9f04a374cd) from its MIT source at `2a280f5a231966dc5d1b534978dd9f9f04a374cd`. It remains outside the addon repository. Used Visual Studio Build Tools with the v145 toolset; the resource include was changed from afxres.h to windows.h because MFC was not installed. No archive-reading code was changed.
+
+[Tools/extract_local_assets.py](../Tools/extract_local_assets.py) opens local storage through CascOpenStorage, opens a fixed list of UI paths with strict data checking, reads their contents, and closes the handles. It does not use online storage or request downloads.
+
+Checked 24 paths in each product. **21 BLP textures were extracted from each**, decoded with Pillow and inspected in a local contact sheet. [LocalAssetInventory.csv](LocalAssetInventory.csv) records exact paths, sizes, SHA-256 hashes and failed opens.
+
+Outputs stay outside the repository:
+
+- `C:/dev/addons playground/cf-ui-research/local-art-era-69722`
+- `C:/dev/addons playground/cf-ui-research/local-art-anniversary-69795`
+
+The two builds have different bytes and decoded pixels for the rare-elite target border and minimap border. Other extracted files have matching hashes. Thus a common path alone does not promise identical pixels across client versions.
+
+## Important corrections from actual pixels
+
+- **UI-MainMenuBar-EndCap-Dwarf is the original gryphon.**
+- **UI-MainMenuBar-EndCap-Human is a lion.** The earlier candidate research misidentified it as a gryphon; this inspection supersedes that identification.
+- UI-MainMenuBar-Dwarf is a four-section stone/background sheet.
+- UI-Minimap-Border is the main ring/header sheet. MiniMap-TrackingBorder is only the small tracking-button ring.
+- UI-TargetingFrame and the rare/elite variants contain original unit-frame artwork.
+- UI-StatusBar and both inspected CastingBar border variants decoded successfully.
+- UI-MainMenuBar, UI-MainMenuBar-Experience and UI-MicroButton-Character-Up were not extracted by those names. These failed lookups do not establish absence under every alias or in other clients.
+
+An offline art-composition check was also inspected to verify bar crops, mirrored endcaps and unit-bar placement. It is **not an in-game screenshot**.
+
+## Runtime boundary
+
+The addon references native paths, including EndCap-Dwarf. It bundles no extracted images. Local extraction establishes availability in the two named Classic stores. Retail source and current-addon research support the development approach, but Retail and Forever rendering remain unverified.
+
+The gallery and report must be run in the beta. A successful SetTexture result is recorded as LOAD_ACCEPTED_VISUAL_UNVERIFIED, never as proof of rendered pixels.
+
+## Reproduce on this Windows host
+
+```powershell
+$py = 'C:\Users\Z68\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe'
+& $py Tools/extract_local_assets.py --dll 'C:\dev\addons playground\cf-ui-research\CascLib\bin\CascLib_dll\x64\Release\CascLib.dll' --storage 'C:\Program Files (x86)\World of Warcraft' --product wow_classic_era --output 'C:\dev\addons playground\cf-ui-research\local-art-era-69722'
+```
+
+A new product/build needs its own metadata and output directory. This tool refuses to write extracted art inside the addon repository.
