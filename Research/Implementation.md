@@ -1,4 +1,4 @@
-# Implementation and source evidence: 0.4 alpha
+# Implementation and source evidence: 0.5 alpha
 
 All addon implementation is independently authored. No ClassicUI, Classic Frames, KeyUI or DragonflightUI code was copied.
 
@@ -13,7 +13,7 @@ Paths below are under Interface/AddOns in those snapshots.
 |---|---|---|
 | Action bars | Blizzard_ActionBar/Shared/ActionBar.lua; Mainline/MainActionBar.xml; Blizzard_ActionBarController/ActionBarController.lua | Move and size existing ActionButton1-12 outside combat; preserve their native containers, action IDs, scripts, paging and state controller |
 | Original bar artwork | Classic Blizzard_ActionBar/Classic/MainMenuBar.xml | Independently lay out the four original sheet crops and mirror EndCap-Dwarf on the right |
-| Player | Blizzard_UnitFrame/Mainline/PlayerFrame.xml | Passive skin on native button; alpha-mask the original main art and bar regions with reversible snapshots |
+| Player | Blizzard_UnitFrame/Mainline/PlayerFrame.xml | Passive skin on native button; alpha-mask main artwork and power only; preserve the full native health subtree |
 | Target | Blizzard_UnitFrame/Mainline/TargetFrame.xml | Use HealthBarsContainer (not an assumed direct HealthBar); keep native target visibility, menu, auras and cast frame |
 | Unit values | Blizzard_APIDocumentationGenerated/UnitDocumentation.lua; SimpleStatusBarAPIDocumentation.lua; SimpleFontStringAPIDocumentation.lua | Pass values directly to permitted SetMinMaxValues, SetValue and SetText display sinks; never calculate health percentages |
 | Minimap | Blizzard_Minimap/Mainline/Minimap.xml; Classic/Minimap.xml | Replace the compass/ring visually without altering the map, mask or click scripts |
@@ -32,7 +32,7 @@ Frame geometry and crops are implementation choices. This alpha does not claim p
 
 ## Lifecycle and rollback
 
-Modules initialize in TOC registration order. Initialization, enable, update and disable calls are isolated with pcall. A partially failed enable rolls back captured properties and hides new art. Each mutation records the original points, dimensions, scale, alpha or texture only once per application.
+Modules initialize in TOC registration order. Initialization, enable, update and disable calls are isolated with pcall. A partially failed enable rolls back captured properties and hides new art. Each mutation records the original points, dimensions, scale, frame level, alpha or texture only once per application.
 
 All native layout writes and restoration wait until InCombatLockdown returns false. If that API is missing, the addon performs no layout writes. An update failure stops that module's event processing, reports an error, and restores the default skin after combat. Other modules continue. Use /cf refresh for an explicit retry. Reload is the recovery if a client rejects rollback.
 
@@ -40,15 +40,15 @@ The addon never overwrites a native script or method, never reparents a native f
 
 ## Secret values
 
-Health, maximum health, power, maximum power and names go directly into Blizzard's documented display methods. No health/power values are compared, formatted, cached or used in Lua arithmetic. Restricted level and classification values fall back to an empty level and normal original border. Restricted power tokens use a fixed blue fill. The current native unit token is used for vehicle display when readable.
+Power, maximum power and names go directly into Blizzard's documented display methods. Health and prediction values stay entirely with the native health engine. No health/power values are compared, formatted, cached or used in Lua arithmetic. Restricted level and classification values fall back to an empty level and normal original border. Restricted power tokens use a fixed blue fill. The current native unit token is used for vehicle display when readable.
 
 This is a design based on the pinned Retail API documentation, not proof of beta behavior. The mock's opaque sentinel values test accidental arithmetic/string conversion but cannot emulate every engine restriction.
 
 ## Independent and limited modules
 
-Ten modules have implementations. FocusFrame, Buffs, Debuffs, Tooltips, QuestTracker and Panels explicitly report NOT_IMPLEMENTED and leave native UI intact. Panels refers to other windows; SpellBook is separate.
+Fourteen modules have implementations. FocusFrame and Panels explicitly report NOT_IMPLEMENTED and leave native UI intact. Panels refers to other windows; SpellBook is separate.
 
-The unit skin suppresses the native health prediction/absorb visuals and portrait combat flash along with the main bar regions. It does not replace those advanced visuals yet. Class-specific resources, target auras, target cast bars and the target-of-target frame remain native and need layout checks on multiple classes.
+The unit skin keeps the entire native HealthBarsContainer visible, moves it as one unit and raises its frame level above the passive border. Its native HealthBar remains at the container level so native OVERLAY health text stays above the BACKGROUND fill. Dimensions, masks, prediction segments, losses, text, scripts and values remain native. A journal restores its points and frame levels. There is no duplicate health fill or health API read in the skin. Native health retains its full modern height; the custom power display moves down to clear it. Portrait combat flash is still omitted. Class-specific resources, target auras, target cast bars and the target-of-target frame remain native and need layout checks on multiple classes.
 
 XP/reputation remain modern native tracking bars with original fills and trim; this is not a rebuilt 1024-pixel Vanilla XP system. Micro and bag buttons keep Retail art. The minimap header and utility buttons remain native. Cast effects and empower markers also remain native.
 
@@ -58,7 +58,7 @@ The core's Blizzard ADDON_LOADED handling activates the module after Blizzard_Pl
 
 ## Settings
 
-Core/Options.lua presents only the ten implemented features. The whole row is a check button. The main switch, feature rows, session trial and retry button call the same controllers as slash commands. These update the existing SavedVariables table without replacing unrelated report data, then use RequestApply and its existing combat/Edit Mode rules. Opening the window does not enable the addon or opt into an unknown client trial.
+Core/Options.lua presents only the fourteen implemented features. The whole row is a check button. The main switch, feature rows, session trial and retry button call the same controllers as slash commands. These update the existing SavedVariables table without replacing unrelated report data, then use RequestApply and its existing combat/Edit Mode rules. Opening the window does not enable the addon or opt into an unknown client trial.
 
 Apply completion, queued requests and runtime faults refresh visible controls directly; there is no per-frame polling. Checkbox state shows saved intent, while the status label shows application state. Disabling the main switch preserves the selected features. The window uses addon-owned geometry only, supports dragging and UISpecialFrames/Escape, and shrinks to fit UIParent. Both missing Settings APIs and failed optional category registration leave the standalone `/cf` window usable. UI errors are isolated from layout restoration and included in `/cf report`.
 
@@ -68,8 +68,21 @@ Settings registration happens outside combat after application, so a Blizzard ad
 
 Tests/run_tests.py compiles and executes all TOC Lua with Lua 5.1 via the test-only lupa runtime. It checks native-frame restoration, combat deferral, Edit Mode snapshots, module isolation, rejected assets/events, missing APIs, unknown clients, opaque values, late-loaded frames, reports and gallery creation.
 
-The 0.4 suite has 32 cases and loads 30 Lua files. Spellbook cases cover lazy loading, untouched interaction scripts, tab visibility, both widths, restoration after native state changes, pooled-entry reuse, combat deferral, missing art, changed hierarchy and failure isolation/retry. Settings cases cover aliases, singleton lifetime, saved preferences, shared slash-command state, combat and Edit Mode, explicit trials, optional category registration, display fitting, tools and error isolation.
+The 0.5 suite has 44 cases and loads 30 Lua files. Spellbook cases cover lazy loading, untouched interaction scripts, tab visibility, both widths, restoration after native state changes, pooled-entry reuse, combat deferral, missing art, changed hierarchy and failure isolation/retry. Settings cases cover aliases, singleton lifetime, saved preferences, shared slash-command state, combat and Edit Mode, explicit trials, optional category registration, display fitting, tools and error isolation.
 
 Tests/preview_options.py reads the actual mocked Lua frame tree to render an offline layout preview using test-only Pillow. Normal, trial and combat layouts were inspected without text-width overflow. Font metrics and checkbox marks are approximate. The previews and earlier spellbook compositions are not game screenshots or interaction tests and are excluded from install packages.
 
 Mock behavior is deliberately labeled and cannot prove WoW's taint propagation, protected operations, rendered pixels, actual event delivery or SavedVariables persistence. The next required validation is the user's beta session in BETA-TEST.md.
+
+## 0.5 source checks and scope
+
+The pinned revisions above were verified locally for this pass. Source paths below are under Interface/AddOns.
+
+- Retail Blizzard_UnitFrame/Mainline/PlayerFrame.xml and TargetFrame.xml define HealthBarsContainer.HealthBar, its heal/absorb children and mask. Player health is 124x20; target health is 126x20. Native prediction sizing and restricted-value calculations stay in Blizzard code. Raising/repositioning the intact subtree needs client checks, especially over-absorb glows, text layering, temporary maximum-health loss and vehicle changes.
+- Retail Blizzard_BuffFrame/BuffFrame.lua creates auraFrames at load time. BuffFrameTemplates.xml puts Icon on BACKGROUND, duration below it and dispel/enchant/count regions on OVERLAY. Our anchored ARTWORK slot borders inherit native button visibility and scale. Private aura Icon frames are excluded. UNIT_AURA only refreshes player button identities; no aura values are inspected. New art waits for combat to end; failures use the existing isolated event wrapper.
+- Classic Blizzard_BuffFrame/Classic/BuffFrame.lua uses native debuff overlays. We retain Retail's dispel and enchant art rather than replacing their state handling. UI-Quickslot2 is the original Classic action-slot border reused for this skin; this is not a claim of exact Vanilla aura artwork.
+- Retail Blizzard_SharedXML/SharedTooltipTemplates.xml, SharedTooltipTemplates.lua, NineSlice.lua and Backdrop.lua define tooltip art, its embedded visibility, region names and BackdropTemplate support. Addon-owned backdrops are children of native NineSlice frames, below tooltip text. Only original region alpha is journaled; native style textures, vertex colors, scripts, owners, anchors and visibility are untouched. GameTooltip, ItemRefTooltip and available comparison tooltips are supported. Specialty/embedded tooltip content is not rebuilt. The new border is fixed gray, so native item-quality border tint is not displayed; item names and overlay decorations remain native.
+- Classic Blizzard_SharedXML/Backdrop.lua references UI-Tooltip-Background and UI-Tooltip-Border. Both were extracted from local Era storage and decoded outside the repository. The install ZIP contains paths only.
+- Retail Blizzard_ObjectiveTracker/Blizzard_ObjectiveTracker.xml and Blizzard_ObjectiveTrackerContainer.xml define Header.Background and separate text/minimize/filter controls. Only the top header texture and an anchored trim change. Quest rows, pooled items, progress bars, navigation and module headers retain native artwork and behavior.
+
+The twelve additional cases cover native health ownership/rollback, absent hierarchy, aura reuse/private anchors/combat/faults, tooltip visibility and partial failure, tracker restoration, late frames and all four new settings choices. The expanded settings preview has seven rows per column and scales to the display. Offline preview and mocks do not establish rendered pixels or engine behavior.

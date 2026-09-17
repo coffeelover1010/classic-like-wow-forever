@@ -6,10 +6,12 @@ CF.Options = O
 O.Groups = {
   { title = "HUD & frames", items = {
     {"ActionBars", "Action bars", "Stone panels, gryphons and spell slots."},
-    {"PlayerFrame", "Player frame", "Classic portrait, health and power."},
+    {"PlayerFrame", "Player frame", "Classic trim. Native health and shields."},
     {"TargetFrame", "Target frame", "Classic borders and target details."},
     {"Minimap", "Minimap", "The original round minimap border."},
     {"CastBar", "Cast bar", "Classic border and bar placement."},
+    {"Buffs", "Buffs", "Classic borders around your buffs."},
+    {"Debuffs", "Debuffs", "Classic borders. Dispel colors stay."},
   }},
   { title = "Bars & panels", items = {
     {"SpellBook", "Spellbook", "Parchment, metal trim and spell slots."},
@@ -17,6 +19,8 @@ O.Groups = {
     {"ReputationBar", "Reputation bar", "Classic fill for your tracked faction."},
     {"MicroMenu", "Menu buttons", "Move the menu into the bottom bar."},
     {"Bags", "Bag buttons", "Move bag buttons into the bottom bar."},
+    {"Tooltips", "Tooltips", "Classic background and gray border."},
+    {"QuestTracker", "Quest tracker", "Classic trim for the tracker header."},
   }},
 }
 local colors = {
@@ -149,13 +153,13 @@ function O:Refresh()
 end
 
 function O:Fit()
-  self.Frame:SetScale(math.max(0.1,math.min(1,(UIParent:GetWidth()-32)/700,(UIParent:GetHeight()-32)/624)))
+  self.Frame:SetScale(math.max(0.1,math.min(1,(UIParent:GetWidth()-32)/700,(UIParent:GetHeight()-32)/740)))
 end
 
 function O:Build()
   local f = CreateFrame("Frame","ClassicForeverUIOptions",UIParent)
   self.Frame = f
-  f:Hide(); f:SetSize(700,624); f:SetPoint("CENTER",UIParent,"CENTER",0,0)
+  f:Hide(); f:SetSize(700,740); f:SetPoint("CENTER",UIParent,"CENTER",0,0)
   f:SetFrameStrata("DIALOG"); f:SetClampedToScreen(true)
   f:EnableMouse(true); f:SetMovable(true); f:RegisterForDrag("LeftButton")
   f:SetScript("OnDragStart",f.StartMoving); f:SetScript("OnDragStop",f.StopMovingOrSizing)
@@ -189,10 +193,10 @@ function O:Build()
   f.Report = button(f,"Open report",144,function() CF.Diagnostics:Report() end)
   f.Retry = button(f,"Retry changes",144,function() CF:RetryModules() end)
   for index,b in ipairs({f.Gallery,f.Report,f.Retry}) do
-    b:SetPoint("TOPLEFT",f,"TOPLEFT",24+(index-1)*158,-558)
+    b:SetPoint("TOPLEFT",f,"TOPLEFT",24+(index-1)*158,-674)
   end
-  label(f,"Saved automatically. Alpha: in-game checks are still needed.",nil,24,600,560,16,"muted")
-  label(f,CF.Version,nil,575,600,101,16,"muted"):SetJustifyH("RIGHT")
+  label(f,"Saved automatically. Alpha: in-game checks are still needed.",nil,24,716,560,16,"muted")
+  label(f,CF.Version,nil,575,716,101,16,"muted"):SetJustifyH("RIGHT")
   if type(UISpecialFrames) == "table" then UISpecialFrames[#UISpecialFrames+1] = "ClassicForeverUIOptions" end
   f:SetScript("OnShow",function() self:Fit(); CF:RefreshOptions() end)
   f:SetScript("OnEvent",function() self:Fit() end)

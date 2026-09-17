@@ -1,6 +1,6 @@
-# Forever beta test: 0.4.0-alpha
+# Forever beta test: 0.5.0-alpha
 
-Allow about 55 minutes. This is the first in-game test, not a confirmed compatible release.
+Allow about 65 minutes. This is the first in-game test, not a confirmed compatible release.
 
 ## 1. Install and collect the build (5 minutes)
 
@@ -44,7 +44,7 @@ This opts into visual trials for the current session. Unknown and Classic client
 
 ## 3. Settings window (5 minutes)
 
-1. Type `/cf`. Check the main switch and ten feature rows. Labels should be readable at your UI scale.
+1. Type `/cf`. Check the main switch and fourteen feature rows. Labels should be readable at your UI scale.
 2. Turn the minimap off and on using its row. Check both the saved checkbox and the visible border. Turn another feature off, then turn the main switch off and on; your individual choices should stay saved.
 3. Type `/cf module Minimap off` while settings is open. Its checkbox and status should update. Turn it back on in the window.
 4. Drag the window, close it with Escape, and reopen it with `/cf config`. Check that it fits your screen.
@@ -61,7 +61,7 @@ On an unrecognized client, changing the main switch does not start a trial. Use 
 /cf gallery
 ```
 
-Use **Next page** to inspect every texture. Check the original stone, both gryphons, unit borders, elite variants, minimap ring, cast border, and spellbook paper, trim and icon. Blank or green areas are failures even if a texture says `LOAD_ACCEPTED`. Take screenshots of failures and note the asset name.
+Use **Next page** to inspect every texture. Check the original stone, both gryphons, unit borders, elite variants, minimap ring, cast border, and spellbook paper, trim and icon, plus the tooltip border and background. Blank or green areas are failures even if a texture says `LOAD_ACCEPTED`. Take screenshots of failures and note the asset name.
 
 The gryphon path ends in **EndCap-Dwarf**. **EndCap-Human** is a lion. No modern gryphon atlas is used as a hidden fallback.
 
@@ -88,6 +88,14 @@ The gryphon path ends in **EndCap-Dwarf**. **EndCap-Human** is a lion. No modern
 7. If the client permits opening the book in combat, change a category or page. Any new borders should wait until combat ends. Record any blocked-action error.
 
 The skin keeps Retail's spell layout and controls. It does not rebuild Vanilla's twelve-spell pages.
+
+## 6a. Health indicators, auras, tooltips and tracker (10 minutes)
+
+1. With player and target skins on, take damage and receive a cast heal and a shield. Check incoming healing, absorbs, over-absorb glow, heal absorbs, temporary health loss and health text where available. Compare with each skin off. Native full-height health must remain readable above the Classic border; power must not cover it. Repeat on a friendly target and in a vehicle.
+2. Gain and lose buffs and debuffs. Check timers, counts, dispel colors, enchant borders, fading and right-click cancellation. Fill more than one row, collapse/expand buffs, and change aura size/direction in Edit Mode. Private auras must remain native.
+3. Hover units, spells and bag items. Open a chat item link and comparison tooltips. Check long text, inserted item content, screen-edge positioning and embedded tooltips. The new border is gray; item names should retain their native colors.
+4. Track and untrack quests. Collapse/expand and filter the tracker. Click a quest and use its quest item, including during combat. Resize/move it in Edit Mode. Only the top header should look different.
+5. Toggle Buffs, Debuffs, Tooltips and Quest tracker separately in settings. Check native art returns. Repeat a toggle during combat; it should apply after combat. Reload and verify each saved choice.
 
 ## 7. Combat, vehicles and Edit Mode (10 minutes)
 

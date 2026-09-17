@@ -66,6 +66,9 @@ function Methods:UnregisterAllEvents() self.events={} end
 function Methods:SetScript(name,func) self.scripts[name]=func end
 function Methods:GetScript(name) return self.scripts[name] end
 function Methods:SetColorTexture(...) self.color={...} end
+function Methods:SetBackdrop(data) self.backdrop=data end
+function Methods:SetBackdropColor(...) self.backdropColor={...} end
+function Methods:SetBackdropBorderColor(...) self.backdropBorderColor={...} end
 function Methods:SetTexture(path)
   self.texture,self.atlas=path,nil
   if path == Mock.missingTexture then return false end
@@ -232,6 +235,47 @@ TargetFrame=Mock.Native("TargetFrame"); TargetFrame.unit="target"
 Mock.Child(TargetFrame,"TargetFrameContainer")
 local tm=Mock.Child(Mock.Child(TargetFrame,"TargetFrameContent"),"TargetFrameContentMain")
 for _,key in ipairs({"HealthBarsContainer","ManaBar","Name","LevelText","ReputationColor"}) do Mock.Child(tm,key) end
+for _,main in ipairs({pm,tm}) do
+  local container=main.HealthBarsContainer
+  local width=main==tm and 126 or 124
+  container:SetSize(width,20)
+  local bar=Mock.Child(container,"HealthBar")
+  bar:SetSize(width,20); bar:SetStatusBarTexture("native-health")
+  bar.value=37; bar:SetScript("OnValueChanged",function() end)
+  for _,key in ipairs({"MyHealPredictionBar","OtherHealPredictionBar","TotalAbsorbBar","HealAbsorbBar",
+      "OverAbsorbGlow","OverHealAbsorbGlow"}) do Mock.Child(bar,key) end
+  Mock.Child(container,"HealthBarMask"); Mock.Child(container,"HealthBarText")
+end
+function Mock.Aura(frame)
+  local button=Mock.Native(nil,frame)
+  for _,key in ipairs({"Icon","Duration","Count","DebuffBorder","TempEnchantBorder"}) do
+    Mock.Child(button,key):SetTexture("native-"..key)
+  end
+  button:SetScript("OnClick",function() end)
+  button:SetScript("OnUpdate",function() end)
+  frame.auraFrames[#frame.auraFrames+1]=button
+  return button
+end
+for _,name in ipairs({"BuffFrame","DebuffFrame"}) do
+  local frame=Mock.Native(name); frame.auraFrames={}
+  Mock.Aura(frame); Mock.Aura(frame)
+end
+for _,name in ipairs({"GameTooltip","ItemRefTooltip","ShoppingTooltip1","ShoppingTooltip2"}) do
+  local tip=Mock.Native(name)
+  local nine=Mock.Child(tip,"NineSlice")
+  for _,key in ipairs({"TopLeftCorner","TopRightCorner","BottomLeftCorner","BottomRightCorner",
+      "TopEdge","BottomEdge","LeftEdge","RightEdge","Center"}) do
+    Mock.Child(nine,key):SetAlpha(0.8)
+  end
+  tip:SetScript("OnShow",function() end)
+  tip:SetScript("OnTooltipCleared",function() end)
+  tip:Hide()
+end
+ObjectiveTrackerFrame=Mock.Native("ObjectiveTrackerFrame")
+local header=Mock.Child(ObjectiveTrackerFrame,"Header")
+Mock.Child(header,"Background"):SetAtlas("native-tracker")
+Mock.Child(header,"MinimizeButton"):SetScript("OnClick",function() end)
+Mock.Child(header,"FilterButton"); Mock.Child(header,"Text")
 MinimapCluster=Mock.Native("MinimapCluster")
 Minimap=Mock.Native("Minimap",MinimapCluster); Minimap:SetSize(198,198)
 Mock.Native("MinimapCompassTexture",Minimap)

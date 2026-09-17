@@ -1,5 +1,48 @@
 local _, CF = ...
 CF.Visuals = {}
+-- Retail creates these buttons before it fills them with aura data. Skin the
+-- button identity, never the aura data (which can contain restricted values).
+function CF.Visuals:AuraModule(frameName)
+  local M = { Borders = {} }
+  function M:Initialize()
+    local frame = _G[frameName]
+    if not frame or type(frame.auraFrames) ~= "table" then
+      return false, "Native aura buttons unavailable"
+    end
+    self.Frame = frame
+    return CF.Assets:Require({"CLASSIC_QUICKSLOT"})
+  end
+  function M:Refresh(event, eventUnit)
+    if CF.API.IsSecret(eventUnit) or (eventUnit and eventUnit ~= "player") then return end
+    if CF.API.IsInCombatLockdown() then CF.Pending = true; CF:RefreshOptions(); return end
+    for _, button in ipairs(self.Frame.auraFrames) do
+      local icon = button.Icon
+      -- Private aura anchors have a Frame named Icon, not a texture.
+      if icon and type(icon.GetTexture) == "function" then
+        local border = self.Borders[button]
+        if not border then
+          border = button:CreateTexture(nil,"ARTWORK",nil,-2)
+          self.Borders[button] = border
+          border:Hide()
+          border:SetPoint("TOPLEFT",icon,"TOPLEFT",-7,7)
+          border:SetPoint("BOTTOMRIGHT",icon,"BOTTOMRIGHT",7,-7)
+        end
+        if not CF.Assets:Apply(border,"CLASSIC_QUICKSLOT") then error("Aura border rejected") end
+        border:Show()
+      end
+    end
+  end
+  function M:Enable()
+    self:Refresh()
+    CF.Events:Bind(self,{"UNIT_AURA"},self.Refresh)
+    return true, "Classic slots; native timers, dispel colors, enchant borders and clicks retained"
+  end
+  function M:Disable()
+    CF.Events:Unbind(self)
+    for _,border in pairs(self.Borders) do border:Hide() end
+  end
+  return M
+end
 function CF.Visuals:Texture(parent, id, layer, width, height, point, relative, relativePoint, x, y)
   local texture = parent:CreateTexture(nil, layer or "ARTWORK")
   texture:SetSize(width, height)
@@ -34,10 +77,11 @@ function CF.Visuals:UnitModule(unit, frameName, screenX)
     local mainName = unit == "player" and "PlayerFrameContentMain" or "TargetFrameContentMain"
     self.Main = CF.Compat:Path(self.Frame, contentName, mainName)
     self.Container = self.Frame[unit == "player" and "PlayerFrameContainer" or "TargetFrameContainer"]
-    if not self.Main or not self.Container or not self.Main.HealthBarsContainer then
+    if not self.Main or not self.Container or not self.Main.HealthBarsContainer or
+        not self.Main.HealthBarsContainer.HealthBar then
       return false, "Retail unit frame hierarchy absent; default retained"
     end
-    local ok, why = CF.API.Required({"UnitHealth","UnitHealthMax","UnitPower","UnitPowerMax",
+    local ok, why = CF.API.Required({"UnitPower","UnitPowerMax",
       "UnitPowerType","UnitName","UnitLevel","SetPortraitTexture"})
     if not ok then return false, why end
     return CF.Assets:Require({unit == "player" and "CLASSIC_PLAYERFRAME_BORDER" or "CLASSIC_TARGETFRAME_BORDER", "CLASSIC_STATUSBAR"})
@@ -54,8 +98,10 @@ function CF.Visuals:UnitModule(unit, frameName, screenX)
     root.Portrait = root:CreateTexture(nil, "BACKGROUND")
     root.Portrait:SetSize(64,64)
     root.Portrait:SetPoint("TOPLEFT", portraitX, -16)
-    root.Health = CF.Visuals:Fill(root, barX, -46, 119, 10, 0.1,0.85,0.15)
-    root.Power = CF.Visuals:Fill(root, barX, -58, 119, 10, 0.1,0.3,0.9)
+    -- Native health owns predictions, masks, losses, text and restricted values.
+    -- Keep its full geometry; never draw a duplicate opaque health bar over it.
+    root.Power = CF.Visuals:Fill(root, barX, -64, 119, 10, 0.1,0.3,0.9)
+    root.Power:SetFrameLevel(root:GetFrameLevel()+4)
     local face = CreateFrame("Frame", nil, root)
     face:SetAllPoints()
     face:SetFrameLevel(root:GetFrameLevel() + 3)
@@ -63,8 +109,7 @@ function CF.Visuals:UnitModule(unit, frameName, screenX)
       "ARTWORK",256,128,"TOPLEFT",root,"TOPLEFT",borderX,-4)
     root.Name = CF.Visuals:Label(face,"GameFontNormalSmall",116,16,barX,-27)
     root.Level = CF.Visuals:Label(face,"GameNormalNumberFont",24,16,player and 26 or 190,-62)
-    root.HealthText = CF.Visuals:Label(face,"GameFontHighlightSmall",117,10,barX,-45)
-    root.PowerText = CF.Visuals:Label(face,"GameFontHighlightSmall",117,10,barX,-57)
+    root.PowerText = CF.Visuals:Label(root.Power,"GameFontHighlightSmall",117,10,0,1)
   end
   function M:Refresh(event, eventUnit)
     local displayUnit = CF.API.DisplayUnit(self.Frame, unit)
@@ -97,15 +142,19 @@ function CF.Visuals:UnitModule(unit, frameName, screenX)
     j:Scale(self.Frame,1)
     j:Alpha(self.Container,0)
     local main = self.Main
+    local health = main.HealthBarsContainer
+    j:Point(health,"TOPLEFT",self.Frame,"TOPLEFT",unit == "player" and 87 or 22,-40)
+    -- Above the passive border, including its child frames. Keep native masks,
+    -- bar dimensions, scripts, values and visibility entirely Blizzard-owned.
+    j:FrameLevel(health,self.Visual:GetFrameLevel()+5)
+    j:FrameLevel(health.HealthBar,self.Visual:GetFrameLevel()+5)
     if unit == "player" then
-      j:Alpha(main.HealthBarsContainer,0)
       j:Alpha(main.ManaBarArea,0)
       j:Alpha(_G.PlayerName,0)
       j:Alpha(_G.PlayerLevelText,0)
       j:Alpha(main.StatusTexture,0)
       j:Alpha(main.HitIndicator,0)
     else
-      j:Alpha(main.HealthBarsContainer,0)
       j:Alpha(main.ManaBar,0)
       j:Alpha(main.Name,0)
       j:Alpha(main.LevelText,0)
@@ -117,7 +166,7 @@ function CF.Visuals:UnitModule(unit, frameName, screenX)
       "UNIT_PORTRAIT_UPDATE","UNIT_MODEL_CHANGED","UNIT_CLASSIFICATION_CHANGED",
       "UNIT_ENTERED_VEHICLE","UNIT_EXITED_VEHICLE","UNIT_PET"},self.Refresh)
     self.Visual:Show()
-    return true, "Original border and display bars; native unit button, menus and auras retained"
+    return true, "Classic border/power; full native health, healing and shields retained"
   end
   function M:Disable()
     CF.Events:Unbind(self)

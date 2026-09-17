@@ -1,5 +1,12 @@
 local _, CF = ...
 CF.FrameManifest = {
+  { name="BuffFrame", use="passive borders on native auraFrames; private anchors untouched", protected="runtime-probed" },
+  { name="DebuffFrame", use="passive borders; native dispel colors and durations", protected="runtime-probed" },
+  { name="GameTooltip", use="Classic backdrop beneath native content", protected="runtime-probed" },
+  { name="ItemRefTooltip", use="Classic backdrop; native links retained", protected="runtime-probed" },
+  { name="ShoppingTooltip1", use="Classic comparison backdrop", protected="runtime-probed" },
+  { name="ShoppingTooltip2", use="Classic comparison backdrop", protected="runtime-probed" },
+  { name="ObjectiveTrackerFrame", use="header artwork only; native tracking and controls retained", protected="runtime-probed" },
   { name="PlayerSpellsFrame", use="spellbook-only passive artwork; loaded on demand", protected="runtime-probed" },
   { name="PlayerName", use="reversible alpha change", protected="runtime-probed" },
   { name="PlayerLevelText", use="reversible alpha change", protected="runtime-probed" },

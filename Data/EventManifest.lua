@@ -1,5 +1,6 @@
 local _, CF = ...
 CF.EventManifest = {
+  UNIT_AURA = true,
   UNIT_ENTERED_VEHICLE = true,
   UNIT_EXITED_VEHICLE = true,
   UNIT_PET = true,

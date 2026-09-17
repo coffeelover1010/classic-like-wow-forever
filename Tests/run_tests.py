@@ -27,13 +27,13 @@ def run(name, body, setup=""):
     print("PASS:", name)
 
 
-run("login applies 9 implemented modules; deferred modules are honest", """
+run("login applies 13 available modules; deferred modules are honest", """
 Mock.Event("PLAYER_LOGIN")
-for _,name in ipairs({"ActionBars","PlayerFrame","TargetFrame","Minimap","ExperienceBar","ReputationBar","MicroMenu","Bags","CastBar"}) do
+for _,name in ipairs({"ActionBars","PlayerFrame","TargetFrame","Minimap","ExperienceBar","ReputationBar","MicroMenu","Bags","CastBar","Buffs","Debuffs","Tooltips","QuestTracker"}) do
   assert(ClassicForeverUI.Modules[name].State=="APPLIED_UNVERIFIED", name .. ": " .. ClassicForeverUI.Modules[name].State)
 end
 assert(ClassicForeverUI.Modules.FocusFrame.State=="NOT_IMPLEMENTED")
-assert(TargetFrame.TargetFrameContent.TargetFrameContentMain.HealthBarsContainer:GetAlpha()==0)
+assert(TargetFrame.TargetFrameContent.TargetFrameContentMain.HealthBarsContainer:GetAlpha()==1)
 assert(ActionButton1.action==1 and ActionButton12.action==12)
 assert(ActionButton1.secureToken=="unchanged")
 assert(ActionButton1:GetParent()==MainActionBarButtonContainer1)
@@ -99,7 +99,7 @@ assert(ClassicForeverUI.Modules.PlayerFrame.State=="UNAVAILABLE")
 assert(ClassicForeverUI.Modules.TargetFrame.State=="UNAVAILABLE")
 assert(ClassicForeverUI.Modules.ActionBars.Active)
 assert(PlayerFrame.PlayerFrameContainer:GetAlpha()==1)
-""", "UnitHealth=nil")
+""", "UnitPower=nil")
 
 run("initialization and partial enable failures remain isolated", """
 ClassicForeverUI:RegisterModule("InitializeFailure",{Initialize=function() error("init failure") end})
@@ -115,7 +115,7 @@ assert(ClassicForeverUI.Modules.ActionBars.Active and BagsBar:GetAlpha()==1)
 run("opaque health, power, name, level and classification are display-only", """
 Mock.Event("PLAYER_LOGIN")
 local v=ClassicForeverUI.Modules.PlayerFrame.Visual
-assert(v.Health.value==Mock.health and v.Name.text==Mock.unitName)
+assert(v.Power.value==Mock.power and v.Name.text==Mock.unitName)
 Mock.combat=true; Mock.Event("UNIT_HEALTH","player")
 assert(ClassicForeverUI.Modules.PlayerFrame.State=="APPLIED_UNVERIFIED")
 assert(v.Level.text=="")
@@ -127,7 +127,7 @@ Mock.powerType=Mock.Secret(); Mock.classification=Mock.Secret()
 
 run("runtime update failure stops retry loop and restores default out of combat", """
 Mock.Event("PLAYER_LOGIN"); Mock.combat=true
-UnitHealth=function() error("runtime API restriction") end
+UnitPower=function() error("runtime API restriction") end
 Mock.Event("UNIT_HEALTH","player")
 assert(ClassicForeverUI.Modules.PlayerFrame.State=="UPDATE_FAILED")
 Mock.combat=false; Mock.Event("PLAYER_REGEN_ENABLED")
@@ -306,7 +306,7 @@ for name,row in pairs(o.Rows) do
   count=count+1
   assert(not ClassicForeverUI.Modules[name].Deferred and row:GetChecked())
 end
-assert(count==10 and not o.Rows.Panels and not o.Rows.Tooltips)
+assert(count==14 and not o.Rows.Panels and o.Rows.Tooltips)
 assert(o.Rows.SpellBook.Status.text=="Open book")
 assert(o.Rows.Minimap.Status.text=="Applied")
 local frames=#Mock.frames
@@ -405,12 +405,12 @@ assert(cf.Diagnostics.GalleryFrame:IsShown())
 run("settings reflect runtime faults and Retry changes recovers the module", """
 Mock.Event("PLAYER_LOGIN"); SlashCmdList.CLASSICFOREVERUI("")
 local cf=ClassicForeverUI; local o=cf.Options
-local original=UnitHealth
-UnitHealth=function() error("temporary fault") end
+local original=UnitPower
+UnitPower=function() error("temporary fault") end
 Mock.Event("UNIT_HEALTH","player")
 assert(o.Rows.PlayerFrame.Status.text=="Needs retry")
 assert(not cf.Pending)
-UnitHealth=original; Mock.Click(o.Frame.Retry)
+UnitPower=original; Mock.Click(o.Frame.Retry)
 assert(cf.Modules.PlayerFrame.Active and o.Rows.PlayerFrame.Status.text=="Applied")
 """)
 
@@ -434,6 +434,7 @@ assert(ClassicForeverUIDB.modules.Minimap==false and ClassicForeverUI.Pending)
 assert(Mock.nativeWrites==before)
 """, "InCombatLockdown=nil")
 
+exec(compile((ROOT / "Tests/ui_pass_tests.py").read_text(), "ui_pass_tests.py", "exec"))
 print(f"PASS: all {len(FILES)} TOC files compiled and executed by Lua 5.1")
 with (ROOT / "Research/LocalAssetInventory.csv").open(newline="", encoding="utf-8") as f:
     extracted = {row["path"] for row in csv.DictReader(f) if row["status"] == "extracted"}

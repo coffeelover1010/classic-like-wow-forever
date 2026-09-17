@@ -1,5 +1,5 @@
 local addonName, CF = ...
-CF.Name, CF.Version = addonName, "0.4.0-alpha"
+CF.Name, CF.Version = addonName, "0.5.0-alpha"
 CF.Modules, CF.ModuleOrder = {}, {}
 _G.ClassicForeverUI = CF
 
@@ -112,7 +112,7 @@ function CF:Start()
     end, self)
   end
   self:RequestApply()
-  self:Print("0.4 alpha loaded. /cf opens settings. /cf off restores the default UI. In-game testing is pending.")
+  self:Print("0.5 alpha loaded. /cf opens settings. /cf off restores the default UI. In-game testing is pending.")
 end
 
 local bootstrap = CreateFrame("Frame")

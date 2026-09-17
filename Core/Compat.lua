@@ -34,6 +34,11 @@ function CF.Compat:NewJournal()
     self:Record(object, "scale", function() object:SetScale(before) end)
     object:SetScale(value)
   end
+  function journal:FrameLevel(object, value)
+    local before = object:GetFrameLevel()
+    self:Record(object, "level", function() object:SetFrameLevel(before) end)
+    object:SetFrameLevel(value)
+  end
   function journal:Size(object, width, height)
     local w, h = object:GetSize()
     self:Record(object, "size", function() object:SetSize(w, h) end)

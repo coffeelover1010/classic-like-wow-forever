@@ -28,7 +28,7 @@ def render(output, scenario):
     g = lua.globals()
     root = g.ClassicForeverUI.Options.Frame
     key = lua.eval("tostring")
-    rects = {key(root): (0, 0, 700, 624)}
+    rects = {key(root): (0, 0, 700, 740)}
 
     def fraction(point):
         return (0 if "LEFT" in point else 1 if "RIGHT" in point else .5,
@@ -71,7 +71,7 @@ def render(output, scenario):
             layer = {"BACKGROUND": 0, "ARTWORK": 1, "OVERLAY": 2, "HIGHLIGHT": 3}.get(obj.layer, 1)
             objects.append((depth, layer, obj.sublevel or 0, obj))
     objects.sort(key=lambda item: item[:3])
-    canvas = Image.new("RGBA", (700, 624), (15, 14, 12, 255))
+    canvas = Image.new("RGBA", (700, 740), (15, 14, 12, 255))
     font_path = Path("C:/Windows/Fonts/arial.ttf")
     if not font_path.exists():
         font_path = Path("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf")
@@ -99,10 +99,10 @@ def render(output, scenario):
         elif obj.texture and "UI-CheckBox-Check" in obj.texture:
             draw.line([(x+6, y+13), (x+11, y+18), (x+21, y+7)], fill=(231,197,118), width=3)
         canvas = Image.alpha_composite(canvas, layer)
-    result = Image.new("RGB", (748, 702), (29, 28, 25))
+    result = Image.new("RGB", (748, 818), (29, 28, 25))
     result.paste(canvas.convert("RGB"), (24, 24))
     draw = ImageDraw.Draw(result)
-    draw.text((24, 670), "Offline layout preview / approximate fonts / not an in-game screenshot",
+    draw.text((24, 786), "Offline layout preview / approximate fonts / not an in-game screenshot",
               font=ImageFont.truetype(str(font_path), 12), fill=(175,174,165))
     output.parent.mkdir(parents=True, exist_ok=True)
     result.save(output)

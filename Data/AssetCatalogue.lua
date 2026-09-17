@@ -8,6 +8,8 @@ local function art(path, usage, coords, width, height)
     forever = "FOREVER_VALIDATION_REQUIRED", fallback = nil }
 end
 CF.AssetCatalogue = {
+  CLASSIC_TOOLTIP_BACKGROUND = art("Tooltips\\UI-Tooltip-Background", "Classic tooltip background", nil,64,64),
+  CLASSIC_TOOLTIP_BORDER = art("Tooltips\\UI-Tooltip-Border", "Classic tooltip edge sheet", nil,128,16),
   CLASSIC_MAINBAR_LEFT = art("MainMenuBar\\UI-MainMenuBar-Dwarf", "stone left quarter", {0,1,0.83203125,1},256,43),
   CLASSIC_MAINBAR_MIDDLE_LEFT = art("MainMenuBar\\UI-MainMenuBar-Dwarf", "stone second quarter", {0,1,0.58203125,0.75},256,43),
   CLASSIC_MAINBAR_MIDDLE_RIGHT = art("MainMenuBar\\UI-MainMenuBar-Dwarf", "micro menu background", {0,1,0.33203125,0.5},256,43),

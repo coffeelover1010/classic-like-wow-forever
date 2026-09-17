@@ -1,6 +1,6 @@
 # ClassicForeverUI
 
-A Retail addon that puts original Blizzard Classic artwork around a Classic-style layout. Version **0.4.0-alpha** adds a simple settings window and is ready to install for testing. It has **not been tested inside WoW**. Forever support is unverified.
+A Retail addon that puts original Blizzard Classic artwork around a Classic-style layout. Version **0.5.0-alpha** adds tooltips, aura borders and tracker trim, and restores native healing and shield indicators and is ready to install for testing. It has **not been tested inside WoW**. Forever support is unverified.
 
 ## Install
 
@@ -17,20 +17,23 @@ Read [BETA-TEST.md](BETA-TEST.md) for the test session. Start with `/cf diagnost
 ## What it changes
 
 - The bottom bar uses original stone panels, gryphons and button borders. The right gryphon is mirrored.
-- Player and target frames use original borders, portraits, health and power bars. Target rarity selects the matching original border when classification is readable.
+- Player and target frames use original borders, portraits and power bars around native health displays. Target rarity selects the matching original border when classification is readable.
+- Buffs and debuffs get original slot borders. Native timers, counts, dispel colors, enchant borders and right-click controls stay in place. Private aura anchors remain unchanged.
+- Tooltips use the original dark background and a gray border. Links, comparisons and native content stay in place. The border is gray even for rare items; item names keep their native colors.
+- The quest tracker gets a Classic header and metal trim. Its rows, quest items, filters and collapse controls stay native.
 - The minimap uses the original round border.
 - Native XP and reputation bars get original fill and metal trim. Blizzard still handles their values, selection, rested XP and tooltips.
 - The native micro menu and bags move into the bottom layout. Their Retail button artwork remains.
 - The native player cast bar gets an original border and a Classic-style position. Blizzard still handles casting, channeling and empowered spells.
 - The spellbook uses original parchment, metal trim, a book icon and spell-slot borders. It follows the small and large views. Search, categories, page arrows, pet spells and dragging spells stay native. The talents and specialization tabs keep their own artwork.
 
-The addon keeps Blizzard's action buttons, secure paging, unit buttons, right-click menus and aura controls. It does not change their parents, scripts or secure attributes. Native focus, buffs, debuffs, tooltips, quest tracker and other panels remain in place. This is a recognizable Classic layout, not full Vanilla pixel parity.
+The addon keeps Blizzard's action buttons, secure paging, unit buttons, right-click menus and aura controls. It does not change their parents, scripts or secure attributes. Native focus and other panels remain unchanged. Buffs, debuffs and the tracker keep their native positions. This is a recognizable Classic layout, not full Vanilla pixel parity.
 
 Open the spellbook once to load its skin. Before that, its module can report `UNAVAILABLE` with an instruction to open it. Use `/cf module SpellBook off` to restore only the spellbook. Native spell-state markers, passive shapes, cooldowns and pet autocast overlays are retained above the added borders.
 
 ## Controls
 
-Type **`/cf`** to open settings. There is one main switch and ten feature checkboxes. Click anywhere on a feature row to change it. Choices save automatically and apply outside combat. Turning the main switch off keeps your feature choices for next time.
+Type **`/cf`** to open settings. There is one main switch and fourteen feature checkboxes. Click anywhere on a feature row to change it. Choices save automatically and apply outside combat. Turning the main switch off keeps your feature choices for next time.
 
 The window shows which features have applied, which are off, and which need attention. **Open book** means the spellbook must be opened once to load. **View textures**, **Open report**, and **Retry changes** give quick access to troubleshooting. The report provides text to copy with Ctrl+A, Ctrl+C.
 
@@ -57,7 +60,7 @@ Lua 5.1 checks and mocked regression tests pass. Original textures were read fro
 
 `APPLIED_UNVERIFIED` means the module's Lua ran without a caught error. `LOAD_ACCEPTED_VISUAL_UNVERIFIED` means the texture API accepted the request. Neither means the image rendered correctly. See [Tests/DiagnosticExpectations.md](https://github.com/coffeelover1010/classic-like-wow-forever/blob/main/Tests/DiagnosticExpectations.md).
 
-Unit skins currently omit the native health prediction/absorb display and native portrait combat flash. Other Retail class resources remain native. Minimap utility buttons and newer micro menu features also remain native. Other UI addons can move these same frames; test this alpha with them disabled.
+Unit skins retain full-size native health bars, incoming healing, shields, heal absorbs, losses and native health text. Their modern health artwork remains; portrait combat flash is still omitted. Other Retail class resources remain native. Minimap utility buttons and newer micro menu features also remain native. Other UI addons can move these same frames; test this alpha with them disabled.
 
 ## Build and test
 
@@ -69,7 +72,7 @@ python Tests/run_tests.py
 python Tools/package_addon.py
 ```
 
-Output: `dist/ClassicForeverUI/` and `dist/ClassicForeverUI-0.4.0-alpha.zip`. Packaging uses the TOC and a small document allowlist. It excludes research checkouts, test tools, previews, extracted images and native libraries.
+Output: `dist/ClassicForeverUI/` and `dist/ClassicForeverUI-0.5.0-alpha.zip`. Packaging uses the TOC and a small document allowlist. It excludes research checkouts, test tools, previews, extracted images and native libraries.
 
 If the beta rejects the TOC, first read its actual Interface number. Then build a separate package:
 

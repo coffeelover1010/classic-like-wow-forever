@@ -10,6 +10,7 @@ import json
 from pathlib import Path
 
 ASSETS = {
+    "Tooltips": ["UI-Tooltip-Background", "UI-Tooltip-Border"],
     "SpellBook": ["UI-SpellbookPanel-TopLeft", "UI-SpellbookPanel-TopRight",
                   "UI-SpellbookPanel-BotLeft", "UI-SpellbookPanel-BotRight",
                   "Spellbook-Icon", "UI-Spellbook-SpellBackground", "SpellBook-SkillLineTab"],

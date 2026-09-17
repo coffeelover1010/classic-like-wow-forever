@@ -57,3 +57,5 @@ $py = 'C:\Users\Z68\.cache\codex-runtimes\codex-primary-runtime\dependencies\pyt
 ```
 
 A new product/build needs its own metadata and output directory. This tool refuses to write extracted art inside the addon repository.
+
+The 0.5 pass added two Era tooltip paths: UI-Tooltip-Background and UI-Tooltip-Border. Both extracted successfully and were decoded locally; their size/hash evidence is appended to LocalAssetInventory.csv. The Anniversary inventory remains the earlier 31-path run.

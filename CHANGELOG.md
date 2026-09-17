@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.5.0-alpha — 17 September 2026
+
+- Added original Classic tooltip backgrounds and gray borders, buff/debuff slot borders and quest-tracker header trim.
+- Restored native player/target health, incoming healing, shields and heal-absorb indicators. Removed the duplicate health bar; kept native masks, values and full health-bar size.
+- Added four simple settings rows. Only focus and other panels remain unimplemented.
+- Preserved native aura timers/clicks, tooltip content and tracker controls. New changes share combat deferral, Edit Mode suspension, rollback and isolated failure handling.
+- Passed 44 offline Lua 5.1 cases and all 30 TOC files. Reviewed the expanded settings preview. No running client was tested; Forever remains unverified.
+
 ## 0.4.0-alpha â€” 17 September 2026
 
 - Added a compact settings window with a main switch, ten feature toggles and automatic saving. Open it with `/cf`, `/cf config` or `/cf options`.

@@ -33,14 +33,12 @@ function CF.API.Required(names)
   return true
 end
 function CF.API.UpdateUnit(visual, unit)
-  -- Secret health/power goes straight to Blizzard's allowed display sinks.
+  -- Secret power/name goes straight to Blizzard's allowed display sinks.
+  -- Native health and its predictions are never read or written by this skin.
   -- No comparisons, arithmetic, caching, formatting or table keys use it.
-  visual.Health:SetMinMaxValues(0, UnitHealthMax(unit))
-  visual.Health:SetValue(UnitHealth(unit))
   visual.Power:SetMinMaxValues(0, UnitPowerMax(unit))
   visual.Power:SetValue(UnitPower(unit))
   visual.Name:SetText(UnitName(unit))
-  visual.HealthText:SetText(UnitHealth(unit))
   visual.PowerText:SetText(UnitPower(unit))
   local level = UnitLevel(unit)
   if CF.API.IsSecret(level) then visual.Level:SetText("") else

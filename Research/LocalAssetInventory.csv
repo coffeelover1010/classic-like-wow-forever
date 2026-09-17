@@ -61,3 +61,5 @@ build,product,path,status,bytes,sha256,error
 2.5.6.69795,wow_anniversary,Interface\Buttons\UI-MicroButton-Quest-Up.blp,extracted,3940,c61f3386991e79d0ec17814b53a7493782caa818cd0ec4740f6b4652c7655e4e,
 2.5.6.69795,wow_anniversary,Interface\Buttons\UI-MicroButton-Socials-Up.blp,extracted,3940,4ffd15080a3746539c77e52975131fc23471820bff5fafec8177e33175daa339,
 2.5.6.69795,wow_anniversary,Interface\Buttons\UI-MicroButton-MainMenu-Up.blp,extracted,3940,d700a588a004039ca14a9617e2242da028d7a8e4e5120c4481c1e80951ea3270,
+1.15.9.69722,wow_classic_era,Interface\Tooltips\UI-Tooltip-Background.blp,extracted,6660,cf44686081767a422a601e566c936e98edf857b9f8717c40993a6c898171f87e,
+1.15.9.69722,wow_classic_era,Interface\Tooltips\UI-Tooltip-Border.blp,extracted,3940,6a6a1946032606c1237fce51746411282383869e021bacdf4043d4b8a11c84fc,

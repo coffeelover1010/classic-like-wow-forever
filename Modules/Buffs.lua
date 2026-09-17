@@ -1,2 +1,2 @@
 local _, CF = ...
-CF:RegisterModule("Buffs", { Deferred = "Native Blizzard UI retained; skin not implemented" })
+CF:RegisterModule("Buffs", CF.Visuals:AuraModule("BuffFrame"))
