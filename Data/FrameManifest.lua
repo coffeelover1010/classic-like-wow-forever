@@ -1,5 +1,6 @@
 local _, CF = ...
 CF.FrameManifest = {
+  { name="PlayerSpellsFrame", use="spellbook-only passive artwork; loaded on demand", protected="runtime-probed" },
   { name="PlayerName", use="reversible alpha change", protected="runtime-probed" },
   { name="PlayerLevelText", use="reversible alpha change", protected="runtime-probed" },
   { name="MinimapBorder", use="optional reversible alpha change", protected="runtime-probed" },

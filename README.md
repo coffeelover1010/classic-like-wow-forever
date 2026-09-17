@@ -1,6 +1,6 @@
 # ClassicForeverUI
 
-A Retail addon that puts original Blizzard Classic artwork around a Classic-style layout. Version **0.2.0-alpha** is ready to install for testing. It has **not been tested inside WoW**. Forever support is unverified.
+A Retail addon that puts original Blizzard Classic artwork around a Classic-style layout. Version **0.3.0-alpha** adds a Classic spellbook skin and is ready to install for testing. It has **not been tested inside WoW**. Forever support is unverified.
 
 ## Install
 
@@ -22,8 +22,11 @@ Read [BETA-TEST.md](BETA-TEST.md) for the test session. Start with `/cf diagnost
 - Native XP and reputation bars get original fill and metal trim. Blizzard still handles their values, selection, rested XP and tooltips.
 - The native micro menu and bags move into the bottom layout. Their Retail button artwork remains.
 - The native player cast bar gets an original border and a Classic-style position. Blizzard still handles casting, channeling and empowered spells.
+- The spellbook uses original parchment, metal trim, a book icon and spell-slot borders. It follows the small and large views. Search, categories, page arrows, pet spells and dragging spells stay native. The talents and specialization tabs keep their own artwork.
 
-The addon keeps Blizzard's action buttons, secure paging, unit buttons, right-click menus and aura controls. It does not change their parents, scripts or secure attributes. Native focus, buffs, debuffs, tooltips, quest tracker and panels remain in place. This is a recognizable first layout, not full Vanilla pixel parity.
+The addon keeps Blizzard's action buttons, secure paging, unit buttons, right-click menus and aura controls. It does not change their parents, scripts or secure attributes. Native focus, buffs, debuffs, tooltips, quest tracker and other panels remain in place. This is a recognizable Classic layout, not full Vanilla pixel parity.
+
+Open the spellbook once to load its skin. Before that, its module can report `UNAVAILABLE` with an instruction to open it. Use `/cf module SpellBook off` to restore only the spellbook. Native spell-state markers, passive shapes, cooldowns and pet autocast overlays are retained above the added borders.
 
 ## Controls
 
@@ -58,7 +61,7 @@ python Tests/run_tests.py
 python Tools/package_addon.py
 ```
 
-Output: `dist/ClassicForeverUI/` and `dist/ClassicForeverUI-0.2.0-alpha.zip`. Packaging uses the TOC and a small document allowlist. It excludes research checkouts, test tools, extracted images and native libraries.
+Output: `dist/ClassicForeverUI/` and `dist/ClassicForeverUI-0.3.0-alpha.zip`. Packaging uses the TOC and a small document allowlist. It excludes research checkouts, test tools, extracted images and native libraries.
 
 If the beta rejects the TOC, first read its actual Interface number. Then build a separate package:
 

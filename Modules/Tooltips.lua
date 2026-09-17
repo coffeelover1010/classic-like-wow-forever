@@ -1,2 +1,2 @@
 local _, CF = ...
-CF:RegisterModule("Tooltips", { Deferred = "Native Blizzard UI retained in 0.2 alpha" })
+CF:RegisterModule("Tooltips", { Deferred = "Native Blizzard UI retained; skin not implemented" })

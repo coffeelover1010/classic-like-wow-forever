@@ -177,6 +177,125 @@ assert(ClassicForeverUI.Modules.ActionBars.Active)
 assert(ClassicForeverUI.Diagnostics:Collect():find("ADDON_LOADED: REJECTED"))
 """, 'Mock.rejectedEvent="ADDON_LOADED"')
 
+run("spellbook lazy loading, native controls and tab visibility", """
+Mock.Event("PLAYER_LOGIN")
+local m=ClassicForeverUI.Modules.SpellBook
+assert(m.State=="UNAVAILABLE" and m.Detail:find("Open the spellbook"))
+local book=Mock.LoadSpellBook()
+local button=book.items[1].Button
+local click,drag=button:GetScript("OnClick"),button:GetScript("OnDragStart")
+local parent,search,page=button:GetParent(),book.SearchBox,book.PagedSpellsFrame.PagingControls
+Mock.Event("ADDON_LOADED","Blizzard_PlayerSpells")
+assert(m.Active and m.Skin.mouse==false and m.Body.mouse==false)
+assert(not m.Skin:IsVisible())
+book:Show(); Mock.Callback("PlayerSpellsFrame.SpellBookFrame.Show")
+assert(m.Skin:IsVisible() and book.TopBar:GetAlpha()==0)
+assert(book.SearchBox==search and book.PagedSpellsFrame.PagingControls==page)
+assert(button:GetScript("OnClick")==click and button:GetScript("OnDragStart")==drag)
+assert(button:GetParent()==parent and button.secureToken=="spell-native")
+assert(button.Icon:GetTexture()=="native-Icon" and button.Border:GetTexture()=="native-Border")
+assert(button.AutoCastOverlay:GetAlpha()==1 and button.Cooldown:GetAlpha()==1)
+assert(book.items[1].Backplate:GetAlpha()==0.25)
+assert(PlayerSpellsFrame.TalentsFrame:GetAlpha()==1 and PlayerSpellsFrame:GetWidth()==232)
+book:Hide()
+assert(not m.Skin:IsVisible() and PlayerSpellsFrame.TalentsFrame:IsVisible())
+""")
+
+run("spellbook resize follows anchors and preserves latest native visibility on restore", """
+Mock.Event("PLAYER_LOGIN")
+local book=PlayerSpellsFrame.SpellBookFrame
+local m=ClassicForeverUI.Modules.SpellBook
+assert(m.Active and m.Skin.allPoints==book)
+book:SetMinimized(false)
+local before=Mock.nativeWrites
+Mock.Callback("PlayerSpellsFrame.SpellBookFrame.DisplayedSpellsChanged")
+assert(Mock.nativeWrites==before and book:GetWidth()==1612)
+assert(book.BookBGLeft:IsShown() and not book.BookBGHalved:IsShown())
+assert(book.BookBGLeft:GetAlpha()==0)
+SlashCmdList.CLASSICFOREVERUI("module SpellBook off"); Mock.Flush()
+assert(book:GetWidth()==1612 and book.BookBGLeft:IsShown() and not book.BookBGHalved:IsShown())
+assert(book.BookBGLeft:GetAlpha()==1 and book.BookCornerFlipbook:GetAlpha()==0.7)
+assert(book.TopBar:GetAtlas()=="native-TopBar")
+local a,b,c,d=book.TopBar:GetTexCoord(); assert(a==0 and b==1 and c==0 and d==1)
+assert(not m.Skin:IsShown() and ClassicForeverUI.Modules.ActionBars.Active)
+local count=#Mock.frames
+SlashCmdList.CLASSICFOREVERUI("module SpellBook on"); Mock.Flush()
+assert(m.Active and #Mock.frames==count)
+book:SetMinimized(true)
+Mock.Callback("PlayerSpellsFrame.SpellBookFrame.DisplayedSpellsChanged")
+assert(book:GetWidth()==806 and book.BookBGHalved:IsShown() and not book.BookBGLeft:IsShown())
+""", "Mock.LoadSpellBook()")
+
+run("spellbook pooled entries add one passive border and reuse it across pages", """
+Mock.Event("PLAYER_LOGIN")
+local book=PlayerSpellsFrame.SpellBookFrame
+local m=ClassicForeverUI.Modules.SpellBook
+local new=Mock.Spell(book,3)
+local before=#Mock.frames
+Mock.Callback("PlayerSpellsFrame.SpellBookFrame.DisplayedSpellsChanged")
+assert(#Mock.frames==before+1 and m.Slots[new.Button]:IsShown())
+local border=m.Slots[new.Button]
+assert(border.layer=="ARTWORK" and border.sublevel==-2)
+new.Button.spellID=999
+for i=1,5 do Mock.Callback("PlayerSpellsFrame.SpellBookFrame.DisplayedSpellsChanged") end
+assert(#Mock.frames==before+1 and m.Slots[new.Button]==border)
+assert(new.Button.spellID==999 and new.TextContainer.text=="native localized spell name")
+SlashCmdList.CLASSICFOREVERUI("off"); Mock.Flush()
+for _,texture in pairs(m.Slots) do assert(not texture:IsShown()) end
+local count=#Mock.frames
+Mock.Callback("PlayerSpellsFrame.SpellBookFrame.Show")
+assert(#Mock.frames==count and not border:IsShown())
+""", "Mock.LoadSpellBook()")
+
+run("spellbook page updates and disable defer during combat", """
+Mock.Event("PLAYER_LOGIN")
+local book=PlayerSpellsFrame.SpellBookFrame
+local m=ClassicForeverUI.Modules.SpellBook
+local new=Mock.Spell(book,3)
+Mock.combat=true
+local count,writes=#Mock.frames,Mock.nativeWrites
+Mock.Callback("PlayerSpellsFrame.SpellBookFrame.DisplayedSpellsChanged")
+assert(ClassicForeverUI.Pending and not m.Slots[new.Button])
+assert(#Mock.frames==count and Mock.nativeWrites==writes)
+Mock.combat=false; Mock.Event("PLAYER_REGEN_ENABLED")
+assert(m.Slots[new.Button]:IsShown())
+Mock.combat=true
+SlashCmdList.CLASSICFOREVERUI("module SpellBook off"); Mock.Flush()
+assert(m.Active and m.Skin:IsShown())
+Mock.combat=false; Mock.Event("PLAYER_REGEN_ENABLED")
+assert(not m.Active and book.TopBar:GetAlpha()==1 and not m.Skin:IsShown())
+""", "Mock.LoadSpellBook()")
+
+run("missing spellbook art leaves stock book and other modules running", """
+Mock.Event("PLAYER_LOGIN")
+local m=ClassicForeverUI.Modules.SpellBook
+assert(m.State=="UNAVAILABLE" and not m.Skin)
+assert(PlayerSpellsFrame.SpellBookFrame.BookBGHalved:GetAlpha()==1)
+assert(ClassicForeverUI.Modules.ActionBars.Active)
+""", r'Mock.LoadSpellBook(); Mock.missingTexture="Interface\\SpellBook\\UI-SpellbookPanel-TopLeft"')
+
+run("spellbook update failure rolls back and stays stopped until explicit retry", """
+Mock.Event("PLAYER_LOGIN")
+local book=PlayerSpellsFrame.SpellBookFrame
+local m=ClassicForeverUI.Modules.SpellBook
+book.ForEachDisplayedSpell=function() error("pool changed") end
+Mock.Callback("PlayerSpellsFrame.SpellBookFrame.DisplayedSpellsChanged")
+assert(m.Faulted and not m.Active and m.State=="UPDATE_FAILED")
+assert(book.TopBar:GetAlpha()==1 and not m.Skin:IsShown())
+local count=#Mock.frames
+Mock.Callback("PlayerSpellsFrame.SpellBookFrame.Show")
+assert(#Mock.frames==count and ClassicForeverUI.Modules.ActionBars.Active)
+book.ForEachDisplayedSpell=function(self,callback) for _,item in ipairs(self.items) do callback(item) end end
+SlashCmdList.CLASSICFOREVERUI("refresh"); Mock.Flush()
+assert(m.Active and not m.Faulted and #Mock.frames==count)
+""", "Mock.LoadSpellBook()")
+
+run("unexpected spellbook hierarchy remains untouched", """
+Mock.Event("PLAYER_LOGIN")
+assert(ClassicForeverUI.Modules.SpellBook.State=="UNAVAILABLE")
+assert(PlayerSpellsFrame.SpellBookFrame.TopBar:GetAlpha()==1)
+""", "Mock.LoadSpellBook(); PlayerSpellsFrame.SpellBookFrame.ForEachDisplayedSpell=nil")
+
 print(f"PASS: all {len(FILES)} TOC files compiled and executed by Lua 5.1")
 with (ROOT / "Research/LocalAssetInventory.csv").open(newline="", encoding="utf-8") as f:
     extracted = {row["path"] for row in csv.DictReader(f) if row["status"] == "extracted"}

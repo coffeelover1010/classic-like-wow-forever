@@ -1,4 +1,4 @@
-# 0.2.0-alpha engineering handoff
+# 0.3.0-alpha engineering handoff
 
 ## Repository and package
 
@@ -8,7 +8,7 @@ The Git repository is classic-like-wow-forever. The install folder is **ClassicF
 classic-like-wow-forever/
   ClassicForeverUI.toc
   Core/             lifecycle, environment, rollback, assets, visual helpers, reports
-  Modules/          nine implemented modules; six explicit deferred modules
+  Modules/          ten implemented modules; six explicit deferred modules
   Data/             asset/API/frame/event catalogues
   Research/         pinned sources, licensing, local asset inventory and implementation
   Tests/            Lua 5.1 mock regression suite and diagnostic expectations
@@ -18,19 +18,19 @@ classic-like-wow-forever/
   LICENSE / LICENSE-NOTES.md
   dist/             generated; ignored by Git
     ClassicForeverUI/
-    ClassicForeverUI-0.2.0-alpha.zip
-    ClassicForeverUI-0.2.0-alpha.zip.sha256
+    ClassicForeverUI-0.3.0-alpha.zip
+    ClassicForeverUI-0.3.0-alpha.zip.sha256
 ```
 
 ## Implemented
 
-Original stone action bar, original mirrored gryphons, classic action-slot borders, player/target visual skins, original minimap border, native XP/reputation fill and trim, native micro menu/bag placement, original cast border. The real action buttons, unit buttons, casting engine and tracking logic remain Blizzard-owned.
+Original stone action bar, original mirrored gryphons, classic action-slot borders, player/target visual skins, original minimap border, native XP/reputation fill and trim, native micro menu/bag placement, original cast border, and original parchment/trim/icon/slot borders for the native spellbook. The real action buttons, unit buttons, casting engine and tracking logic remain Blizzard-owned.
 
 Module failures are isolated and partially applied changes roll back. Missing combat API blocks writes. Edit Mode temporarily suspends the layout. Commands include off/on, per-module controls, retry, asset gallery and a copyable report.
 
 ## What works versus what is untested
 
-The implemented behaviors passed the offline Lua 5.1 regression suite. All packaged Lua files load in the mock, and the ZIP is checked against the exact TOC/document allowlist.
+The implemented behaviors passed 22 offline Lua 5.1 regression cases, including seven spellbook cases. All 29 packaged Lua files load in the mock, and the ZIP is checked against the exact TOC/document allowlist.
 
 **Nothing is claimed tested in a running Retail, Classic or Forever client.** Original artwork was freshly extracted from Era 1.15.9.69722 and Anniversary 2.5.6.69795, decoded and inspected locally. The gryphon is EndCap-Dwarf; EndCap-Human is a lion.
 
@@ -44,9 +44,9 @@ The real build/Interface number, loading rules, API lineage, frame hierarchy, ev
 
 APIs: CreateFrame, GetBuildInfo, InCombatLockdown, issecretvalue, UnitHealth/UnitHealthMax, UnitPower/UnitPowerMax, UnitName, UnitLevel, UnitPowerType, UnitClassification, SetPortraitTexture, C_Timer.After and EventRegistry callbacks.
 
-Frames: MainActionBar, ActionButton1-12 and their native containers, PlayerFrame, TargetFrame, Minimap/MinimapCluster, MicroMenuContainer, BagsBar, PlayerCastingBarFrame, MainStatusTrackingBarContainer and SecondaryStatusTrackingBarContainer.
+Frames: MainActionBar, ActionButton1-12 and their native containers, PlayerFrame, TargetFrame, Minimap/MinimapCluster, MicroMenuContainer, BagsBar, PlayerCastingBarFrame, MainStatusTrackingBarContainer, SecondaryStatusTrackingBarContainer, and PlayerSpellsFrame.SpellBookFrame (loaded on demand).
 
-Paths: Interface\MainMenuBar\UI-MainMenuBar-Dwarf; UI-MainMenuBar-EndCap-Dwarf; UI-MainMenuBar-MaxLevel; Interface\TargetingFrame\UI-TargetingFrame and elite/rare variants; UI-StatusBar; Interface\Minimap\UI-Minimap-Border; Interface\CastingBar\UI-CastingBar-Border; Interface\Buttons\UI-Quickslot2.
+Paths: Interface\MainMenuBar\UI-MainMenuBar-Dwarf; UI-MainMenuBar-EndCap-Dwarf; UI-MainMenuBar-MaxLevel; Interface\TargetingFrame\UI-TargetingFrame and elite/rare variants; UI-StatusBar; Interface\Minimap\UI-Minimap-Border; Interface\CastingBar\UI-CastingBar-Border; Interface\Buttons\UI-Quickslot2; Interface\SpellBook\UI-SpellbookPanel-TopLeft/TopRight/BotLeft/BotRight and Spellbook-Icon.
 
 ## Third-party and rights review
 
@@ -56,7 +56,7 @@ Project code is MIT. Blizzard artwork rights are separate. No blanket redistribu
 
 ## Exact Day One procedure
 
-Follow [BETA-TEST.md](BETA-TEST.md): install the correctly named folder, record build/Interface, run all five required diagnostic commands, inspect every gallery page, test clicks/bindings/targets/bags/casts, exercise combat deferral and vehicles, test Edit Mode, reload, and copy /cf report. Allow 45 minutes. Disable the addon if it blocks controls.
+Follow [BETA-TEST.md](BETA-TEST.md): install the correctly named folder, record build/Interface, run all five required diagnostic commands, inspect every gallery page, test clicks/bindings/targets/bags/casts and the spellbook in both sizes, exercise combat deferral and vehicles, test Edit Mode, reload, and copy /cf report. Allow 50 minutes. Disable the addon if it blocks controls.
 
 ## Next ten engineering tasks
 
@@ -69,4 +69,4 @@ Follow [BETA-TEST.md](BETA-TEST.md): install the correctly named folder, record 
 7. Check multiple classes, UI scales, ultrawide screens and target-of-target placement.
 8. Verify minimap buttons, tracking, rotations and any missing texture aliases.
 9. Refine the Vanilla XP/reputation strip and original micro/bag artwork where the client provides it.
-10. Implement lower-priority focus/aura/tooltip/quest/panel skins after the core beta checks pass.
+10. Implement lower-priority focus/aura/tooltip/quest/other-panel skins after the core beta checks pass.

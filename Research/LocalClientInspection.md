@@ -21,7 +21,7 @@ Built [CascLib](https://github.com/ladislav-zezula/CascLib/tree/2a280f5a231966dc
 
 [Tools/extract_local_assets.py](../Tools/extract_local_assets.py) opens local storage through CascOpenStorage, opens a fixed list of UI paths with strict data checking, reads their contents, and closes the handles. It does not use online storage or request downloads.
 
-Checked 24 paths in each product. **21 BLP textures were extracted from each**, decoded with Pillow and inspected in a local contact sheet. [LocalAssetInventory.csv](LocalAssetInventory.csv) records exact paths, sizes, SHA-256 hashes and failed opens.
+Checked 31 paths in each product. **28 BLP textures were extracted from each**. The initial 21 textures were decoded with Pillow and inspected in a local contact sheet. The seven spellbook additions were also decoded and inspected locally. [LocalAssetInventory.csv](LocalAssetInventory.csv) records exact paths, sizes, SHA-256 hashes and failed opens.
 
 Outputs stay outside the repository:
 
@@ -38,9 +38,10 @@ The two builds have different bytes and decoded pixels for the rare-elite target
 - UI-Minimap-Border is the main ring/header sheet. MiniMap-TrackingBorder is only the small tracking-button ring.
 - UI-TargetingFrame and the rare/elite variants contain original unit-frame artwork.
 - UI-StatusBar and both inspected CastingBar border variants decoded successfully.
+- The four UI-SpellbookPanel sheets, Spellbook-Icon, UI-Spellbook-SpellBackground and SpellBook-SkillLineTab decoded successfully in both builds. The spellbook module references the four panel sheets and icon; the last two are research candidates.
 - UI-MainMenuBar, UI-MainMenuBar-Experience and UI-MicroButton-Character-Up were not extracted by those names. These failed lookups do not establish absence under every alias or in other clients.
 
-An offline art-composition check was also inspected to verify bar crops, mirrored endcaps and unit-bar placement. It is **not an in-game screenshot**.
+Offline art-composition checks were also inspected to verify bar crops, mirrored endcaps, unit-bar placement, and spellbook crops/anchors at 806 and 1612 pixels wide. They are **not in-game screenshots**.
 
 ## Runtime boundary
 

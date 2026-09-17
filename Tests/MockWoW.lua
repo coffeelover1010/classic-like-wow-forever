@@ -30,6 +30,7 @@ function Methods:GetParent() return self.parent end
 function Methods:Show() self.shown=true end
 function Methods:Hide() self.shown=false end
 function Methods:IsShown() return self.shown end
+function Methods:IsVisible() return self.shown and (not self.parent or self.parent:IsVisible()) end
 function Methods:SetShown(value) self.shown=value end
 function Methods:EnableMouse(value) self.mouse=value end
 function Methods:SetMovable(value) self.movable=value end
@@ -78,7 +79,9 @@ function CreateFrame(kind,name,parent,template)
   if name then _G[name]=f end
   return f
 end
-function Methods:CreateTexture(name,layer) return CreateFrame("Texture",name,self) end
+function Methods:CreateTexture(name,layer,template,sublevel)
+  local t=CreateFrame("Texture",name,self); t.layer=layer; t.sublevel=sublevel or 0; return t
+end
 function Methods:CreateFontString(name,layer,font) return CreateFrame("FontString",name,self) end
 function Mock.Native(name,parent)
   local f=CreateFrame("Frame",name,parent or UIParent)
@@ -87,6 +90,45 @@ function Mock.Native(name,parent)
   return f
 end
 function Mock.Child(parent,key) local f=Mock.Native(nil,parent); parent[key]=f; return f end
+function Mock.Spell(book, id)
+  local item=Mock.Native(nil,book.PagedSpellsFrame)
+  local button=Mock.Child(item,"Button")
+  button.spellID=id; button:SetSize(40,40); button.secureToken="spell-native"
+  button:SetScript("OnClick",function() end); button:SetScript("OnDragStart",function() end)
+  for _,key in ipairs({"Icon","Border","IconHighlight","AutoCastOverlay","Cooldown"}) do
+    Mock.Child(button,key):SetTexture("native-"..key)
+  end
+  Mock.Child(item,"Backplate"):SetAlpha(0.25)
+  Mock.Child(item,"TextContainer").text="native localized spell name"
+  book.items[#book.items+1]=item
+  return item
+end
+function Mock.LoadSpellBook()
+  local parent=Mock.Native("PlayerSpellsFrame")
+  Mock.Child(parent,"TalentsFrame"); Mock.Child(parent,"SpecFrame")
+  local book=Mock.Child(parent,"SpellBookFrame"); book:SetSize(806,856)
+  for _,key in ipairs({"TopBar","BookBGHalved","BookBGLeft","BookBGRight","BookCornerFlipbook","Bookmark"}) do
+    Mock.Child(book,key):SetAtlas("native-"..key)
+  end
+  book.BookBGLeft:Hide(); book.BookBGRight:Hide(); book.Bookmark:Hide()
+  book.BookCornerFlipbook:SetAlpha(0.7)
+  for _,key in ipairs({"SearchBox","CategoryTabSystem","SettingsDropdown","PagedSpellsFrame"}) do Mock.Child(book,key) end
+  Mock.Child(book.PagedSpellsFrame,"PagingControls")
+  book.items={}
+  function book:ForEachDisplayedSpell(callback)
+    for _,item in ipairs(self.items) do callback(item) end
+  end
+  function book:SetMinimized(value)
+    self.isMinimized=value; self:SetWidth(value and 806 or 1612)
+    self.BookBGHalved:SetShown(value)
+    self.BookBGLeft:SetShown(not value); self.BookBGRight:SetShown(not value)
+    self.Bookmark:SetShown(not value)
+    self.TopBar:SetTexCoord(0,value and 0.5 or 1,0,1)
+  end
+  Mock.Spell(book,1); Mock.Spell(book,2)
+  book:Hide()
+  return book
+end
 function Mock.Flush()
   while #Mock.timers > 0 do local list=Mock.timers; Mock.timers={}; for _,f in ipairs(list) do f() end end
 end

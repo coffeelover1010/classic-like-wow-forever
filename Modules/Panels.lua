@@ -1,2 +1,2 @@
 local _, CF = ...
-CF:RegisterModule("Panels", { Deferred = "Native Blizzard UI retained in 0.2 alpha" })
+CF:RegisterModule("Panels", { Deferred = "Other native panels retained; SpellBook is a separate module" })

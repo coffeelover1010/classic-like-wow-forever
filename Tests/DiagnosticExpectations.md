@@ -6,6 +6,7 @@
 - NOT_IMPLEMENTED means the native feature is left alone.
 - CLIENT_NOT_ENABLED means this project ID needs an explicit session trial with /cf enable.
 - UNAVAILABLE identifies a missing frame, API, asset or hierarchy.
+- SpellBook can be UNAVAILABLE before its first opening loads Blizzard_PlayerSpells; ADDON_LOADED triggers a recheck. A changed hierarchy or rejected original asset leaves the native book intact.
 - ERROR means a module call failed; the partial layout is rolled back.
 - UPDATE_FAILED stops event retries and restores the default module outside combat.
 - RESTORE_FAILED_RELOAD_REQUIRED needs an addon disable/reload.

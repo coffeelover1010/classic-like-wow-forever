@@ -1,4 +1,4 @@
-# Implementation and source evidence: 0.2 alpha
+# Implementation and source evidence: 0.3 alpha
 
 All addon implementation is independently authored. No ClassicUI, Classic Frames, KeyUI or DragonflightUI code was copied.
 
@@ -21,6 +21,8 @@ Paths below are under Interface/AddOns in those snapshots.
 | Micro menu | Blizzard_MicroMenu/Mainline/MicroMenuContainer.xml | Position/scale native MicroMenuContainer; retain Retail icons and panels |
 | Bags | Blizzard_MainMenuBarBagButtons/Mainline/MainMenuBarBagButtons.xml | Position/scale BagsBar; keep reagent slot and expand toggle |
 | Cast bar | Blizzard_UIPanels_Game/Mainline/CastingBarFrame.xml | Add original border around native PlayerCastingBarFrame, retaining cast/channel/empower logic |
+| Spellbook | Blizzard_PlayerSpells/Blizzard_PlayerSpellsFrame.xml; SpellBook/Blizzard_SpellBookFrame.xml and .lua; Blizzard_SpellBookItem.xml and .lua; Blizzard_PagedContent/Blizzard_PagingControls.xml | Passive, anchored Classic backdrop inside SpellBookFrame only; native shared parent and all spell interactions remain unchanged; native page arrows already use original spellbook paths |
+| Original spellbook art | Classic Blizzard_UIPanels_Game/Vanilla/SpellBookFrame.xml | Crop the four original panel sheets into fixed corners, stretched edges and parchment; use Spellbook-Icon and UI-Quickslot2 |
 | Edit Mode | Blizzard_EditMode/Shared/EditModeManager.lua | Listen to EditMode.Enter/Exit callbacks; restore before editing, snapshot and reapply after exiting |
 | Asset status | Blizzard_APIDocumentationGenerated/SimpleTextureBaseAPIDocumentation.lua | SetTexture returns a success boolean on this baseline; nil on another client stays REQUESTED, not verified |
 
@@ -42,14 +44,20 @@ This is a design based on the pinned Retail API documentation, not proof of beta
 
 ## Independent and limited modules
 
-Nine modules have implementations. FocusFrame, Buffs, Debuffs, Tooltips, QuestTracker and Panels explicitly report NOT_IMPLEMENTED and leave native UI intact.
+Ten modules have implementations. FocusFrame, Buffs, Debuffs, Tooltips, QuestTracker and Panels explicitly report NOT_IMPLEMENTED and leave native UI intact. Panels refers to other windows; SpellBook is separate.
 
 The unit skin suppresses the native health prediction/absorb visuals and portrait combat flash along with the main bar regions. It does not replace those advanced visuals yet. Class-specific resources, target auras, target cast bars and the target-of-target frame remain native and need layout checks on multiple classes.
 
 XP/reputation remain modern native tracking bars with original fills and trim; this is not a rebuilt 1024-pixel Vanilla XP system. Micro and bag buttons keep Retail art. The minimap header and utility buttons remain native. Cast effects and empower markers also remain native.
 
+The spellbook keeps Retail's native spell grid, spell-state artwork, category tabs, search, settings and paging. It does not recreate Vanilla's twelve-spell layout. Its passive backdrop inherits the spellbook tab's visibility and width, so it cannot cover the talents or specialization pane. Six native background regions have their alpha journaled; their native textures, animation, show/hide state and size remain unchanged. This preserves the current minimized state when disabled.
+
+The core's Blizzard ADDON_LOADED handling activates the module after Blizzard_PlayerSpells loads. The source-defined PlayerSpellsFrame.SpellBookFrame.Show and PlayerSpellsFrame.SpellBookFrame.DisplayedSpellsChanged callbacks refresh borders for displayed pooled entries via ForEachDisplayedSpell. Registration happens once and callbacks are gated by module state. There are no method or script replacements. Border textures sit below icons and native state overlays. In combat, new borders defer to the existing post-combat apply path. Callback errors stop and restore only this module until an explicit retry.
+
 ## Test scope
 
 Tests/run_tests.py compiles and executes all TOC Lua with Lua 5.1 via the test-only lupa runtime. It checks native-frame restoration, combat deferral, Edit Mode snapshots, module isolation, rejected assets/events, missing APIs, unknown clients, opaque values, late-loaded frames, reports and gallery creation.
+
+The 0.3 suite has 22 cases and loads 29 Lua files. Spellbook cases cover lazy loading, untouched interaction scripts, tab visibility, both widths, restoration after native state changes, pooled-entry reuse, combat deferral, missing art, changed hierarchy and failure isolation/retry. An offline composition made from the module's actual crops and anchors was visually checked at both widths; it is not a game screenshot or an interaction test.
 
 Mock behavior is deliberately labeled and cannot prove WoW's taint propagation, protected operations, rendered pixels, actual event delivery or SavedVariables persistence. The next required validation is the user's beta session in BETA-TEST.md.
