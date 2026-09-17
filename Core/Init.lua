@@ -1,5 +1,5 @@
 local addonName, CF = ...
-CF.Name, CF.Version = addonName, "0.9.0-alpha"
+CF.Name, CF.Version = addonName, "0.10.0-alpha"
 CF.Modules, CF.ModuleOrder = {}, {}
 _G.ClassicForeverUI = CF
 
@@ -72,6 +72,7 @@ function CF:Apply()
         else
           module.State = ok and "UNAVAILABLE" or "ERROR"
           module.Detail = reason or ready
+          if module.State=="UNAVAILABLE" then CF.Events:WatchUnavailable(module) end
         end
       end
     end
@@ -98,6 +99,9 @@ function CF:Start()
   ClassicForeverUIDB = saved
   if type(saved.enabled) ~= "boolean" then saved.enabled = true end
   if type(saved.modules) ~= "table" then saved.modules = {} end
+  for _,module in ipairs(self.ModuleOrder) do
+    if saved.modules[module.Name]==nil and module.DefaultEnabled==false then saved.modules[module.Name]=false end
+  end
   self.Environment:Detect()
   self.Started = true
   if EventRegistry and type(EventRegistry.RegisterCallback) == "function" then
@@ -112,7 +116,7 @@ function CF:Start()
     end, self)
   end
   self:RequestApply()
-  self:Print("0.9 alpha loaded. /cf opens settings. /cf off restores the default UI. In-game testing is pending.")
+  self:Print("0.10 alpha loaded. /cf opens settings. /cf off restores the default UI. In-game testing is pending.")
 end
 
 local bootstrap = CreateFrame("Frame")

@@ -29,9 +29,30 @@ O.Groups = {
     {"CharacterWindow", "Character", "Classic background and gear trim."},
     {"QuestDialogue", "Quest windows", "Classic paper, trim and reward slots."},
     {"GossipDialogue", "NPC dialogue", "Classic paper and dialogue trim."},
-    {"BagWindows", "Bag windows", "Classic side and bottom trim."},
+    {"BagWindows", "Bag windows", "Classic top, side and bottom trim."},
     {"BankWindow", "Bank", "Classic trim inside the bank."},
     {"MerchantWindow", "Merchant", "Classic trim inside shop windows."},
+  }},
+  { title = "More windows", items = {
+    {"MailWindow", "Mail", "Trim for inbox, send and open mail."},
+    {"TradeWindow", "Trade", "Trim around items and money."},
+    {"InspectWindow", "Inspect", "Classic trim inside inspect windows."},
+    {"TrainerWindow", "Trainers", "Classic trim around trainer lists."},
+    {"LootWindow", "Loot", "Outer trim. Loot cards stay native."},
+  }},
+  { title = "Artwork & details", items = {
+    {"MicroArtwork", "Menu artwork", "Original quest and talent button art."},
+    {"BagArtwork", "Bag artwork", "Original trim around bag buttons."},
+    {"MinimapDetails", "Map details", "Header, clock and tracking trim."},
+    {"ItemSlots", "Item slots", "Trim for bag, bank and shop slots."},
+    {"ChatStyle", "Chat input", "Optional input trim. Starts off."},
+  }},
+  { title = "Frames & pages", items = {
+    {"TargetCastBar", "Target casts", "Classic surround. Native cast states."},
+    {"FocusCastBar", "Focus casts", "Classic surround. Native cast states."},
+    {"CompactFocus", "Small focus", "Thin trim for compact focus mode."},
+    {"FocusTarget", "Focus target", "Thin trim. Native health and shields."},
+    {"CharacterPages", "Other pages", "Trim for reputation and currency."},
   }},
 }
 local colors = {
@@ -85,7 +106,7 @@ end
 local function button(parent, text, width, action)
   local b = CreateFrame("Button",nil,parent)
   b:SetSize(width,30)
-  fill(b,0.19,0.17,0.13)
+  b.Background=fill(b,0.19,0.17,0.13)
   local hover = fill(b,1,0.83,0.46,0.10,"HIGHLIGHT")
   b:SetHighlightTexture(hover)
   local title = label(b,text,"GameFontHighlightSmall",0,0,width,30)
@@ -163,14 +184,23 @@ function O:Refresh()
   end
 end
 
+function O:SelectPage(index)
+  self.Page=index
+  for i,page in ipairs(self.Pages) do
+    page:SetShown(i==index)
+    if i==index then self.PageButtons[i].Background:SetColorTexture(0.34,0.27,0.14,1)
+    else self.PageButtons[i].Background:SetColorTexture(0.19,0.17,0.13,1) end
+  end
+end
+
 function O:Fit()
-  self.Frame:SetScale(math.max(0.1,math.min(1,(UIParent:GetWidth()-32)/1034,(UIParent:GetHeight()-32)/758)))
+  self.Frame:SetScale(math.max(0.1,math.min(1,(UIParent:GetWidth()-32)/1034,(UIParent:GetHeight()-32)/798)))
 end
 
 function O:Build()
   local f = CreateFrame("Frame","ClassicForeverUIOptions",UIParent)
   self.Frame = f
-  f:Hide(); f:SetSize(1034,758); f:SetPoint("CENTER",UIParent,"CENTER",0,0)
+  f:Hide(); f:SetSize(1034,798); f:SetPoint("CENTER",UIParent,"CENTER",0,0)
   f:SetFrameStrata("DIALOG"); f:SetClampedToScreen(true)
   f:EnableMouse(true); f:SetMovable(true); f:RegisterForDrag("LeftButton")
   f:SetScript("OnDragStart",f.StartMoving); f:SetScript("OnDragStop",f.StopMovingOrSizing)
@@ -189,25 +219,36 @@ function O:Build()
   f.Notice = label(f,"",nil,24,154,490,36,"muted")
   f.Trial = button(f,"Try this session",132,function() CF:EnableTrial() end)
   f.Trial:SetPoint("TOPRIGHT",f,"TOPRIGHT",-24,-156)
-  for column, group in ipairs(self.Groups) do
+  self.Pages,self.PageButtons={},{}
+  for i,title in ipairs({"Layout & windows","More features"}) do
+    local page=CreateFrame("Frame",nil,f); page:SetAllPoints(f); self.Pages[i]=page
+    local index=i
+    local tab=button(f,title,158,function() self:SelectPage(index) end)
+    tab:SetPoint("TOPLEFT",f,"TOPLEFT",24+(i-1)*170,-190)
+    self.PageButtons[i]=tab
+  end
+  for groupIndex, group in ipairs(self.Groups) do
+    local column=(groupIndex-1)%3+1
+    local page=self.Pages[math.floor((groupIndex-1)/3)+1]
     local x = 24+(column-1)*334
-    label(f,group.title,"GameFontNormal",x,185,318,20,"gold")
+    label(page,group.title,"GameFontNormal",x,225,318,20,"gold")
     for index, item in ipairs(group.items) do
       local name = item[1]
-      local row = choice(f,item[2],item[3],318)
+      local row = choice(page,item[2],item[3],318)
       self.Rows[name] = row
-      row:SetPoint("TOPLEFT",f,"TOPLEFT",x,-212-(index-1)*56)
+      row:SetPoint("TOPLEFT",page,"TOPLEFT",x,-252-(index-1)*56)
       row:SetScript("OnClick",function(b) CF:SetModuleEnabled(name,b:GetChecked()) end)
     end
   end
+  self:SelectPage(self.Page or 1)
   f.Gallery = button(f,"View textures",144,function() CF.Diagnostics:Gallery() end)
   f.Report = button(f,"Open report",144,function() CF.Diagnostics:Report() end)
   f.Retry = button(f,"Retry changes",144,function() CF:RetryModules() end)
   for index,b in ipairs({f.Gallery,f.Report,f.Retry}) do
-    b:SetPoint("TOPLEFT",f,"TOPLEFT",24+(index-1)*158,-692)
+    b:SetPoint("TOPLEFT",f,"TOPLEFT",24+(index-1)*158,-732)
   end
-  label(f,"Saved automatically. Alpha: in-game checks are still needed.",nil,24,734,560,16,"muted")
-  label(f,CF.Version,nil,909,734,101,16,"muted"):SetJustifyH("RIGHT")
+  label(f,"Saved automatically. Alpha: in-game checks are still needed.",nil,24,774,560,16,"muted")
+  label(f,CF.Version,nil,909,774,101,16,"muted"):SetJustifyH("RIGHT")
   if type(UISpecialFrames) == "table" then UISpecialFrames[#UISpecialFrames+1] = "ClassicForeverUIOptions" end
   f:SetScript("OnShow",function() self:Fit(); CF:RefreshOptions() end)
   f:SetScript("OnEvent",function() self:Fit() end)

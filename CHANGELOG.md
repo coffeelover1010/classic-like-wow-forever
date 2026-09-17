@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.10.0-alpha - 17 September 2026
+
+- Added scoped mail, trade, inspect and trainer inset skins, plus outer loot-window trim. Native transactions, rows, models and loot cards remain intact.
+- Added passive surrounds for native target/focus casts, compact focus and focus-target. No cast logic, prediction bars, indicators or protected trees were rebuilt.
+- Added original quest/talent micro-button normal, pressed and disabled artwork, plus bag-button surrounds. Native state logic, highlights and alerts remain.
+- Added guarded minimap header, clock and tracking decoration. Utility notification art remains native.
+- Extended bag top edges and merchant money insets. Added trim for supported bag/bank/merchant/buyback item icons and reputation/currency page backgrounds.
+- Added optional chat input trim, off by default. Native text, sending, tabs, docking and focus states remain unchanged.
+- Added narrow late-discovery events and safe pooled-item refresh, with rollback, theme guards, combat queues and Edit Mode suspension.
+- Expanded settings to 38 choices on two fitted three-column pages. Full party/raid/boss skins, fuller small-unit replacements, curved portraits and generic panels remain deferred with source-based reasons.
+- Extracted four original quest/talent state paths from Era 1.15.9.69722 outside the repository. Corrected cast/slot crops after inspecting transparent padding. No artwork is bundled.
+- Passed 116 offline Lua 5.1 cases across 55 TOC Lua files and verified a 60-file install ZIP. Inspected both settings pages and crop previews. No running client tested; Forever compatibility remains unverified.
+
 ## 0.9.0-alpha - 17 September 2026
 
 - Added independent Bag windows, Bank and Merchant settings. Individual/reagent/combined bags get side and bottom strips; the shared character/account bank panel and merchant main inset get Classic metal trim.
@@ -24,7 +37,7 @@
 - Freshly extracted and inspected four original quest sheets from Era 1.15.9.69722, outside the repository. No artwork is bundled.
 - Passed 64 offline Lua 5.1 cases and all 35 TOC files; inspected settings and art previews. No running client tested. Forever remains unverified.
 
-## 0.6.0-alpha — 17 September 2026
+## 0.6.0-alpha â€” 17 September 2026
 
 - Added a full-size focus skin with native health/predictions and native position/scale. Compact focus remains unchanged and reports unavailable.
 - Added Classic metal trim outside native pet and target-of-target bars. Modern small-frame artwork and all native controls remain.
@@ -32,7 +45,7 @@
 - Passed 52 offline Lua 5.1 cases and all 32 TOC files. Inspected the settings preview and verified the install ZIP allowlist.
 - No running client tested. Forever compatibility remains unverified. Focus-target, party, raid, boss and other panels remain later work.
 
-## 0.5.0-alpha — 17 September 2026
+## 0.5.0-alpha â€” 17 September 2026
 
 - Added original Classic tooltip backgrounds and gray borders, buff/debuff slot borders and quest-tracker header trim.
 - Restored native player/target health, incoming healing, shields and heal-absorb indicators. Removed the duplicate health bar; kept native masks, values and full health-bar size.

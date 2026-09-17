@@ -5,7 +5,7 @@ function Mock.Windows()
     BottomLeftCorner="UI-Frame-InnerBotLeftCorner",BottomRightCorner="UI-Frame-InnerBotRight",
     TopEdge="_UI-Frame-InnerTopTile",BottomEdge="_UI-Frame-InnerBotTile",
     LeftEdge="!UI-Frame-InnerLeftTile",RightEdge="!UI-Frame-InnerRightTile"}
-  local bag={BottomEdge="_UI-Frame-Metal-EdgeBottom",LeftEdge="!UI-Frame-Metal-EdgeLeft",RightEdge="!UI-Frame-Metal-EdgeRight"}
+  local bag={TopEdge="_UI-Frame-Metal-EdgeTop",BottomEdge="_UI-Frame-Metal-EdgeBottom",LeftEdge="!UI-Frame-Metal-EdgeLeft",RightEdge="!UI-Frame-Metal-EdgeRight"}
   local function border(owner, atlases)
     local nine=Mock.Child(owner,"NineSlice")
     for key,atlas in pairs(atlases) do

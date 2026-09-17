@@ -11,7 +11,20 @@ for this pass. Native red-button paths are source-confirmed, not newly extracted
 
 Date: 17 September 2026. This is fresh filesystem/archive evidence, not an in-game test.
 
-## Installed clients
+## 0.10 artwork pass
+
+On 17 September 2026, the read-only extractor rechecked local wow_classic_era
+storage at build 1.15.9.69722. Quest and talent micro-button Down/Disabled paths
+were added to the allowlist and decoded successfully. Their four size/hash rows
+are appended to LocalAssetInventory.csv. Existing paths were also read into
+`cf-ui-research/feature-art-era-69722` outside this repository.
+
+The crop preview includes the original micro-button states, tracking ring,
+small cast border and slot surround. Measured alpha bounds corrected padding in
+the latter two crops. This proves local image content, not native rendering.
+Anniversary and Retail were not extracted in this pass. No game was launched.
+
+## Installed clients (earlier inspection)
 
 The standard installation at `C:\Program Files (x86)\World of Warcraft` has these active products in `.build.info`:
 

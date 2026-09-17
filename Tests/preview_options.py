@@ -25,6 +25,8 @@ def render(output, scenario):
     lua.execute('Mock.Event("PLAYER_LOGIN"); SlashCmdList.CLASSICFOREVERUI("")')
     if scenario == "combat":
         lua.execute('Mock.combat=true; Mock.Click(ClassicForeverUI.Options.Rows.Minimap)')
+    if scenario == "more":
+        lua.execute('ClassicForeverUI.Options:SelectPage(2)')
     g = lua.globals()
     root = g.ClassicForeverUI.Options.Frame
     key = lua.eval("tostring")
@@ -112,6 +114,6 @@ def render(output, scenario):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, default=ROOT / "dist/settings-preview.png")
-    parser.add_argument("--scenario", choices=("normal", "combat", "trial"), default="normal")
+    parser.add_argument("--scenario", choices=("normal", "combat", "trial", "more"), default="normal")
     args = parser.parse_args()
     render(args.output, args.scenario)

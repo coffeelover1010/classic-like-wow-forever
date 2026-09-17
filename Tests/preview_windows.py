@@ -20,12 +20,12 @@ def render(art_root, output):
         crop = source.crop((round(c[0]*source.width), round(c[2]*source.height),
                             round(c[1]*source.width), round(c[3]*source.height)))
         canvas.alpha_composite(crop.resize((box[2], box[3])), (box[0], box[1]))
-    draw.text((25,16),'0.9 window trim / existing Classic character-sheet crops',fill='white')
-    for x,title,thin in [(25,'Bags: side and bottom strips',True),(335,'Bank: shared panel inset',False),(645,'Merchant: main inset',False)]:
+    draw.text((25,16),'0.10 window trim / existing Classic character-sheet crops',fill='white')
+    for x,title,thin in [(25,'Bags: four edge strips',True),(335,'Bank: shared panel inset',False),(645,'Standard inset: shop/mail/trade',False)]:
         draw.text((x,48),title,fill='white')
         draw.rectangle((x,80,x+268,350),fill=(20,20,20),outline=(80,80,80))
         if thin:
-            pieces=[('LEFT',(x,95,4,240)),('RIGHT',(x+264,95,4,240)),('BOTTOM',(x+4,346,260,4))]
+            pieces=[('TOP',(x+4,80,260,4)),('LEFT',(x,95,4,240)),('RIGHT',(x+264,95,4,240)),('BOTTOM',(x+4,346,260,4))]
         else:
             pieces=[('TL',(x,80,8,8)),('TR',(x+260,80,8,8)),('BL',(x,342,8,8)),('BR',(x+260,342,8,8)),
                 ('TOP',(x+8,80,252,8)),('BOTTOM',(x+8,342,252,8)),('LEFT',(x,88,8,254)),('RIGHT',(x+260,88,8,254))]

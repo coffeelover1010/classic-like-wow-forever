@@ -1,82 +1,82 @@
 # ClassicForeverUI
 
-A Retail addon that puts original Blizzard Classic artwork around a Classic-style layout. Version **0.9.0-alpha** adds separate bag, bank and merchant window trim. It has **not been tested inside WoW**. Forever support is unverified.
+A Retail addon that puts original Blizzard Classic artwork around a Classic-style layout. **0.10.0-alpha** adds more window skins, cast surrounds, button artwork and small details. **No running WoW client has been tested. Forever support is unverified.**
 
 ## Install
 
-Download or build the release ZIP. Extract the **ClassicForeverUI** folder into the chosen client's **Interface/AddOns** folder. The result must be:
+Extract the release ZIP's **ClassicForeverUI** folder into your client's **Interface/AddOns** folder:
 
 ```text
 Interface/AddOns/ClassicForeverUI/ClassicForeverUI.toc
 ```
 
-Do not install a folder called `classic-like-wow-forever` or nest one ClassicForeverUI folder inside another. Restart the game after installing a new addon. Enable it at character selection.
+Restart the game and enable the addon at character selection. Do not install a folder named `classic-like-wow-forever` or nest one ClassicForeverUI folder inside another.
 
-Read [BETA-TEST.md](BETA-TEST.md) for the test session. Start with `/cf diagnostic`, `/cf gallery`, and `/cf report`. Use `/cf off` to restore the default UI. Changes made during combat wait until combat ends.
+Start with `/cf diagnostic`, `/cf gallery` and `/cf report`. Follow [BETA-TEST.md](BETA-TEST.md). Use `/cf off` to restore the default UI; changes made in combat wait until combat ends.
 
 ## What it changes
 
-- The bottom bar uses original stone panels, gryphons and button borders. The right gryphon is mirrored.
-- Player and target frames use original borders, portraits and power bars around native health displays. Target rarity selects the matching original border when classification is readable.
-- Full-size focus uses the target-style skin while keeping its native position and scale. Compact focus stays native and reports unavailable.
-- Pet and target-of-target get thin Classic metal trim above health and below power. Their native borders, portraits, bars, masks, text, prediction indicators and positions stay in place. This is a limited trim pass.
-- Buffs and debuffs get original slot borders. Native timers, counts, dispel colors, enchant borders and right-click controls stay in place. Private aura anchors remain unchanged.
-- Tooltips use the original dark background and a gray border. Links, comparisons and native content stay in place. The border is gray even for rare items; item names keep their native colors.
-- The character equipment page gets its original dark background, inset trim and thin metal borders around supported gear slots. Native buttons, model, stats, titles and equipment sets stay in place.
-- Standard NPC quest and gossip windows get original parchment and inset borders. Quest item rewards get slot trim. Text, choices, scrolling, tooltips and native buttons stay in place.
-- The quest tracker gets a Classic header and metal trim. Its rows, quest items, filters and collapse controls stay native.
-- The minimap uses the original round border.
-- Native XP and reputation bars get original fill and metal trim. Blizzard still handles their values, selection, rested XP and tooltips.
-- The native micro menu and bags move into the bottom layout. Their Retail button artwork remains.
-- The native player cast bar gets an original border and a Classic-style position. Blizzard still handles casting, channeling and empowered spells.
-- The spellbook uses original parchment, metal trim, a book icon and spell-slot borders. It follows the small and large views. Search, categories, page arrows, pet spells and dragging spells stay native. The talents and specialization tabs keep their own artwork.
+- Original stone action-bar panels, mirrored gryphons and slot borders surround Blizzard's action buttons.
+- Player, target and full-size focus get Classic borders and power displays around native health, healing and shield indicators. Full-size focus keeps its position and scale.
+- Pet, target-of-target and focus-target get thin metal trim. Compact focus has a separate trim option. Their native bars, portraits, auras and controls remain.
+- Player casts get a Classic border and position. Target and focus casts get separate Classic surrounds at their native position and size. Native cast, channel, interrupt and empower behavior stays in charge.
+- The minimap gets its original round border. A separate option adds a dark header, clock underline and tracking ring. Native clock text, alarms, tracking, mail, calendar and utility controls stay in place.
+- Native XP and tracked reputation bars get original fill and trim. Blizzard still selects and updates them.
+- Menu and bag buttons can move into the bottom layout. Separate artwork options add original quest/talent button states and bag-slot surrounds. Newer menu functions, alerts, bag masks, the reagent bag and expand toggle remain.
+- Spellbook, quest and NPC dialogue windows get original parchment and trim. Native searches, pages, spell controls, choices and rewards remain.
+- The character equipment page gets a dark background, inset and gear trim. A separate option styles the reputation and currency pages while keeping their rows and controls.
+- Bag windows get top, side and bottom strips. Bank, merchant, mail, trade, inspect and trainer windows get scoped inset trim. Loot gets outer panel trim; its scrolling item cards remain native.
+- A separate item-slot option adds original surrounds to supported bag, bank and merchant icons. Quality colors, counts, search shading, quest marks, cooldowns and item actions remain native.
+- Buffs and debuffs get slot borders. Tooltips get Classic dark backdrops and gray borders. The quest tracker gets header trim.
+- Optional chat input trim starts **off**. Native chat tabs, backgrounds and input borders already use older Blizzard artwork, so they are retained.
 
-The addon keeps Blizzard's action buttons, secure paging, unit buttons, right-click menus and aura controls. It does not change their parents, scripts or secure attributes. Compact focus, focus-target, party, raid, boss frames and other panels remain unchanged. Buffs, debuffs and the tracker keep their native positions. This is a recognizable Classic layout, not full Vanilla pixel parity.
+The addon keeps native scripts, secure attributes, parents, keybindings and transaction controls under Blizzard ownership. It does not rebuild the Vanilla UI pixel for pixel. Tooltips use a fixed gray border; item names keep their native quality colors. The existing player/target/full-focus skin omits portrait combat flash.
 
-Open the spellbook once to load its skin. Before that, its module can report `UNAVAILABLE` with an instruction to open it. Use `/cf module SpellBook off` to restore only the spellbook. Native spell-state markers, passive shapes, cooldowns and pet autocast overlays are retained above the added borders.
+## Limits of this pass
 
-Standard quest and gossip buttons already use original Blizzard red-button artwork; their native states stay in charge. Quest maps, popup quest details, custom gossip, spell-reward pools and changed hierarchies remain native. Special material and accessibility backgrounds are retained. The outer portrait frame is unchanged; this pass changes the inner border. Use `/cf module QuestDialogue off` or `/cf module GossipDialogue off` to switch off either skin.
+| Area | Supported scope | Retained or deferred |
+|---|---|---|
+| Mail, trade, inspect, trainers | Known native insets; inbox/send/opened mail | Stationery, item rows, outer portraits, models and all actions |
+| Loot | Four outer edge strips | Pooled cards, quality/quest markers, animations and auto-loot |
+| Target/focus casts | Passive original surrounds | Native indicators and cast engine; changed border themes |
+| Menu/bag artwork | Quest and talent up/down/disabled textures; six bag surrounds | Other menu icons, highlights/alerts, circular masks and newer functions |
+| Minimap details | Header, clock underline and tracking ring | Native utility buttons and changing notification art |
+| Deeper windows | Bag top edges; bag/bank/shop slot trim; merchant money insets; reputation/currency pages | Color-driven bag backgrounds, curved outer portraits, legacy/guild banks and custom layouts |
+| Chat | Optional exterior input trim | Native old-art tabs/backgrounds, focus highlights and chat behavior |
+| Unit/group frames | Compact focus and focus-target trim; existing pet/target-of-target trim | Fuller small-frame replacements and party/raid/boss skins need client layout and indicator checks |
 
-The character skin is limited to the standard Retail paper-doll hierarchy. Its art follows the equipment page, so reputation and currency pages keep their own look. Original red buttons and native Quickslot button states are retained. The outer portrait border, model and class backgrounds, stats, outfits, titles, tabs, flyouts and sockets stay native. Changed slots are skipped and reported as a supported count out of eighteen. Custom or restricted backgrounds reveal native art. Use `/cf module CharacterWindow off` to turn it off. Bag window trim has its own setting.
-
-Bag windows get thin Classic metal strips along their native sides and bottom. This covers the six individual bag frames (including the reagent bag) and combined bags when their expected border structure is present. The bank gets inset trim on its shared character/account panel. The merchant gets trim around its main inset. These are limited border skins, using original character-sheet artwork, not full Vanilla window recreations.
-
-Backgrounds, bag portrait corners, item slots and all item overlays remain native. Search, sorting, dragging, tooltips, comparisons, bank tabs, reagent rules, buying, selling, buyback and repair controls are not changed. Legacy bank/reagent frames, guild banks, custom windows and changed border themes stay native. Use `/cf module BagWindows off`, `/cf module BankWindow off` or `/cf module MerchantWindow off` independently. Missing hierarchies report unavailable; changed themes report zero supported borders.
+Missing or changed hierarchies fail safely. Scoped borders and new guarded backgrounds reveal native art for changed, tinted or restricted themes. Some windows load only when first opened. Use `/cf refresh` if a supported frame appears later without its skin. Pool and load-on-demand event coverage still need real-client checks.
 
 ## Controls
 
-Type **`/cf`** to open settings. There is one main switch and 23 feature checkboxes. Click anywhere on a feature row to change it. Choices save automatically and apply outside combat. Turning the main switch off keeps your feature choices for next time.
+Type **`/cf`** for the main switch and **38 feature choices** on two pages: **Layout & windows** and **More features**. Each row is clickable. Choices save automatically. Turning off the main switch keeps your feature choices.
 
-The window shows which features have applied, which are off, and which need attention. **Open book** means the spellbook must be opened once to load. **View textures**, **Open report**, and **Retry changes** give quick access to troubleshooting. The report provides text to copy with Ctrl+A, Ctrl+C.
-
-Drag the window to move it. Close it with **Close** or **Escape**. Its 1034x758 layout has three columns (8, 8 and 7 choices) and scales down to fit smaller screens. On clients with Blizzard's Settings API, **Settings > AddOns > ClassicForeverUI** also has an **Open settings** button. `/cf` works without that API.
+The settings window has three columns per page and a 1034x798 base size that scales down to fit the screen. Drag it to move it; close with **Close** or **Escape**. **View textures**, **Open report** and **Retry changes** help with testing. The report supports Ctrl+A, Ctrl+C. An optional **Settings > AddOns > ClassicForeverUI** entry opens the same window.
 
 | Command | Use |
 |---|---|
-| `/cf`, `/cf config`, `/cf options` | Open the settings window |
+| `/cf`, `/cf config`, `/cf options` | Open settings |
 | `/cf help` | List commands |
 | `/cf off` / `/cf on` | Restore default / apply addon layout |
-| `/cf module Minimap off` | Disable one module; use `on` to enable it |
-| `/cf refresh` | Recheck and retry modules, outside combat |
-| `/cf gallery` | View original textures at their configured crop and orientation |
-| `/cf report` | Open a report you can copy with Ctrl+A, Ctrl+C |
+| `/cf module MailWindow off` | Disable one feature; use `on` to enable it |
+| `/cf refresh` | Recheck and retry modules outside combat |
+| `/cf gallery` | Inspect every configured texture and crop |
+| `/cf report` | Open a report to copy |
 | `/cf diagnostic` | Print the full report to chat |
 | `/cf environment`, `assets`, `api`, `frames` | Print one report section |
 | `/cf enable` | Try the layout on an unknown or Classic client for this session |
 
-On recognized Retail, the layout applies at login. Other project IDs default to diagnostics until `/cf enable` or **Try this session** in settings. That trial is not saved between sessions. A Retail ID is not proof that a future client has the same API. Edit Mode temporarily restores the stock layout and reapplies the addon after closing.
+Recognized Retail applies the layout at login. Other project IDs start with diagnostics until **Try this session** or `/cf enable`. That trial is not saved. A Retail project ID does not establish future-client compatibility. Edit Mode restores the stock layout temporarily and reapplies the addon after closing.
 
-## Test status and limits
+## Test status
 
-Lua 5.1 checks and mocked regression tests pass. Original textures were read from installed Classic Era and Anniversary archives and inspected locally. There was no installed Retail executable or Forever beta found in the inspected locations. No in-game rendering, secure combat behavior, Edit Mode persistence, vehicle controls or compatibility is certified.
+**116 offline Lua 5.1 regression cases pass; all 55 TOC Lua files compile and execute in the mock.** Settings and original-art crop previews were inspected offline. Extraction records establish local Classic archive availability only. Four new micro-button state textures were extracted and decoded from Era 1.15.9.69722 for this pass; Anniversary was not re-extracted.
 
-`APPLIED_UNVERIFIED` means the module's Lua ran without a caught error. `LOAD_ACCEPTED_VISUAL_UNVERIFIED` means the texture API accepted the request. Neither means the image rendered correctly. See [Tests/DiagnosticExpectations.md](https://github.com/coffeelover1010/classic-like-wow-forever/blob/main/Tests/DiagnosticExpectations.md).
-
-Unit skins retain full-size native health bars, incoming healing, shields, heal absorbs, losses and native health text. Their modern health artwork remains; portrait combat flash is still omitted. Other Retail class resources remain native. Minimap utility buttons and newer micro menu features also remain native. Other UI addons can move these same frames; test this alpha with them disabled.
+`APPLIED_UNVERIFIED` means a module ran without a caught error. `LOAD_ACCEPTED_VISUAL_UNVERIFIED` means the texture API accepted a request. Neither proves pixels, event delivery, combat safety, taint behavior or Forever compatibility. See [diagnostic expectations](https://github.com/coffeelover1010/classic-like-wow-forever/blob/main/Tests/DiagnosticExpectations.md). Test with other UI addons disabled.
 
 ## Build and test
 
-Python 3.12 and the test-only `lupa` package are used for local checks. The installed addon needs only WoW.
+Python and the test-only `lupa` package run offline checks. The installed addon needs only WoW.
 
 ```text
 python -m pip install lupa
@@ -84,33 +84,20 @@ python Tests/run_tests.py
 python Tools/package_addon.py
 ```
 
-Output: `dist/ClassicForeverUI/` and `dist/ClassicForeverUI-0.9.0-alpha.zip`. Packaging uses the TOC and a small document allowlist. It excludes research checkouts, test tools, previews, extracted images and native libraries.
+Output: `dist/ClassicForeverUI/` and `dist/ClassicForeverUI-0.10.0-alpha.zip`. The builder verifies the exact 60-file payload: 55 Lua files, the TOC and four documents. Research, tests, previews, extracted art and native libraries are excluded.
 
-If the beta rejects the TOC, first read its actual Interface number. Then build a separate package:
+If a client rejects the TOC, first record its actual Interface number, then build a separate package:
 
 ```text
 python Tools/package_addon.py --interface OBSERVED_NUMBER --output dist-beta
 ```
 
-Changing a TOC number only permits a loading attempt. It does not establish compatibility.
+Changing the TOC only permits a loading attempt; it does not establish compatibility.
 
-## Architecture and research
+## Architecture and rights
 
-`Core/` handles lifecycle, rollback, environment checks, assets and reports. Independent modules live in `Modules/`. `Data/` lists assets, APIs, frames and events. A failed module leaves the others running. An unknown combat API prevents layout writes.
+`Core/` handles lifecycle, rollback, combat/Edit Mode rules, settings, assets and reports. Independent modules live in `Modules/`. Errors are isolated. Missing combat support blocks writes. The generic `Panels` module remains explicitly deferred.
 
-See [Research/Implementation.md](https://github.com/coffeelover1010/classic-like-wow-forever/blob/main/Research/Implementation.md), [Research/LocalClientInspection.md](https://github.com/coffeelover1010/classic-like-wow-forever/blob/main/Research/LocalClientInspection.md), and [Research/OriginalArtworkFeasibility.md](https://github.com/coffeelover1010/classic-like-wow-forever/blob/main/Research/OriginalArtworkFeasibility.md).
+See [implementation and source evidence](https://github.com/coffeelover1010/classic-like-wow-forever/blob/main/Research/Implementation.md), [local artwork evidence](https://github.com/coffeelover1010/classic-like-wow-forever/blob/main/Research/LocalClientInspection.md), and [engineering handoff](https://github.com/coffeelover1010/classic-like-wow-forever/blob/main/HANDOFF.md).
 
-The existing source comparison tools remain available:
-
-```text
-python Tools/scan_lua_api_usage.py SOURCE --output scan.json
-python Tools/generate_asset_manifest.py SOURCE --out generated-assets
-python Tools/compare_ui_sources.py CLASSIC RETAIL --output comparison.md
-python Tools/generate_compat_report.py classic.json retail.json
-```
-
-Add new client rules only after checking its actual source and behavior. Keep Forever differences in the compatibility layer.
-
-## Artwork and license
-
-Our code is MIT licensed. Blizzard owns the referenced artwork. The install package contains **no extracted textures** and no copied third-party addon code. No AI artwork is used. Read [LICENSE-NOTES.md](LICENSE-NOTES.md) for the distinction between source-code licenses and artwork rights.
+Our code is MIT licensed. Blizzard owns the referenced artwork. The ZIP contains **no extracted textures**, copied third-party addon code or AI artwork. Read [LICENSE-NOTES.md](LICENSE-NOTES.md). This is an unofficial community project.

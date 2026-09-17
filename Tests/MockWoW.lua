@@ -66,6 +66,8 @@ function Methods:UnregisterAllEvents() self.events={} end
 function Methods:SetScript(name,func) self.scripts[name]=func end
 function Methods:GetScript(name) return self.scripts[name] end
 function Methods:SetColorTexture(...) self.color={...} end
+function Methods:SetVertexColor(r,g,b,a) self.vertex={r,g,b,a or 1} end
+function Methods:GetVertexColor() return unpack(self.vertex or {1,1,1,1}) end
 function Methods:SetBackdrop(data) self.backdrop=data end
 function Methods:SetBackdropColor(...) self.backdropColor={...} end
 function Methods:SetBackdropBorderColor(...) self.backdropBorderColor={...} end

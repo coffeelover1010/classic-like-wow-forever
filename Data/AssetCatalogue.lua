@@ -8,6 +8,15 @@ local function art(path, usage, coords, width, height)
     forever = "FOREVER_VALIDATION_REQUIRED", fallback = nil }
 end
 CF.AssetCatalogue = {
+  CLASSIC_TRACKING_RING = art("Minimap\\MiniMap-TrackingBorder", "original tracking ring", {0,40/64,0,40/64},40,40),
+  CLASSIC_MICRO_QUEST_Up = art("Buttons\\UI-MicroButton-Quest-Up", "original quest button", {0,1,22/64,1},32,42),
+  CLASSIC_MICRO_QUEST_Down = art("Buttons\\UI-MicroButton-Quest-Down", "pressed quest button", {0,1,22/64,1},32,42),
+  CLASSIC_MICRO_QUEST_Disabled = art("Buttons\\UI-MicroButton-Quest-Disabled", "disabled quest button", {0,1,22/64,1},32,42),
+  CLASSIC_MICRO_TALENTS_Up = art("Buttons\\UI-MicroButton-Talents-Up", "original talent button", {0,1,22/64,1},32,42),
+  CLASSIC_MICRO_TALENTS_Down = art("Buttons\\UI-MicroButton-Talents-Down", "pressed talent button", {0,1,22/64,1},32,42),
+  CLASSIC_MICRO_TALENTS_Disabled = art("Buttons\\UI-MicroButton-Talents-Disabled", "disabled talent button", {0,1,22/64,1},32,42),
+  CLASSIC_CAST_SMALL = art("CastingBar\\UI-CastingBar-Border-Small", "small cast surround", {28/256,228/256,22/64,44/64},200,22),
+  CLASSIC_SLOT_TRIM = art("Buttons\\UI-Quickslot2", "cropped slot surround", {12/64,51/64,12/64,51/64},39,39),
   CLASSIC_CHARACTER_BACKGROUND = art("PaperDollInfoFrame\\UI-Character-CharacterTab-L1", "original dark character background", {80/256,240/256,100/256,240/256},240,320),
   CLASSIC_CHARACTER_TL = art("PaperDollInfoFrame\\UI-Character-CharacterTab-L1", "character inset corner", {58/256,66/256,72/256,80/256},8,8),
   CLASSIC_CHARACTER_TR = art("PaperDollInfoFrame\\UI-Character-CharacterTab-R1", "character inset corner", {38/128,46/128,72/256,80/256},8,8),

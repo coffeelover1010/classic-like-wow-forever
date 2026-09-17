@@ -9,9 +9,21 @@ W.Inset = {
   LeftEdge={"LEFT","!UI-Frame-InnerLeftTile"}, RightEdge={"RIGHT","!UI-Frame-InnerRightTile"},
 }
 W.Bag = {
+  TopEdge={"TOP","_UI-Frame-Metal-EdgeTop"},
   BottomEdge={"BOTTOM","_UI-Frame-Metal-EdgeBottom"},
   LeftEdge={"LEFT","!UI-Frame-Metal-EdgeLeft"}, RightEdge={"RIGHT","!UI-Frame-Metal-EdgeRight"},
 }
+W.Edges = {
+  TopEdge={"TOP","_UI-Frame-Metal-EdgeTop"},
+  BottomEdge=W.Bag.BottomEdge, LeftEdge=W.Bag.LeftEdge, RightEdge=W.Bag.RightEdge,
+}
+
+function W:AddInset(result, owner, inset)
+  if owner and inset and inset:GetParent()==owner and inset.layoutType=="InsetFrameTemplate" and
+      self:Valid(inset,inset.NineSlice,self.Inset) then
+    result[#result+1]={inset.NineSlice,self.Inset}
+  end
+end
 
 function W:Valid(owner, nine, pieces)
   if not owner or not nine or nine:GetParent() ~= owner then return false end
@@ -22,7 +34,7 @@ function W:Valid(owner, nine, pieces)
 end
 
 function W:New(selectBorders, events, detail)
-  local m = {Art={}, Hooks={}, SelectBorders=selectBorders}
+  local m = {Art={}, Hooks={}, SelectBorders=selectBorders,WakeEvents=events}
   function m:Initialize()
     if type(hooksecurefunc) ~= "function" then return false,"Secure texture hooks unavailable" end
     local borders=self:SelectBorders()
@@ -45,8 +57,8 @@ function W:New(selectBorders, events, detail)
       for key,piece in pairs(pieces) do
         local native=nine[key]
         local hooks=self.Hooks[native] or {}; self.Hooks[native]=hooks
-        for _,method in ipairs({"SetAtlas","SetTexture","Show","Hide"}) do
-          if not hooks[method] then
+        for _,method in ipairs({"SetAtlas","SetTexture","Show","Hide","SetAlpha","SetVertexColor"}) do
+          if type(native[method])=="function" and not hooks[method] then
             hooksecurefunc(native,method,function()
               -- Only hide our art here, even in combat. Recheck on the safe queue.
               for _,t in pairs(self.Art) do t:Hide() end
@@ -57,6 +69,12 @@ function W:New(selectBorders, events, detail)
         end
         local atlas=native:GetAtlas()
         if CF.API.IsSecret(atlas) or atlas ~= piece[2] or not native:IsShown() then ordinary=false end
+        if CF.API.IsSecret(native:GetAlpha()) then ordinary=false end
+        if type(native.GetVertexColor)=="function" then
+          local r,g,b,a=native:GetVertexColor()
+          if CF.API.IsSecret(r) or CF.API.IsSecret(g) or CF.API.IsSecret(b) or CF.API.IsSecret(a) or
+              r~=1 or g~=1 or b~=1 or a~=1 then ordinary=false end
+        end
       end
       if ordinary then
         supported=supported+1
@@ -70,13 +88,14 @@ function W:New(selectBorders, events, detail)
           t:ClearAllPoints()
           if thin then
             -- Narrow strip centered on the existing edge; no portrait/header cover.
-            if key=="BottomEdge" then
+            if key=="BottomEdge" or key=="TopEdge" then
               t:SetPoint("LEFT",native,"LEFT",0,0); t:SetPoint("RIGHT",native,"RIGHT",0,0); t:SetHeight(4)
             else
               t:SetPoint("TOP",native,"TOP",0,0); t:SetPoint("BOTTOM",native,"BOTTOM",0,0); t:SetWidth(4)
             end
           else t:SetAllPoints(native) end
           if not CF.Assets:Apply(t,"CLASSIC_CHARACTER_"..piece[1]) then error("Window trim rejected") end
+          t:SetAlpha(native:GetAlpha())
           t:Show()
         end
       end

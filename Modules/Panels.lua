@@ -1,2 +1,2 @@
 local _, CF = ...
-CF:RegisterModule("Panels", { Deferred = "Other native panels retained; SpellBook, QuestDialogue GossipDialogue and CharacterWindow are separate scoped modules" })
+CF:RegisterModule("Panels", { Deferred = "Generic panels, curved portrait replacements and party/raid/boss skins remain native pending client checks; named window modules are separate" })

@@ -71,3 +71,7 @@ build,product,path,status,bytes,sha256,error
 1.15.9.69722,wow_classic_era,Interface\PaperDollInfoFrame\UI-Character-CharacterTab-R1.blp,extracted,44900,df19d3f6caa6af8cbfb8b3816ca8207214e6165107bd31b9da539d6bc0ebf085,
 1.15.9.69722,wow_classic_era,Interface\PaperDollInfoFrame\UI-Character-CharacterTab-BottomLeft.blp,extracted,88580,53655353ef9803ecdab93dbfc5751b7a659a3eb30b4699010bd3cc895907938c,
 1.15.9.69722,wow_classic_era,Interface\PaperDollInfoFrame\UI-Character-CharacterTab-BottomRight.blp,extracted,44900,2996fb4f70d0f7088866323feba13e69348720a8528cbdaca6d4412728b3d4e6,
+1.15.9.69722,wow_classic_era,Interface\Buttons\UI-MicroButton-Quest-Down.blp,extracted,3940,5027f07bd021212f68a3cc784b34d855d2d6e759e43fbf1783a9e11a66272d73,
+1.15.9.69722,wow_classic_era,Interface\Buttons\UI-MicroButton-Quest-Disabled.blp,extracted,3940,fe31ab4bec3b42b4cf4d155012c98edc9f8fa17e4ed5a4c65f094d73622d342e,
+1.15.9.69722,wow_classic_era,Interface\Buttons\UI-MicroButton-Talents-Down.blp,extracted,3940,74c64418c8992a57dc93740aea7d71b5e460297134c5083a4a67e693c2fcb9be,
+1.15.9.69722,wow_classic_era,Interface\Buttons\UI-MicroButton-Talents-Disabled.blp,extracted,3940,e587f032a591c7b619d8019b9ea5cc34782c3362158f36289bac98e643cd440c,

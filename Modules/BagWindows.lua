@@ -13,4 +13,4 @@ local function borders()
   return result
 end
 CF:RegisterModule("BagWindows",W:New(borders,{"BAG_UPDATE_DELAYED","CVAR_UPDATE","PLAYER_ENTERING_WORLD"},
-  "Bag side/bottom trim (six individual bags and combined bags); native corners, backgrounds and pooled items retained."))
+  "Bag top/side/bottom trim (six individual bags and combined bags); native portrait corners, backgrounds and pooled items retained."))

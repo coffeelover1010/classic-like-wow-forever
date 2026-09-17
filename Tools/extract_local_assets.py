@@ -27,7 +27,8 @@ ASSETS = {
     "CastingBar": ["UI-CastingBar-Border-Small", "UI-CastingBar-Border"],
     "Buttons": ["UI-Quickslot2", "UI-Quickslot", "UI-MicroButton-Character-Up",
                 "UI-MicroButton-Spellbook-Up", "UI-MicroButton-Talents-Up",
-                "UI-MicroButton-Quest-Up", "UI-MicroButton-Socials-Up",
+                "UI-MicroButton-Quest-Up", "UI-MicroButton-Quest-Down", "UI-MicroButton-Quest-Disabled",
+                "UI-MicroButton-Talents-Down", "UI-MicroButton-Talents-Disabled", "UI-MicroButton-Socials-Up",
                 "UI-MicroButton-MainMenu-Up"],
 }
 

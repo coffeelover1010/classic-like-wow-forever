@@ -26,7 +26,7 @@ Actual client procedure: BETA-TEST.md.
 - Buffs, Debuffs, Tooltips and QuestTracker now report APPLIED_UNVERIFIED only when their native hierarchy and artwork are available. Missing parts leave that module unavailable; Panels remains NOT_IMPLEMENTED.
 - Native health indicators remain owned by Blizzard. Their presence in the mock is not proof of correct rendering or secure behavior.
 
-- FocusFrame applies only to the full-size pinned Retail hierarchy; compact focus reports UNAVAILABLE and stays native. PetFrame and TargetOfTarget report APPLIED_UNVERIFIED for passive trim only. Missing or changed small-frame structures report UNAVAILABLE.
+- FocusFrame applies only to the full-size pinned Retail hierarchy. CompactFocus is a separate passive-trim module; mode changes queue rediscovery. PetFrame, TargetOfTarget and FocusTarget report APPLIED_UNVERIFIED for passive trim only. Missing or changed small-frame structures report UNAVAILABLE.
 # 0.8 character diagnostics
 
 - CharacterWindow is independent of deferred Panels. Missing roots, inset ownership,
@@ -38,7 +38,7 @@ Actual client procedure: BETA-TEST.md.
   paths have Era 1.15.9.69722 extraction evidence only. Retail and Forever remain
   unverified. Buttons retain their native original art; no new button extraction
   or renderer is claimed.
-- Character appears as the twentieth settings choice. Combat changes queue;
+- Character remains an independent settings choice. Combat changes queue;
   Edit Mode suspends; creation/update failures hide partial art independently.
 - No equipment, stat, model, health or prediction values are read by this module.
 
@@ -57,6 +57,25 @@ paths. Four new quest sheet entries have Era extraction evidence only.
 
 BagWindows, BankWindow and MerchantWindow are independent of Bags (button placement)
 and deferred Panels. Missing structures/hooks/art report UNAVAILABLE. Successful
-application reports APPLIED_UNVERIFIED, with supported border counts up to 7/1/1.
+application reports APPLIED_UNVERIFIED, with supported border counts up to 7/1/3.
 A changed or opaque border theme reports zero supported borders and retains native art.
 Reports do not certify item interactions, pixels, taint or Forever compatibility.
+
+## 0.10 scoped feature diagnostics
+
+- There are 38 saved feature choices on two settings pages. ChatStyle defaults
+  off only when no saved choice exists. Panels remains NOT_IMPLEMENTED.
+- MailWindow, TradeWindow, InspectWindow, TrainerWindow and LootWindow report
+  supported border counts, up to 3/6/1/2/1. Loot cards remain native.
+- TargetCastBar, FocusCastBar, BagArtwork, MinimapDetails, CharacterPages,
+  CompactFocus, ItemSlots and ChatStyle report supported cosmetic piece counts.
+  Counts can change as native windows load and pools grow or release items.
+- MicroArtwork reports up to two quest/talent buttons. Native atlas changes win
+  over applied art and rollback. Highlights, alerts and newer buttons stay native.
+- Changed parents, missing parts, secret states, tinted/unknown guarded artwork
+  or unavailable APIs retain native art. Zero supported pieces is not a visual
+  certification. Guarded alpha/tint changes hide addon art before a safe refresh.
+- Narrow wake events retry unavailable structures through the normal apply
+  path; disabled or faulted modules stay off. Pool hooks never call transaction APIs.
+- Every new feature shares combat queues, Edit Mode suspension and rollback.
+  Offline tests cannot certify protected-frame behavior, taint or event delivery.
