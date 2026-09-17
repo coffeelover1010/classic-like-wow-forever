@@ -1,2 +1,2 @@
 local _, CF = ...
-CF.AtlasCatalogue = {} -- Populate from verified client-source scans; never assume atlas existence on Forever.
+CF.AtlasCatalogue = {} -- Original artwork uses paths; no modern gryphon fallback.

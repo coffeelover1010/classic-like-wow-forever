@@ -1,1 +1,2 @@
-local _, CF = ...; local M = { Ready = true }; function M:Initialize() self.Frame = _G.GameTooltip end; function M:Enable() end; function M:Disable() end; function M:Refresh() end; function M:RunDiagnostics() return self.Frame ~= nil end; CF:RegisterModule("Tooltips", M)
+local _, CF = ...
+CF:RegisterModule("Tooltips", { Deferred = "Native Blizzard UI retained in 0.2 alpha" })

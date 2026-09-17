@@ -1,1 +1,2 @@
-local _, CF = ...; local M = { Ready = true }; function M:Initialize() end; function M:Enable() end; function M:Disable() end; function M:Refresh() end; function M:RunDiagnostics() return true end; CF:RegisterModule("Debuffs", M)
+local _, CF = ...
+CF:RegisterModule("Debuffs", { Deferred = "Native Blizzard UI retained in 0.2 alpha" })

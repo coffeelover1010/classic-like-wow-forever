@@ -1,8 +1,2 @@
 local _, CF = ...
-local M = { Ready = true }
-function M:Initialize() self.Frame = _G.PlayerFrame end
-function M:Enable() end
-function M:Disable() end
-function M:Refresh() end
-function M:RunDiagnostics() return self.Frame ~= nil end
-CF:RegisterModule("PlayerFrame", M)
+CF:RegisterModule("PlayerFrame",CF.Visuals:UnitModule("player","PlayerFrame",20))
