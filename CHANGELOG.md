@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.7.0-alpha - 17 September 2026
+
+- Added separate standard quest and NPC dialogue skins: original parchment, inset borders and quest item/currency reward-slot trim. Native buttons already use original red-button artwork and remain unchanged.
+- Preserved native text, selection, scrolling, tooltips, themes, material overlays and accessibility backgrounds. Outer portrait frames, map/popups, custom dialogue and spell-reward pools remain native.
+- Added two settings choices, bringing the fitted window to nineteen. Kept combat deferral, Edit Mode suspension, rollback and isolated failures.
+- Freshly extracted and inspected four original quest sheets from Era 1.15.9.69722, outside the repository. No artwork is bundled.
+- Passed 64 offline Lua 5.1 cases and all 35 TOC files; inspected settings and art previews. No running client tested. Forever remains unverified.
+
 ## 0.6.0-alpha — 17 September 2026
 
 - Added a full-size focus skin with native health/predictions and native position/scale. Compact focus remains unchanged and reports unavailable.

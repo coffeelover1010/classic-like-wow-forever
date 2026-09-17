@@ -1,5 +1,14 @@
 # Local client and artwork inspection
 
+## 0.7 quest artwork addition
+
+Freshly extracted UI-QuestGreeting-TopLeft, TopRight, BotLeft and BotRight from
+Era 1.15.9.69722. All four decoded and were inspected as a 384x512 sheet plus a
+catalogue-crop composition. Exact sizes and SHA-256 hashes are appended to
+LocalAssetInventory.csv. Outputs remain in cf-ui-research/local-art-era-69722/QuestFrame;
+the addon package contains only native paths. Anniversary was not re-extracted
+for this pass. Native red-button paths are source-confirmed, not newly extracted.
+
 Date: 17 September 2026. This is fresh filesystem/archive evidence, not an in-game test.
 
 ## Installed clients

@@ -1,4 +1,4 @@
-# 0.6.0-alpha engineering handoff
+# 0.7.0-alpha engineering handoff
 
 ## Repository and package
 
@@ -8,7 +8,7 @@ The Git repository is classic-like-wow-forever. The install folder is **ClassicF
 classic-like-wow-forever/
   ClassicForeverUI.toc
   Core/             lifecycle, environment, rollback, assets, visual helpers, settings, reports
-  Modules/          seventeen implemented modules; one explicit deferred module
+  Modules/          nineteen implemented modules; one explicit deferred module
   Data/             asset/API/frame/event catalogues
   Research/         pinned sources, licensing, local asset inventory and implementation
   Tests/            Lua 5.1 mock regression suite and diagnostic expectations
@@ -18,23 +18,29 @@ classic-like-wow-forever/
   LICENSE / LICENSE-NOTES.md
   dist/             generated; ignored by Git
     ClassicForeverUI/
-    ClassicForeverUI-0.6.0-alpha.zip
-    ClassicForeverUI-0.6.0-alpha.zip.sha256
+    ClassicForeverUI-0.7.0-alpha.zip
+    ClassicForeverUI-0.7.0-alpha.zip.sha256
 ```
 
 ## Implemented
 
 Original stone action bar, original mirrored gryphons, classic action-slot borders, player/target visual skins, original minimap border, native XP/reputation fill and trim, native micro menu/bag placement, original cast border, and original parchment/trim/icon/slot borders for the native spellbook. Full-size focus uses the target-style skin at its native position and scale. Pet and target-of-target have passive Classic metal trim outside their native bars; their modern artwork remains. Compact focus and focus-target are unchanged. Classic tooltip backdrops, buff/debuff slot borders and quest-tracker header trim are also implemented. Player/target/focus health stays native, including incoming heals, shields, masks and health text. The real action buttons, unit buttons, casting engine and tracking logic remain Blizzard-owned.
 
-Module failures are isolated and partially applied changes roll back. Missing combat API blocks writes. Edit Mode temporarily suspends the layout. The /cf settings window has a main switch, seventeen feature toggles, saved choices and live status. It shares the slash-command apply path and includes texture, report and retry buttons. An optional Blizzard Settings > AddOns entry opens the same window. Unknown-client trials remain explicit and session-only.
+Module failures are isolated and partially applied changes roll back. Missing combat API blocks writes. Edit Mode temporarily suspends the layout. The /cf settings window has a main switch, nineteen feature toggles, saved choices and live status. It shares the slash-command apply path and includes texture, report and retry buttons. An optional Blizzard Settings > AddOns entry opens the same window. Unknown-client trials remain explicit and session-only.
 
 ## What works versus what is untested
 
-The implemented behaviors passed 52 offline Lua 5.1 regression cases, including eight new unit-frame cases, twelve UI-pass cases, seven spellbook cases and ten settings cases. All 32 packaged Lua files load in the mock, and the ZIP is checked against the exact TOC/document allowlist.
+The implemented behaviors passed 64 offline Lua 5.1 regression cases, including twelve new dialogue cases, eight unit-frame cases, twelve UI-pass cases, seven spellbook cases and ten settings cases. All 35 packaged Lua files load in the mock, and the ZIP is checked against the exact TOC/document allowlist.
 
 **Nothing is claimed tested in a running Retail, Classic or Forever client.** Original artwork was freshly extracted from Era 1.15.9.69722 and Anniversary 2.5.6.69795, decoded and inspected locally. The gryphon is EndCap-Dwarf; EndCap-Human is a lion.
 
 Retail and beta executables were not found in the inspected locations. The user's first beta session remains necessary. Micro and bag button art, advanced class visuals and native tracking details retain Retail styling.
+
+## 0.7 dialogue scope
+
+QuestDialogue and GossipDialogue are independent modules; Core/DialogueSkin.lua shares only their passive visual helpers. Ordinary QuestBG-Parchment backgrounds receive a covering texture, without changing the native background. Secure post-hooks hide that texture when native backgrounds change, including in combat; all creation, native alpha writes and rollback defer as before. Original inner quest borders follow Inset.NineSlice. Outer portrait borders and the already-original red buttons stay native. Standard QuestInfoRewardsFrame item/currency buttons receive passive slot borders after quest events. Map rewards, spell rewards, popup details, custom dialogue and missing hierarchies remain unchanged.
+
+Four QuestGreeting sheets were freshly extracted from Era 1.15.9.69722 and inspected. The new paths were not extracted from Anniversary. No extracted files enter Git or the ZIP. Settings now have nineteen choices in a fitted 700x870 window.
 
 ## Forever blockers
 
@@ -56,7 +62,7 @@ Project code is MIT. Blizzard artwork rights are separate. No blanket redistribu
 
 ## Exact Day One procedure
 
-Follow [BETA-TEST.md](BETA-TEST.md): install the correctly named folder, record build/Interface, run all five required diagnostic commands, inspect every gallery page, test settings and saved choices, clicks/bindings/targets/bags/casts and the spellbook in both sizes, exercise combat deferral and vehicles, test Edit Mode, reload, and copy /cf report. Allow 65 minutes. Disable the addon if it blocks controls.
+Follow [BETA-TEST.md](BETA-TEST.md): install the correctly named folder, record build/Interface, run all five required diagnostic commands, inspect every gallery page, test settings and saved choices, clicks/bindings/targets/bags/casts and the spellbook in both sizes, exercise combat deferral and vehicles, test Edit Mode, reload, and copy /cf report. Allow 80 minutes. Disable the addon if it blocks controls.
 
 ## Next ten engineering tasks
 

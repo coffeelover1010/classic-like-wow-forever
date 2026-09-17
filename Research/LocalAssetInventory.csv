@@ -63,3 +63,7 @@ build,product,path,status,bytes,sha256,error
 2.5.6.69795,wow_anniversary,Interface\Buttons\UI-MicroButton-MainMenu-Up.blp,extracted,3940,d700a588a004039ca14a9617e2242da028d7a8e4e5120c4481c1e80951ea3270,
 1.15.9.69722,wow_classic_era,Interface\Tooltips\UI-Tooltip-Background.blp,extracted,6660,cf44686081767a422a601e566c936e98edf857b9f8717c40993a6c898171f87e,
 1.15.9.69722,wow_classic_era,Interface\Tooltips\UI-Tooltip-Border.blp,extracted,3940,6a6a1946032606c1237fce51746411282383869e021bacdf4043d4b8a11c84fc,
+1.15.9.69722,wow_classic_era,Interface\QuestFrame\UI-QuestGreeting-TopLeft.blp,extracted,88580,88486e1ff62e2a56edbece3eca48ce2b83672d1e5c16fc39ffa3f300c09a61fa,
+1.15.9.69722,wow_classic_era,Interface\QuestFrame\UI-QuestGreeting-TopRight.blp,extracted,44900,f858fd4fb92ea13a187ea77201fb9139e4ec36c407678e7b7024b8059a59c1c8,
+1.15.9.69722,wow_classic_era,Interface\QuestFrame\UI-QuestGreeting-BotLeft.blp,extracted,88580,d5bcb93fab8806cf3a7d95c4ecac690ccaafd92290bf0ea2864d5ef0267b9b98,
+1.15.9.69722,wow_classic_era,Interface\QuestFrame\UI-QuestGreeting-BotRight.blp,extracted,44900,54942b22098ba5b38382cd64e5e0b3bba93a7f5c2b6427b4f6d5950122bdb534,

@@ -38,3 +38,7 @@ for i=2,11 do
     use="reversible position and size; passive border; native parent and secure attributes retained",
     protected="runtime-probed" }
 end
+
+for _,name in ipairs({"QuestFrame","QuestFrameDetailPanel","QuestFrameProgressPanel","QuestFrameRewardPanel","QuestFrameGreetingPanel","QuestInfoRewardsFrame","GossipFrame"}) do
+  CF.FrameManifest[#CF.FrameManifest+1] = {name=name, use="scoped NPC parchment/inset/reward art; native controls retained", protected="runtime-probed"}
+end

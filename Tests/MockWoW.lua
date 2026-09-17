@@ -135,6 +135,54 @@ function Mock.Native(name,parent)
   return f
 end
 function Mock.Child(parent,key) local f=Mock.Native(nil,parent); parent[key]=f; return f end
+function hooksecurefunc(object, method, callback)
+  local original=object[method]
+  object[method]=function(self,...)
+    local result=original(self,...); callback(self,...); return result
+  end
+end
+function Mock.Dialogues()
+  local function window(name)
+    local f=Mock.Native(name)
+    Mock.Child(f,"CloseButton"); local inset=Mock.Child(f,"Inset")
+    local nine=Mock.Child(inset,"NineSlice")
+    for _,key in ipairs({"TopLeftCorner","TopRightCorner","BottomLeftCorner","BottomRightCorner",
+        "TopEdge","BottomEdge","LeftEdge","RightEdge"}) do
+      local t=Mock.Child(nine,key); t:SetAtlas("native-"..key); t:SetAlpha(.7)
+    end
+    f:SetSize(338,496); return f
+  end
+  local quest=window("QuestFrame")
+  for _,suffix in ipairs({"Detail","Progress","Reward","Greeting"}) do
+    local panel=Mock.Native("QuestFrame"..suffix.."Panel",quest)
+    Mock.Child(panel,"Bg"):SetAtlas("QuestBG-Parchment")
+    Mock.Child(panel,"MaterialTopLeft"):SetTexture("native-material")
+    panel:SetScript("OnShow",function() end)
+  end
+  for _,name in ipairs({"QuestFrameAcceptButton","QuestFrameDeclineButton","QuestFrameCompleteButton",
+      "QuestFrameCompleteQuestButton","QuestFrameGoodbyeButton","QuestFrameGreetingGoodbyeButton"}) do
+    local b=Mock.Native(name,QuestFrameDetailPanel)
+    b:SetScript("OnClick",function() Mock.questClicks=(Mock.questClicks or 0)+1 end)
+    Mock.Child(b,"Left"):SetTexture("Interface\\Buttons\\UI-Panel-Button-Up")
+  end
+  QuestInfoRewardsFrame=Mock.Native("QuestInfoRewardsFrame",QuestFrameRewardPanel)
+  QuestInfoRewardsFrame.RewardButtons={}
+  function Mock.Reward()
+    local b=Mock.Native(nil,QuestInfoRewardsFrame)
+    Mock.Child(b,"Icon"):SetTexture("reward-icon"); Mock.Child(b,"NameFrame")
+    Mock.Child(b,"IconBorder"):SetTexture("quality-border")
+    b:SetScript("OnClick",function() Mock.selected=b end)
+    b:SetScript("OnEnter",function() Mock.tooltip=b end)
+    table.insert(QuestInfoRewardsFrame.RewardButtons,b); return b
+  end
+  Mock.Reward()
+  local gossip=window("GossipFrame")
+  Mock.Child(gossip,"Background"):SetAtlas("QuestBG-Parchment")
+  local panel=Mock.Child(gossip,"GreetingPanel")
+  Mock.Child(panel,"ScrollBox"); Mock.Child(panel,"ScrollBar")
+  Mock.Child(panel,"GoodbyeButton"):SetScript("OnClick",function() gossip:Hide() end)
+  Mock.Child(gossip,"FriendshipStatusBar")
+end
 function Mock.Spell(book, id)
   local item=Mock.Native(nil,book.PagedSpellsFrame)
   local button=Mock.Child(item,"Button")

@@ -23,6 +23,8 @@ O.Groups = {
     {"MicroMenu", "Menu buttons", "Move the menu into the bottom bar."},
     {"Bags", "Bag buttons", "Move bag buttons into the bottom bar."},
     {"Tooltips", "Tooltips", "Classic background and gray border."},
+    {"QuestDialogue", "Quest windows", "Classic paper, trim and reward slots."},
+    {"GossipDialogue", "NPC dialogue", "Classic paper and dialogue trim."},
     {"QuestTracker", "Quest tracker", "Classic trim for the tracker header."},
   }},
 }
@@ -156,13 +158,13 @@ function O:Refresh()
 end
 
 function O:Fit()
-  self.Frame:SetScale(math.max(0.1,math.min(1,(UIParent:GetWidth()-32)/700,(UIParent:GetHeight()-32)/856)))
+  self.Frame:SetScale(math.max(0.1,math.min(1,(UIParent:GetWidth()-32)/700,(UIParent:GetHeight()-32)/870)))
 end
 
 function O:Build()
   local f = CreateFrame("Frame","ClassicForeverUIOptions",UIParent)
   self.Frame = f
-  f:Hide(); f:SetSize(700,856); f:SetPoint("CENTER",UIParent,"CENTER",0,0)
+  f:Hide(); f:SetSize(700,870); f:SetPoint("CENTER",UIParent,"CENTER",0,0)
   f:SetFrameStrata("DIALOG"); f:SetClampedToScreen(true)
   f:EnableMouse(true); f:SetMovable(true); f:RegisterForDrag("LeftButton")
   f:SetScript("OnDragStart",f.StartMoving); f:SetScript("OnDragStop",f.StopMovingOrSizing)
@@ -183,12 +185,12 @@ function O:Build()
   f.Trial:SetPoint("TOPRIGHT",f,"TOPRIGHT",-24,-156)
   for column, group in ipairs(self.Groups) do
     local x = 24+(column-1)*334
-    label(f,group.title,"GameFontNormal",x,207,318,20,"gold")
+    label(f,group.title,"GameFontNormal",x,185,318,20,"gold")
     for index, item in ipairs(group.items) do
       local name = item[1]
       local row = choice(f,item[2],item[3],318)
       self.Rows[name] = row
-      row:SetPoint("TOPLEFT",f,"TOPLEFT",x,-238-(index-1)*58)
+      row:SetPoint("TOPLEFT",f,"TOPLEFT",x,-212-(index-1)*56)
       row:SetScript("OnClick",function(b) CF:SetModuleEnabled(name,b:GetChecked()) end)
     end
   end
@@ -196,10 +198,10 @@ function O:Build()
   f.Report = button(f,"Open report",144,function() CF.Diagnostics:Report() end)
   f.Retry = button(f,"Retry changes",144,function() CF:RetryModules() end)
   for index,b in ipairs({f.Gallery,f.Report,f.Retry}) do
-    b:SetPoint("TOPLEFT",f,"TOPLEFT",24+(index-1)*158,-790)
+    b:SetPoint("TOPLEFT",f,"TOPLEFT",24+(index-1)*158,-804)
   end
-  label(f,"Saved automatically. Alpha: in-game checks are still needed.",nil,24,832,560,16,"muted")
-  label(f,CF.Version,nil,575,832,101,16,"muted"):SetJustifyH("RIGHT")
+  label(f,"Saved automatically. Alpha: in-game checks are still needed.",nil,24,846,560,16,"muted")
+  label(f,CF.Version,nil,575,846,101,16,"muted"):SetJustifyH("RIGHT")
   if type(UISpecialFrames) == "table" then UISpecialFrames[#UISpecialFrames+1] = "ClassicForeverUIOptions" end
   f:SetScript("OnShow",function() self:Fit(); CF:RefreshOptions() end)
   f:SetScript("OnEvent",function() self:Fit() end)

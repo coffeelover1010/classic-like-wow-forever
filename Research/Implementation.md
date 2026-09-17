@@ -1,4 +1,65 @@
-# Implementation and source evidence: 0.6 alpha
+# Implementation and source evidence: 0.7 alpha
+
+## 0.7 standard quest and gossip pass
+
+The pinned Retail and Classic revisions below were verified locally. Retail
+Blizzard_UIPanels_Game/Mainline/QuestFrame.xml and QuestFrameTemplates.xml define
+QuestFrame's four panels, Bg regions, separate BORDER material layers, buttons and
+scroll frames. GossipFrame.xml defines Background, GreetingPanel.ScrollBox,
+ScrollBar and GoodbyeButton. Mainline/SharedUIPanelTemplates.xml and
+Mainline/NineSliceLayouts.lua under Blizzard_SharedXML define Inset.NineSlice and
+its eight regions. We require that structure and parent ownership before writes.
+
+QuestDialogue and GossipDialogue are separate modules. Their passive textures
+cover only ordinary QuestBG-Parchment; native backgrounds are never changed.
+Secure post-hooks on each background's SetAtlas/SetTexture/Hide/Show immediately
+hide the added paper and queue a next-frame refresh. Hooks remain installed but
+are inert while disabled; registration is tracked per method, including retries
+after partial failure. Hiding addon-owned paper in combat reveals the latest native
+background without a native write. Creation, native inset alpha changes, restoration
+and other updates still defer in combat. No native script or method is replaced.
+
+Blizzard_AccessibilityTemplates/QuestTextContrast.lua lists ordinary parchment and
+four contrast atlases. Unknown, themed and accessibility atlases receive no added
+paper. QuestFrame_SetMaterial keeps special materials on BORDER above the added
+BACKGROUND paper. Native text and colors, friendship UI, scrolling and selection
+remain unchanged. Texture alpha is journaled only for the eight inset border
+regions; their textures, theme state and anchors remain native. The outer portrait
+border, title bar and close control remain unchanged.
+
+QuestInfo.lua creates reusable RewardButtons on QuestInfoRewardsFrame; QuestInfo.xml
+uses LargeQuestRewardItemButtonTemplate. Blizzard_ItemButton/Mainline/ItemButtonTemplate.xml
+places Icon on BACKGROUND and quality/count/overlay art on OVERLAY. Added ARTWORK
+slot borders anchor to Icon and remain below those native state overlays. Deferred
+quest-event refresh discovers late buttons after native handlers finish. The map
+reward frame, spell pools and custom reward layouts are excluded. Changed/missing
+reward button structures are skipped. No quest values, IDs or reward APIs are read.
+
+Retail Blizzard_SharedXML/SecureUIPanelTemplates.xml and .lua already use
+UI-Panel-Button-Up/Down/Disabled with original cropped Left/Middle/Right textures
+and native state scripts. Those buttons are deliberately retained, not presented
+as a new button renderer. This is source evidence, not extraction evidence for
+those button paths. Native fonts, hit rectangles and enabled states are untouched.
+
+Classic Blizzard_UIPanels_Game/Vanilla/QuestFrameTemplates.xml references the four
+UI-QuestGreeting sheets. All four were freshly extracted from local Era
+1.15.9.69722, decoded and inspected. The catalogue crops their parchment and inset
+metal edges. Their new entries truthfully use EXTRACTED_1.15.9.69722; no new
+Anniversary extraction is claimed. Original UI-Quickslot2 supplies reward trim.
+
+The 0.7 suite has 64 Lua 5.1 regression cases and 35 TOC Lua files. Twelve added
+cases cover controls/rollback, themed and contrast transitions during combat,
+late rewards, reuse, absent hierarchy, late discovery, Edit Mode/settings,
+partial application, partial hook registration, update faults, missing art/APIs,
+ownership changes and stale queued callbacks. The 700x870 settings preview has
+nineteen rows across two columns and no measured text overflow. The artwork crop
+composition uses catalogue coordinates and approximate inset geometry, not native
+atlas dimensions. Both previews were inspected; neither is an in-game screenshot.
+
+CustomGossipFrameBase, quest map/popups, spell-reward pools, character and bag
+windows remain unsupported. The generic Panels module stays deferred. Actual
+client rendering, secure hook/taint behavior, reward event coverage and all
+accessibility settings still need the beta checklist. Forever remains unverified.
 
 All addon implementation is independently authored. No ClassicUI, Classic Frames, KeyUI or DragonflightUI code was copied.
 
@@ -46,7 +107,7 @@ This is a design based on the pinned Retail API documentation, not proof of beta
 
 ## Independent and limited modules
 
-Seventeen modules have implementations. Panels explicitly reports NOT_IMPLEMENTED and leave native UI intact. Panels refers to other windows; SpellBook is separate.
+Nineteen modules have implementations. Panels explicitly reports NOT_IMPLEMENTED and leave native UI intact. Panels refers to other windows; SpellBook, QuestDialogue and GossipDialogue are separate.
 
 The unit skin keeps the entire native HealthBarsContainer visible, moves it as one unit and raises its frame level above the passive border. Its native HealthBar remains at the container level so native OVERLAY health text stays above the BACKGROUND fill. Dimensions, masks, prediction segments, losses, text, scripts and values remain native. A journal restores its points and frame levels. There is no duplicate health fill or health API read in the skin. Native health retains its full modern height; the custom power display moves down to clear it. Portrait combat flash is still omitted. Class-specific resources, target auras, target cast bars and the focus-target frame remain native and need layout checks on multiple classes.
 
@@ -58,7 +119,7 @@ The core's Blizzard ADDON_LOADED handling activates the module after Blizzard_Pl
 
 ## Settings
 
-Core/Options.lua presents only the seventeen implemented features. The whole row is a check button. The main switch, feature rows, session trial and retry button call the same controllers as slash commands. These update the existing SavedVariables table without replacing unrelated report data, then use RequestApply and its existing combat/Edit Mode rules. Opening the window does not enable the addon or opt into an unknown client trial.
+Core/Options.lua presents only the nineteen implemented features. The whole row is a check button. The main switch, feature rows, session trial and retry button call the same controllers as slash commands. These update the existing SavedVariables table without replacing unrelated report data, then use RequestApply and its existing combat/Edit Mode rules. Opening the window does not enable the addon or opt into an unknown client trial.
 
 Apply completion, queued requests and runtime faults refresh visible controls directly; there is no per-frame polling. Checkbox state shows saved intent, while the status label shows application state. Disabling the main switch preserves the selected features. The window uses addon-owned geometry only, supports dragging and UISpecialFrames/Escape, and shrinks to fit UIParent. Both missing Settings APIs and failed optional category registration leave the standalone `/cf` window usable. UI errors are isolated from layout restoration and included in `/cf report`.
 

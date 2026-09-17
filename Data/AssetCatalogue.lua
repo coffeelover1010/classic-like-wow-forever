@@ -8,6 +8,15 @@ local function art(path, usage, coords, width, height)
     forever = "FOREVER_VALIDATION_REQUIRED", fallback = nil }
 end
 CF.AssetCatalogue = {
+  CLASSIC_QUEST_PAPER = art("QuestFrame\\UI-QuestGreeting-TopLeft", "original quest paper", {32/256,240/256,100/256,240/256},240,180),
+  CLASSIC_QUEST_TL = art("QuestFrame\\UI-QuestGreeting-TopLeft", "original quest tl", {16/256,32/256,76/256,92/256},16,16),
+  CLASSIC_QUEST_TR = art("QuestFrame\\UI-QuestGreeting-TopRight", "original quest tr", {56/128,72/128,76/256,92/256},16,16),
+  CLASSIC_QUEST_BL = art("QuestFrame\\UI-QuestGreeting-BotLeft", "original quest bl", {16/256,32/256,148/256,164/256},16,16),
+  CLASSIC_QUEST_BR = art("QuestFrame\\UI-QuestGreeting-BotRight", "original quest br", {56/128,72/128,148/256,164/256},16,16),
+  CLASSIC_QUEST_TOP = art("QuestFrame\\UI-QuestGreeting-TopLeft", "original quest top", {32/256,240/256,76/256,84/256},240,8),
+  CLASSIC_QUEST_BOTTOM = art("QuestFrame\\UI-QuestGreeting-BotLeft", "original quest bottom", {32/256,240/256,156/256,164/256},240,8),
+  CLASSIC_QUEST_LEFT = art("QuestFrame\\UI-QuestGreeting-TopLeft", "original quest left", {16/256,24/256,92/256,240/256},8,180),
+  CLASSIC_QUEST_RIGHT = art("QuestFrame\\UI-QuestGreeting-TopRight", "original quest right", {64/128,72/128,92/256,240/256},8,180),
   CLASSIC_TOOLTIP_BACKGROUND = art("Tooltips\\UI-Tooltip-Background", "Classic tooltip background", nil,64,64),
   CLASSIC_TOOLTIP_BORDER = art("Tooltips\\UI-Tooltip-Border", "Classic tooltip edge sheet", nil,128,16),
   CLASSIC_MAINBAR_LEFT = art("MainMenuBar\\UI-MainMenuBar-Dwarf", "stone left quarter", {0,1,0.83203125,1},256,43),

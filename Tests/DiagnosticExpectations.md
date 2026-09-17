@@ -27,3 +27,13 @@ Actual client procedure: BETA-TEST.md.
 - Native health indicators remain owned by Blizzard. Their presence in the mock is not proof of correct rendering or secure behavior.
 
 - FocusFrame applies only to the full-size pinned Retail hierarchy; compact focus reports UNAVAILABLE and stays native. PetFrame and TargetOfTarget report APPLIED_UNVERIFIED for passive trim only. Missing or changed small-frame structures report UNAVAILABLE.
+# 0.7 dialogue diagnostics
+
+QuestDialogue and GossipDialogue are independent implemented modules. Missing
+standard window/inset structure or hooksecurefunc produces UNAVAILABLE before
+native changes. APPLIED_UNVERIFIED does not certify client rendering or clicks.
+The Detail text describes the limited standard-window scope. Panels remains
+NOT_IMPLEMENTED. Custom dialogue, map/popups and spell rewards stay native.
+Contrast/themed backgrounds may show native art while the module is applied.
+Native red buttons are retained because the pinned source already uses original
+paths. Four new quest sheet entries have Era extraction evidence only.

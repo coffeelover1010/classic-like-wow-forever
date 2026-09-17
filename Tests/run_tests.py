@@ -306,7 +306,7 @@ for name,row in pairs(o.Rows) do
   count=count+1
   assert(not ClassicForeverUI.Modules[name].Deferred and row:GetChecked())
 end
-assert(count==17 and not o.Rows.Panels and o.Rows.Tooltips)
+assert(count==19 and not o.Rows.Panels and o.Rows.Tooltips)
 assert(o.Rows.SpellBook.Status.text=="Open book")
 assert(o.Rows.Minimap.Status.text=="Applied")
 local frames=#Mock.frames
@@ -436,6 +436,7 @@ assert(Mock.nativeWrites==before)
 
 exec(compile((ROOT / "Tests/ui_pass_tests.py").read_text(), "ui_pass_tests.py", "exec"))
 exec(compile((ROOT / "Tests/unit_pass_tests.py").read_text(), "unit_pass_tests.py", "exec"))
+exec(compile((ROOT / "Tests/dialogue_tests.py").read_text(), "dialogue_tests.py", "exec"))
 print(f"PASS: all {len(FILES)} TOC files compiled and executed by Lua 5.1")
 with (ROOT / "Research/LocalAssetInventory.csv").open(newline="", encoding="utf-8") as f:
     extracted = {row["path"] for row in csv.DictReader(f) if row["status"] == "extracted"}

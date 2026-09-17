@@ -1,6 +1,32 @@
-# Forever beta test: 0.6.0-alpha
+# Forever beta test: 0.7.0-alpha
 
-Allow about 65 minutes. This is the first in-game test, not a confirmed compatible release.
+## New 0.7 quest and NPC dialogue checks (15 minutes)
+
+- Open a normal quest offer, progress/turn-in, completion and quest greeting.
+  Test Accept, Decline, Continue, Complete, Goodbye, Escape and close. Check
+  disabled buttons and click/keyboard behavior. Original red-button art stays native.
+- Read long quest text and scroll both ways. Compare the text, scroll position,
+  portrait, title and model with each module off. Check that inset trim does not
+  cover text, controls or the scrollbar at several UI scales.
+- Select each reward choice, inspect its tooltip and comparison, shift-click an
+  item link, then complete a quest. Check quality borders, counts, currencies,
+  selection highlight and late item data. Spell-reward pools and map rewards
+  should remain native. Check for any reward that appears without trim and record
+  which action displayed it; event coverage still requires a real client.
+- Open gossip with many choices, friendship/reputation and a themed NPC. Scroll,
+  choose an option and close with Goodbye. Verify custom dialogue windows stay native.
+- Try all quest-text contrast settings while the windows are open, including
+  light text on dark paper. The addon paper must disappear immediately when the
+  background changes. Test this during combat where the client permits dialogue.
+  Special quest materials and themed gossip must keep their own background.
+- Toggle Quest windows and NPC dialogue separately, then toggle in combat.
+  Check queued changes apply after combat, exact border restoration, saved choices
+  after reload and suspension/recovery through Edit Mode. All nineteen settings
+  choices and bottom buttons should fit the screen and remain readable.
+- Capture /cf report, taint/errors and screenshots with other UI addons disabled.
+  Mocks cannot establish protected behavior, native hook support or rendered pixels.
+
+Allow about 80 minutes. This is the first in-game test, not a confirmed compatible release.
 
 ## 1. Install and collect the build (5 minutes)
 
@@ -44,7 +70,7 @@ This opts into visual trials for the current session. Unknown and Classic client
 
 ## 3. Settings window (5 minutes)
 
-1. Type `/cf`. Check the main switch and seventeen feature rows. Labels should be readable at your UI scale.
+1. Type `/cf`. Check the main switch and nineteen feature rows. Labels should be readable at your UI scale.
 2. Turn the minimap off and on using its row. Check both the saved checkbox and the visible border. Turn another feature off, then turn the main switch off and on; your individual choices should stay saved.
 3. Type `/cf module Minimap off` while settings is open. Its checkbox and status should update. Turn it back on in the window.
 4. Drag the window, close it with Escape, and reopen it with `/cf config`. Check that it fits your screen.
@@ -160,7 +186,7 @@ After collecting errors you can restore your previous script-error setting, usua
   appear outside health/power; all native small-frame artwork remains.
 - Toggle Focus frame, Pet frame and Target of target in settings during combat.
   Verify queued changes apply after combat and survive reload as saved choices.
-  At small UI sizes, check all seventeen rows and the bottom buttons are readable.
+  At small UI sizes, check all nineteen rows and the bottom buttons are readable.
 - Check each module separately with other UI addons disabled. Capture screenshots
   at several scales, especially for trim overlap and focus heal/absorb glows.
   Mocks cannot verify these pixels, secure behavior, event delivery or taint.
