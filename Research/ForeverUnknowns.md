@@ -2,6 +2,8 @@
 
 No Forever API or client behaviour is assumed. Validate: project ID, interface/build number, addon-folder and TOC rules, Lua/XML support, API lineage, secure/combat restrictions, client texture/atlas availability, Blizzard frame names and UI implementation, SavedVariables, addon manager, addon communication, and slash commands.
 
+The current executable test procedure is [BETA-TEST.md](../BETA-TEST.md). The 0.2.0-alpha folder/ZIP is a test package prepared before in-game validation, not a verified Forever release. No beta installation was found during the focused 17 September local inspection.
+
 ## Day One checklist (under one hour)
 
 1. Install ClassicForeverUI and launch Forever.
@@ -15,5 +17,5 @@ No Forever API or client behaviour is assumed. Validate: project ID, interface/b
 9. Add official environment detection only after a stable identifier is known.
 10. Add verified asset aliases and API shims; update the TOC if required.
 11. Test ActionBars, PlayerFrame, TargetFrame, and Minimap in that order.
-12. Validate protected-frame and combat behaviour before any layout mutation.
-13. Package an alpha only after diagnostics and core-frame tests pass.
+12. Exercise the alpha's guarded layout, then verify combat, vehicle/override controls and Edit Mode restoration.
+13. Label the tested build and only promote the test package after the actual client checks pass.
