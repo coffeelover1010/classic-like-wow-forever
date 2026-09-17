@@ -1,5 +1,5 @@
 local addonName, CF = ...
-CF.Name, CF.Version = addonName, "0.5.0-alpha"
+CF.Name, CF.Version = addonName, "0.6.0-alpha"
 CF.Modules, CF.ModuleOrder = {}, {}
 _G.ClassicForeverUI = CF
 

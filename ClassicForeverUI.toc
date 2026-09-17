@@ -2,7 +2,7 @@
 ## Title: ClassicForeverUI
 ## Notes: Original Classic artwork and layout for Retail. Alpha; Forever unverified.
 ## Author: Videocat
-## Version: 0.5.0-alpha
+## Version: 0.6.0-alpha
 ## SavedVariables: ClassicForeverUIDB
 ## X-Website: https://github.com/coffeelover1010/classic-like-wow-forever
 ## X-Compatibility: Retail development target; in-game testing pending; Forever unverified.
@@ -32,6 +32,8 @@ Modules/Bags.lua
 Modules/CastBar.lua
 Modules/SpellBook.lua
 Modules/FocusFrame.lua
+Modules/PetFrame.lua
+Modules/TargetOfTarget.lua
 Modules/Buffs.lua
 Modules/Debuffs.lua
 Modules/Tooltips.lua

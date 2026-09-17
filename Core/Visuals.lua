@@ -73,6 +73,9 @@ function CF.Visuals:UnitModule(unit, frameName, screenX)
   function M:Initialize()
     self.Frame = _G[frameName]
     if not self.Frame then return false, "Missing " .. frameName end
+    if unit == "focus" and (CF.API.IsSecret(self.Frame.smallSize) or self.Frame.smallSize) then
+      return false, "Compact focus unsupported; native frame retained"
+    end
     local contentName = unit == "player" and "PlayerFrameContent" or "TargetFrameContent"
     local mainName = unit == "player" and "PlayerFrameContentMain" or "TargetFrameContentMain"
     self.Main = CF.Compat:Path(self.Frame, contentName, mainName)
@@ -112,16 +115,19 @@ function CF.Visuals:UnitModule(unit, frameName, screenX)
     root.PowerText = CF.Visuals:Label(root.Power,"GameFontHighlightSmall",117,10,0,1)
   end
   function M:Refresh(event, eventUnit)
+    if unit == "focus" and (CF.API.IsSecret(self.Frame.smallSize) or self.Frame.smallSize) then
+      CF:RequestApply(); return
+    end
     local displayUnit = CF.API.DisplayUnit(self.Frame, unit)
     if not CF.API.IsSecret(eventUnit) and eventUnit and event:match("^UNIT_") and
       eventUnit ~= unit and eventUnit ~= displayUnit then return end
     CF.API.UpdateUnit(self.Visual, displayUnit)
-    if not event or event == "PLAYER_TARGET_CHANGED" or event == "PLAYER_ENTERING_WORLD" or
+    if not event or event == "PLAYER_TARGET_CHANGED" or event == "PLAYER_FOCUS_CHANGED" or event == "PLAYER_ENTERING_WORLD" or
       event == "UNIT_PORTRAIT_UPDATE" or event == "UNIT_MODEL_CHANGED" or
       event == "UNIT_ENTERED_VEHICLE" or event == "UNIT_EXITED_VEHICLE" or event == "UNIT_PET" then
       SetPortraitTexture(self.Visual.Portrait, displayUnit)
     end
-    if unit == "target" and type(UnitClassification) == "function" then
+    if (unit == "target" or unit == "focus") and type(UnitClassification) == "function" then
       local classification = UnitClassification(unit)
       local id = "CLASSIC_TARGETFRAME_BORDER"
       if not CF.API.IsSecret(classification) then
@@ -138,8 +144,10 @@ function CF.Visuals:UnitModule(unit, frameName, screenX)
   function M:Enable()
     if not self.Visual then self:Build() end
     local j = self.Journal
-    j:Point(self.Frame,"TOPLEFT",UIParent,"TOPLEFT",screenX,-20)
-    j:Scale(self.Frame,1)
+    if screenX then
+      j:Point(self.Frame,"TOPLEFT",UIParent,"TOPLEFT",screenX,-20)
+      j:Scale(self.Frame,1)
+    end
     j:Alpha(self.Container,0)
     local main = self.Main
     local health = main.HealthBarsContainer
@@ -161,10 +169,12 @@ function CF.Visuals:UnitModule(unit, frameName, screenX)
       j:Alpha(main.ReputationColor,0)
     end
     self:Refresh()
-    CF.Events:Bind(self,{"PLAYER_ENTERING_WORLD","PLAYER_TARGET_CHANGED","UNIT_HEALTH","UNIT_MAXHEALTH",
+    local events = {"PLAYER_ENTERING_WORLD","PLAYER_TARGET_CHANGED","UNIT_HEALTH","UNIT_MAXHEALTH",
       "UNIT_POWER_UPDATE","UNIT_MAXPOWER","UNIT_DISPLAYPOWER","UNIT_NAME_UPDATE","UNIT_LEVEL",
       "UNIT_PORTRAIT_UPDATE","UNIT_MODEL_CHANGED","UNIT_CLASSIFICATION_CHANGED",
-      "UNIT_ENTERED_VEHICLE","UNIT_EXITED_VEHICLE","UNIT_PET"},self.Refresh)
+      "UNIT_ENTERED_VEHICLE","UNIT_EXITED_VEHICLE","UNIT_PET"}
+    if unit == "focus" then events[#events+1] = "PLAYER_FOCUS_CHANGED" end
+    CF.Events:Bind(self,events,self.Refresh)
     self.Visual:Show()
     return true, "Classic border/power; full native health, healing and shields retained"
   end
@@ -212,5 +222,52 @@ function CF.Visuals:TrackingModule(kind)
   function M:Disable() for _, trim in ipairs(self.Trim or {}) do trim:Hide() end end
   function M:Refresh() end
   function M:RunDiagnostics() return self.State,self.Detail end
+  return M
+end
+
+-- Small frames retain all native regions, bars and controls. Trim is anchored
+-- outside the bar pair on the unit button's BACKGROUND layer, below health
+-- children and their prediction/glow/text regions. No unit values are read.
+function CF.Visuals:SmallUnitModule(resolve)
+  local M = {}
+  function M:Initialize()
+    local frame, health, power, portrait, border = resolve()
+    if not frame or not health or not power or not portrait or not border or
+        type(health.GetStatusBarTexture) ~= "function" or
+        type(power.GetStatusBarTexture) ~= "function" or
+        health:GetParent() ~= frame or power:GetParent() ~= frame then
+      return false, "Retail small unit hierarchy absent; native frame retained"
+    end
+    self.Frame, self.Health, self.Power = frame, health, power
+    return CF.Assets:Require({"CLASSIC_MAXLEVEL"})
+  end
+  function M:Enable()
+    self.Trims = self.Trims or {}
+    local pair = self.Trims[self.Frame]
+    if not pair then pair = {}; self.Trims[self.Frame] = pair end
+    for index, bar in ipairs({self.Health, self.Power}) do
+      local trim = pair[index]
+      if not trim then
+        trim = self.Frame:CreateTexture(nil,"BACKGROUND",nil,-1)
+        pair[index] = trim
+        trim:Hide()
+      end
+      trim:ClearAllPoints()
+      trim:SetHeight(2)
+      local side = index == 1 and "TOP" or "BOTTOM"
+      local edge = index == 1 and "BOTTOM" or "TOP"
+      local offset = index == 1 and 1 or -1
+      trim:SetPoint(edge.."LEFT",bar,side.."LEFT",0,offset)
+      trim:SetPoint(edge.."RIGHT",bar,side.."RIGHT",0,offset)
+      if not CF.Assets:Apply(trim,"CLASSIC_MAXLEVEL") then error("Small unit trim rejected") end
+      trim:Show()
+    end
+    return true, "Classic metal trim; native portrait, bars, predictions, text and layout retained"
+  end
+  function M:Disable()
+    for _,pair in pairs(self.Trims or {}) do
+      for _,trim in pairs(pair) do trim:Hide() end
+    end
+  end
   return M
 end

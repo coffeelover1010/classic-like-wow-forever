@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.6.0-alpha — 17 September 2026
+
+- Added a full-size focus skin with native health/predictions and native position/scale. Compact focus remains unchanged and reports unavailable.
+- Added Classic metal trim outside native pet and target-of-target bars. Modern small-frame artwork and all native controls remain.
+- Added three settings rows; expanded the fitted window to seventeen choices.
+- Passed 52 offline Lua 5.1 cases and all 32 TOC files. Inspected the settings preview and verified the install ZIP allowlist.
+- No running client tested. Forever compatibility remains unverified. Focus-target, party, raid, boss and other panels remain later work.
+
 ## 0.5.0-alpha — 17 September 2026
 
 - Added original Classic tooltip backgrounds and gray borders, buff/debuff slot borders and quest-tracker header trim.

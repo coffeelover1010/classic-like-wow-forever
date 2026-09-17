@@ -9,6 +9,7 @@ CF.EventManifest = {
   PLAYER_ENTERING_WORLD = true,
   ADDON_LOADED = true,
   PLAYER_TARGET_CHANGED = true,
+  PLAYER_FOCUS_CHANGED = true,
   UNIT_HEALTH = true,
   UNIT_MAXHEALTH = true,
   UNIT_POWER_UPDATE = true,

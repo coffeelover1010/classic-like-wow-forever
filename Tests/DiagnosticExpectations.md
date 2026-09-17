@@ -23,5 +23,7 @@
 Offline runner: python Tests/run_tests.py (requires lupa with Lua 5.1).
 Actual client procedure: BETA-TEST.md.
 
-- Buffs, Debuffs, Tooltips and QuestTracker now report APPLIED_UNVERIFIED only when their native hierarchy and artwork are available. Missing parts leave that module unavailable; FocusFrame and Panels remain NOT_IMPLEMENTED.
+- Buffs, Debuffs, Tooltips and QuestTracker now report APPLIED_UNVERIFIED only when their native hierarchy and artwork are available. Missing parts leave that module unavailable; Panels remains NOT_IMPLEMENTED.
 - Native health indicators remain owned by Blizzard. Their presence in the mock is not proof of correct rendering or secure behavior.
+
+- FocusFrame applies only to the full-size pinned Retail hierarchy; compact focus reports UNAVAILABLE and stays native. PetFrame and TargetOfTarget report APPLIED_UNVERIFIED for passive trim only. Missing or changed small-frame structures report UNAVAILABLE.

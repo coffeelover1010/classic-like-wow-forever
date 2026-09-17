@@ -1,4 +1,4 @@
-# Forever beta test: 0.5.0-alpha
+# Forever beta test: 0.6.0-alpha
 
 Allow about 65 minutes. This is the first in-game test, not a confirmed compatible release.
 
@@ -44,7 +44,7 @@ This opts into visual trials for the current session. Unknown and Classic client
 
 ## 3. Settings window (5 minutes)
 
-1. Type `/cf`. Check the main switch and fourteen feature rows. Labels should be readable at your UI scale.
+1. Type `/cf`. Check the main switch and seventeen feature rows. Labels should be readable at your UI scale.
 2. Turn the minimap off and on using its row. Check both the saved checkbox and the visible border. Turn another feature off, then turn the main switch off and on; your individual choices should stay saved.
 3. Type `/cf module Minimap off` while settings is open. Its checkbox and status should update. Turn it back on in the window.
 4. Drag the window, close it with Escape, and reopen it with `/cf config`. Check that it fits your screen.
@@ -143,3 +143,24 @@ After collecting errors you can restore your previous script-error setting, usua
 ```text
 /console scriptErrors 0
 ```
+
+## 0.6 focus, pet and target-of-target checks
+
+- Set, change and clear focus. Check the portrait, name, power, rarity border,
+  incoming heals, shields, heal absorbs and native health text. Check the focus
+  cast bar, auras, focus-target and right-click menu. The focus skin must keep
+  the native position and scale.
+- Enter Edit Mode, move/scale focus, try compact focus, then exit. Compact focus
+  must stay native and report UNAVAILABLE with its reason. Return to full size
+  and retry. Turn the module off and check exact restoration.
+- Summon, dismiss, revive and change pets; test vehicle transitions. Check pet
+  health, incoming healing, absorbs, power, portrait, flashes, name and menu.
+- Switch targets with and without targets of their own. Check target-of-target
+  visibility, debuffs and click targeting. Only two thin metal strips should
+  appear outside health/power; all native small-frame artwork remains.
+- Toggle Focus frame, Pet frame and Target of target in settings during combat.
+  Verify queued changes apply after combat and survive reload as saved choices.
+  At small UI sizes, check all seventeen rows and the bottom buttons are readable.
+- Check each module separately with other UI addons disabled. Capture screenshots
+  at several scales, especially for trim overlap and focus heal/absorb glows.
+  Mocks cannot verify these pixels, secure behavior, event delivery or taint.

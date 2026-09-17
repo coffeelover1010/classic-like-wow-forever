@@ -1,4 +1,4 @@
-# 0.5.0-alpha engineering handoff
+# 0.6.0-alpha engineering handoff
 
 ## Repository and package
 
@@ -8,7 +8,7 @@ The Git repository is classic-like-wow-forever. The install folder is **ClassicF
 classic-like-wow-forever/
   ClassicForeverUI.toc
   Core/             lifecycle, environment, rollback, assets, visual helpers, settings, reports
-  Modules/          fourteen implemented modules; two explicit deferred modules
+  Modules/          seventeen implemented modules; one explicit deferred module
   Data/             asset/API/frame/event catalogues
   Research/         pinned sources, licensing, local asset inventory and implementation
   Tests/            Lua 5.1 mock regression suite and diagnostic expectations
@@ -18,19 +18,19 @@ classic-like-wow-forever/
   LICENSE / LICENSE-NOTES.md
   dist/             generated; ignored by Git
     ClassicForeverUI/
-    ClassicForeverUI-0.5.0-alpha.zip
-    ClassicForeverUI-0.5.0-alpha.zip.sha256
+    ClassicForeverUI-0.6.0-alpha.zip
+    ClassicForeverUI-0.6.0-alpha.zip.sha256
 ```
 
 ## Implemented
 
-Original stone action bar, original mirrored gryphons, classic action-slot borders, player/target visual skins, original minimap border, native XP/reputation fill and trim, native micro menu/bag placement, original cast border, and original parchment/trim/icon/slot borders for the native spellbook. Classic tooltip backdrops, buff/debuff slot borders and quest-tracker header trim are also implemented. Player/target health stays native, including incoming heals, shields, masks and health text. The real action buttons, unit buttons, casting engine and tracking logic remain Blizzard-owned.
+Original stone action bar, original mirrored gryphons, classic action-slot borders, player/target visual skins, original minimap border, native XP/reputation fill and trim, native micro menu/bag placement, original cast border, and original parchment/trim/icon/slot borders for the native spellbook. Full-size focus uses the target-style skin at its native position and scale. Pet and target-of-target have passive Classic metal trim outside their native bars; their modern artwork remains. Compact focus and focus-target are unchanged. Classic tooltip backdrops, buff/debuff slot borders and quest-tracker header trim are also implemented. Player/target/focus health stays native, including incoming heals, shields, masks and health text. The real action buttons, unit buttons, casting engine and tracking logic remain Blizzard-owned.
 
-Module failures are isolated and partially applied changes roll back. Missing combat API blocks writes. Edit Mode temporarily suspends the layout. The /cf settings window has a main switch, fourteen feature toggles, saved choices and live status. It shares the slash-command apply path and includes texture, report and retry buttons. An optional Blizzard Settings > AddOns entry opens the same window. Unknown-client trials remain explicit and session-only.
+Module failures are isolated and partially applied changes roll back. Missing combat API blocks writes. Edit Mode temporarily suspends the layout. The /cf settings window has a main switch, seventeen feature toggles, saved choices and live status. It shares the slash-command apply path and includes texture, report and retry buttons. An optional Blizzard Settings > AddOns entry opens the same window. Unknown-client trials remain explicit and session-only.
 
 ## What works versus what is untested
 
-The implemented behaviors passed 44 offline Lua 5.1 regression cases, including twelve new UI-pass cases, seven spellbook cases and ten settings cases. All 30 packaged Lua files load in the mock, and the ZIP is checked against the exact TOC/document allowlist.
+The implemented behaviors passed 52 offline Lua 5.1 regression cases, including eight new unit-frame cases, twelve UI-pass cases, seven spellbook cases and ten settings cases. All 32 packaged Lua files load in the mock, and the ZIP is checked against the exact TOC/document allowlist.
 
 **Nothing is claimed tested in a running Retail, Classic or Forever client.** Original artwork was freshly extracted from Era 1.15.9.69722 and Anniversary 2.5.6.69795, decoded and inspected locally. The gryphon is EndCap-Dwarf; EndCap-Human is a lion.
 
@@ -66,7 +66,7 @@ Follow [BETA-TEST.md](BETA-TEST.md): install the correctly named folder, record 
 4. Validate all action bindings, paging, forms, vehicles and override controls.
 5. Check combat taint and exact default-layout restoration.
 6. Validate player/target values under real secret restrictions and verify retained native absorb/heal prediction visuals.
-7. Check multiple classes, UI scales, ultrawide screens and target-of-target placement.
+7. Check multiple classes, UI scales, ultrawide screens and pet/target-of-target placement.
 8. Verify minimap buttons, tracking, rotations and any missing texture aliases.
 9. Refine the Vanilla XP/reputation strip and original micro/bag artwork where the client provides it.
-10. Refine focus and other-panel skins after the core beta checks pass.
+10. Consider compact focus, focus-target, party, raid, boss and other panels after client checks.

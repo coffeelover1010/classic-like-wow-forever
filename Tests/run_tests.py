@@ -27,12 +27,12 @@ def run(name, body, setup=""):
     print("PASS:", name)
 
 
-run("login applies 13 available modules; deferred modules are honest", """
+run("login applies available modules; deferred modules are honest", """
 Mock.Event("PLAYER_LOGIN")
 for _,name in ipairs({"ActionBars","PlayerFrame","TargetFrame","Minimap","ExperienceBar","ReputationBar","MicroMenu","Bags","CastBar","Buffs","Debuffs","Tooltips","QuestTracker"}) do
   assert(ClassicForeverUI.Modules[name].State=="APPLIED_UNVERIFIED", name .. ": " .. ClassicForeverUI.Modules[name].State)
 end
-assert(ClassicForeverUI.Modules.FocusFrame.State=="NOT_IMPLEMENTED")
+assert(ClassicForeverUI.Modules.FocusFrame.State=="APPLIED_UNVERIFIED")
 assert(TargetFrame.TargetFrameContent.TargetFrameContentMain.HealthBarsContainer:GetAlpha()==1)
 assert(ActionButton1.action==1 and ActionButton12.action==12)
 assert(ActionButton1.secureToken=="unchanged")
@@ -306,7 +306,7 @@ for name,row in pairs(o.Rows) do
   count=count+1
   assert(not ClassicForeverUI.Modules[name].Deferred and row:GetChecked())
 end
-assert(count==14 and not o.Rows.Panels and o.Rows.Tooltips)
+assert(count==17 and not o.Rows.Panels and o.Rows.Tooltips)
 assert(o.Rows.SpellBook.Status.text=="Open book")
 assert(o.Rows.Minimap.Status.text=="Applied")
 local frames=#Mock.frames
@@ -435,6 +435,7 @@ assert(Mock.nativeWrites==before)
 """, "InCombatLockdown=nil")
 
 exec(compile((ROOT / "Tests/ui_pass_tests.py").read_text(), "ui_pass_tests.py", "exec"))
+exec(compile((ROOT / "Tests/unit_pass_tests.py").read_text(), "unit_pass_tests.py", "exec"))
 print(f"PASS: all {len(FILES)} TOC files compiled and executed by Lua 5.1")
 with (ROOT / "Research/LocalAssetInventory.csv").open(newline="", encoding="utf-8") as f:
     extracted = {row["path"] for row in csv.DictReader(f) if row["status"] == "extracted"}

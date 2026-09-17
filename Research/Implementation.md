@@ -1,4 +1,4 @@
-# Implementation and source evidence: 0.5 alpha
+# Implementation and source evidence: 0.6 alpha
 
 All addon implementation is independently authored. No ClassicUI, Classic Frames, KeyUI or DragonflightUI code was copied.
 
@@ -46,9 +46,9 @@ This is a design based on the pinned Retail API documentation, not proof of beta
 
 ## Independent and limited modules
 
-Fourteen modules have implementations. FocusFrame and Panels explicitly report NOT_IMPLEMENTED and leave native UI intact. Panels refers to other windows; SpellBook is separate.
+Seventeen modules have implementations. Panels explicitly reports NOT_IMPLEMENTED and leave native UI intact. Panels refers to other windows; SpellBook is separate.
 
-The unit skin keeps the entire native HealthBarsContainer visible, moves it as one unit and raises its frame level above the passive border. Its native HealthBar remains at the container level so native OVERLAY health text stays above the BACKGROUND fill. Dimensions, masks, prediction segments, losses, text, scripts and values remain native. A journal restores its points and frame levels. There is no duplicate health fill or health API read in the skin. Native health retains its full modern height; the custom power display moves down to clear it. Portrait combat flash is still omitted. Class-specific resources, target auras, target cast bars and the target-of-target frame remain native and need layout checks on multiple classes.
+The unit skin keeps the entire native HealthBarsContainer visible, moves it as one unit and raises its frame level above the passive border. Its native HealthBar remains at the container level so native OVERLAY health text stays above the BACKGROUND fill. Dimensions, masks, prediction segments, losses, text, scripts and values remain native. A journal restores its points and frame levels. There is no duplicate health fill or health API read in the skin. Native health retains its full modern height; the custom power display moves down to clear it. Portrait combat flash is still omitted. Class-specific resources, target auras, target cast bars and the focus-target frame remain native and need layout checks on multiple classes.
 
 XP/reputation remain modern native tracking bars with original fills and trim; this is not a rebuilt 1024-pixel Vanilla XP system. Micro and bag buttons keep Retail art. The minimap header and utility buttons remain native. Cast effects and empower markers also remain native.
 
@@ -58,7 +58,7 @@ The core's Blizzard ADDON_LOADED handling activates the module after Blizzard_Pl
 
 ## Settings
 
-Core/Options.lua presents only the fourteen implemented features. The whole row is a check button. The main switch, feature rows, session trial and retry button call the same controllers as slash commands. These update the existing SavedVariables table without replacing unrelated report data, then use RequestApply and its existing combat/Edit Mode rules. Opening the window does not enable the addon or opt into an unknown client trial.
+Core/Options.lua presents only the seventeen implemented features. The whole row is a check button. The main switch, feature rows, session trial and retry button call the same controllers as slash commands. These update the existing SavedVariables table without replacing unrelated report data, then use RequestApply and its existing combat/Edit Mode rules. Opening the window does not enable the addon or opt into an unknown client trial.
 
 Apply completion, queued requests and runtime faults refresh visible controls directly; there is no per-frame polling. Checkbox state shows saved intent, while the status label shows application state. Disabling the main switch preserves the selected features. The window uses addon-owned geometry only, supports dragging and UISpecialFrames/Escape, and shrinks to fit UIParent. Both missing Settings APIs and failed optional category registration leave the standalone `/cf` window usable. UI errors are isolated from layout restoration and included in `/cf report`.
 
@@ -68,7 +68,7 @@ Settings registration happens outside combat after application, so a Blizzard ad
 
 Tests/run_tests.py compiles and executes all TOC Lua with Lua 5.1 via the test-only lupa runtime. It checks native-frame restoration, combat deferral, Edit Mode snapshots, module isolation, rejected assets/events, missing APIs, unknown clients, opaque values, late-loaded frames, reports and gallery creation.
 
-The 0.5 suite has 44 cases and loads 30 Lua files. Spellbook cases cover lazy loading, untouched interaction scripts, tab visibility, both widths, restoration after native state changes, pooled-entry reuse, combat deferral, missing art, changed hierarchy and failure isolation/retry. Settings cases cover aliases, singleton lifetime, saved preferences, shared slash-command state, combat and Edit Mode, explicit trials, optional category registration, display fitting, tools and error isolation.
+The 0.6 suite has 52 cases and loads 32 Lua files. Spellbook cases cover lazy loading, untouched interaction scripts, tab visibility, both widths, restoration after native state changes, pooled-entry reuse, combat deferral, missing art, changed hierarchy and failure isolation/retry. Settings cases cover aliases, singleton lifetime, saved preferences, shared slash-command state, combat and Edit Mode, explicit trials, optional category registration, display fitting, tools and error isolation.
 
 Tests/preview_options.py reads the actual mocked Lua frame tree to render an offline layout preview using test-only Pillow. Normal, trial and combat layouts were inspected without text-width overflow. Font metrics and checkbox marks are approximate. The previews and earlier spellbook compositions are not game screenshots or interaction tests and are excluded from install packages.
 
@@ -85,4 +85,43 @@ The pinned revisions above were verified locally for this pass. Source paths bel
 - Classic Blizzard_SharedXML/Backdrop.lua references UI-Tooltip-Background and UI-Tooltip-Border. Both were extracted from local Era storage and decoded outside the repository. The install ZIP contains paths only.
 - Retail Blizzard_ObjectiveTracker/Blizzard_ObjectiveTracker.xml and Blizzard_ObjectiveTrackerContainer.xml define Header.Background and separate text/minimize/filter controls. Only the top header texture and an anchored trim change. Quest rows, pooled items, progress bars, navigation and module headers retain native artwork and behavior.
 
-The twelve additional cases cover native health ownership/rollback, absent hierarchy, aura reuse/private anchors/combat/faults, tooltip visibility and partial failure, tracker restoration, late frames and all four new settings choices. The expanded settings preview has seven rows per column and scales to the display. Offline preview and mocks do not establish rendered pixels or engine behavior.
+The twelve additional cases cover native health ownership/rollback, absent hierarchy, aura reuse/private anchors/combat/faults, tooltip visibility and partial failure, tracker restoration, late frames and all four new settings choices. The expanded 0.5 settings preview had seven rows per column and scales to the display. Offline preview and mocks do not establish rendered pixels or engine behavior.
+
+## 0.6 unit-frame pass
+
+The Retail and Classic pinned revisions above were rechecked locally. Retail
+Blizzard_UnitFrame/Mainline/TargetFrame.xml defines FocusFrame using the same
+TargetFrameTemplate and HealthBarsContainer as target. TargetFrame.lua defines
+FocusFrameMixin:SetSmallSize, CreateTargetofTarget and the native totFrame field.
+The full-size focus skin reuses the target skin, including classification borders,
+with PLAYER_FOCUS_CHANGED refreshing portrait and display values. Focus position
+and scale are not changed. Compact or restricted smallSize is unsupported and
+reports UNAVAILABLE before writes. Edit Mode exit rechecks that condition; focus
+updates also request a deferred recheck if compact mode appears while active.
+
+Retail Mainline/PetFrame.xml defines global PetFrameHealthBar and PetFrameManaBar
+as direct PetFrame children, with prediction frames and masks inside health.
+TargetFrame.xml defines the direct HealthBar/ManaBar children of totFrame.
+Both receive only two passive BACKGROUND textures anchored just outside the bar
+pair. They use the already inventoried Classic UI-MainMenuBar-MaxLevel metal trim.
+No native region is hidden or mutated, and there are no unit-value reads or new
+unit-update handlers in these two modules. All native bar descendants, modern
+border art, portrait, flashes, name, auras, scripts, click targets, scale and
+placement remain owned by Blizzard. Trim inherits unit visibility and bar width.
+Classic Blizzard_UnitFrame/Classic/PetFrame.xml instead uses UI-SmallTargetingFrame;
+its different geometry is not imposed on Retail's native health and power bars.
+This is deliberately a limited trim skin, not a rebuilt Classic small frame.
+
+Missing frame/bar/portrait/border structures and bars with unexpected parents
+leave that module unavailable. Late frames can be retried with /cf refresh;
+ADDON_LOADED also rechecks modules. New textures are retained by native frame
+identity, hidden on disable or partial failure and reused on subsequent applies.
+The existing lifecycle supplies combat deferral, Edit Mode suspension and isolated
+failure handling. Focus-target, party, raid, boss and other panels remain unchanged.
+
+Eight new offline cases cover focus refresh/native health/position/rollback,
+compact fallback, small-frame preservation, missing hierarchy, late discovery,
+settings combat deferral, Edit Mode and partial trim failure/retry. The settings
+preview now has nine/eight rows, seventeen feature choices and a 700x856 window
+that scales to the display. Its normal layout was inspected with approximate
+fonts. No in-game result is implied by this preview or the 52 mock cases.

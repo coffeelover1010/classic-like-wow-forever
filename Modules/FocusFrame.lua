@@ -1,2 +1,3 @@
 local _, CF = ...
-CF:RegisterModule("FocusFrame", { Deferred = "Native Blizzard UI retained; skin not implemented" })
+-- Keep the native focus anchor and Edit Mode scale. Compact mode stays native.
+CF:RegisterModule("FocusFrame",CF.Visuals:UnitModule("focus","FocusFrame"))

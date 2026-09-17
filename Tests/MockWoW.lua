@@ -235,7 +235,11 @@ TargetFrame=Mock.Native("TargetFrame"); TargetFrame.unit="target"
 Mock.Child(TargetFrame,"TargetFrameContainer")
 local tm=Mock.Child(Mock.Child(TargetFrame,"TargetFrameContent"),"TargetFrameContentMain")
 for _,key in ipairs({"HealthBarsContainer","ManaBar","Name","LevelText","ReputationColor"}) do Mock.Child(tm,key) end
-for _,main in ipairs({pm,tm}) do
+FocusFrame=Mock.Native("FocusFrame"); FocusFrame.unit="focus"
+Mock.Child(FocusFrame,"TargetFrameContainer")
+local fm=Mock.Child(Mock.Child(FocusFrame,"TargetFrameContent"),"TargetFrameContentMain")
+for _,key in ipairs({"HealthBarsContainer","ManaBar","Name","LevelText","ReputationColor"}) do Mock.Child(fm,key) end
+for _,main in ipairs({pm,tm,fm}) do
   local container=main.HealthBarsContainer
   local width=main==tm and 126 or 124
   container:SetSize(width,20)
@@ -291,4 +295,18 @@ for _,name in ipairs({"MainStatusTrackingBarContainer","SecondaryStatusTrackingB
     local bar=Mock.Native(nil,f); bar:SetSize(565,11); f.bars[i]=bar
     bar.StatusBar=Mock.Native(nil,bar); bar.StatusBar:SetStatusBarTexture("native-fill")
   end
+end
+
+PetFrame=Mock.Native("PetFrame",PlayerFrame)
+Mock.Child(PetFrame,"Portrait")
+PetFrameTexture=Mock.Child(PetFrame,"FrameTexture")
+PetFrameHealthBar=Mock.Native("PetFrameHealthBar",PetFrame)
+PetFrameManaBar=Mock.Native("PetFrameManaBar",PetFrame)
+TargetFrame.totFrame=Mock.Native(nil,TargetFrame)
+local tot=TargetFrame.totFrame
+for _,key in ipairs({"Portrait","FrameTexture","HealthBar","ManaBar"}) do Mock.Child(tot,key) end
+for _,bar in ipairs({PetFrameHealthBar,PetFrameManaBar,tot.HealthBar,tot.ManaBar}) do
+  bar:SetSize(70,10); bar:SetStatusBarTexture("native-small-bar")
+  bar:SetScript("OnValueChanged",function() end)
+  for _,key in ipairs({"MyHealPredictionBar","TotalAbsorbBar","HealAbsorbBar","Mask","Text"}) do Mock.Child(bar,key) end
 end

@@ -1,5 +1,8 @@
 local _, CF = ...
 CF.FrameManifest = {
+  { name="FocusFrame", use="full-size target-style skin; compact focus retained", protected="runtime-probed" },
+  { name="PetFrame", use="passive metal trim; all native bar descendants retained", protected="runtime-probed" },
+  { name="PetFrameHealthBar", use="anchor only; native health and prediction engine", protected="runtime-probed" },
   { name="BuffFrame", use="passive borders on native auraFrames; private anchors untouched", protected="runtime-probed" },
   { name="DebuffFrame", use="passive borders; native dispel colors and durations", protected="runtime-probed" },
   { name="GameTooltip", use="Classic backdrop beneath native content", protected="runtime-probed" },

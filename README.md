@@ -1,6 +1,6 @@
 # ClassicForeverUI
 
-A Retail addon that puts original Blizzard Classic artwork around a Classic-style layout. Version **0.5.0-alpha** adds tooltips, aura borders and tracker trim, and restores native healing and shield indicators and is ready to install for testing. It has **not been tested inside WoW**. Forever support is unverified.
+A Retail addon that puts original Blizzard Classic artwork around a Classic-style layout. Version **0.6.0-alpha** adds a full-size focus skin and Classic metal trim for pet and target-of-target frames. It has **not been tested inside WoW**. Forever support is unverified.
 
 ## Install
 
@@ -18,6 +18,8 @@ Read [BETA-TEST.md](BETA-TEST.md) for the test session. Start with `/cf diagnost
 
 - The bottom bar uses original stone panels, gryphons and button borders. The right gryphon is mirrored.
 - Player and target frames use original borders, portraits and power bars around native health displays. Target rarity selects the matching original border when classification is readable.
+- Full-size focus uses the target-style skin while keeping its native position and scale. Compact focus stays native and reports unavailable.
+- Pet and target-of-target get thin Classic metal trim above health and below power. Their native borders, portraits, bars, masks, text, prediction indicators and positions stay in place. This is a limited trim pass.
 - Buffs and debuffs get original slot borders. Native timers, counts, dispel colors, enchant borders and right-click controls stay in place. Private aura anchors remain unchanged.
 - Tooltips use the original dark background and a gray border. Links, comparisons and native content stay in place. The border is gray even for rare items; item names keep their native colors.
 - The quest tracker gets a Classic header and metal trim. Its rows, quest items, filters and collapse controls stay native.
@@ -27,13 +29,13 @@ Read [BETA-TEST.md](BETA-TEST.md) for the test session. Start with `/cf diagnost
 - The native player cast bar gets an original border and a Classic-style position. Blizzard still handles casting, channeling and empowered spells.
 - The spellbook uses original parchment, metal trim, a book icon and spell-slot borders. It follows the small and large views. Search, categories, page arrows, pet spells and dragging spells stay native. The talents and specialization tabs keep their own artwork.
 
-The addon keeps Blizzard's action buttons, secure paging, unit buttons, right-click menus and aura controls. It does not change their parents, scripts or secure attributes. Native focus and other panels remain unchanged. Buffs, debuffs and the tracker keep their native positions. This is a recognizable Classic layout, not full Vanilla pixel parity.
+The addon keeps Blizzard's action buttons, secure paging, unit buttons, right-click menus and aura controls. It does not change their parents, scripts or secure attributes. Compact focus, focus-target, party, raid, boss frames and other panels remain unchanged. Buffs, debuffs and the tracker keep their native positions. This is a recognizable Classic layout, not full Vanilla pixel parity.
 
 Open the spellbook once to load its skin. Before that, its module can report `UNAVAILABLE` with an instruction to open it. Use `/cf module SpellBook off` to restore only the spellbook. Native spell-state markers, passive shapes, cooldowns and pet autocast overlays are retained above the added borders.
 
 ## Controls
 
-Type **`/cf`** to open settings. There is one main switch and fourteen feature checkboxes. Click anywhere on a feature row to change it. Choices save automatically and apply outside combat. Turning the main switch off keeps your feature choices for next time.
+Type **`/cf`** to open settings. There is one main switch and seventeen feature checkboxes. Click anywhere on a feature row to change it. Choices save automatically and apply outside combat. Turning the main switch off keeps your feature choices for next time.
 
 The window shows which features have applied, which are off, and which need attention. **Open book** means the spellbook must be opened once to load. **View textures**, **Open report**, and **Retry changes** give quick access to troubleshooting. The report provides text to copy with Ctrl+A, Ctrl+C.
 
@@ -72,7 +74,7 @@ python Tests/run_tests.py
 python Tools/package_addon.py
 ```
 
-Output: `dist/ClassicForeverUI/` and `dist/ClassicForeverUI-0.5.0-alpha.zip`. Packaging uses the TOC and a small document allowlist. It excludes research checkouts, test tools, previews, extracted images and native libraries.
+Output: `dist/ClassicForeverUI/` and `dist/ClassicForeverUI-0.6.0-alpha.zip`. Packaging uses the TOC and a small document allowlist. It excludes research checkouts, test tools, previews, extracted images and native libraries.
 
 If the beta rejects the TOC, first read its actual Interface number. Then build a separate package:
 
