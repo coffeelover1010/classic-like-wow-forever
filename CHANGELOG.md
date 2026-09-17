@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.4.0-alpha — 17 September 2026
+
+- Added a compact settings window with a main switch, ten feature toggles and automatic saving. Open it with `/cf`, `/cf config` or `/cf options`.
+- Added live status labels, combat queue feedback and buttons for textures, reports and retrying changes.
+- Added a Settings > AddOns launcher when Blizzard's Settings API is available. The window also supports dragging, Escape and scaling to fit smaller screens.
+- Kept non-Retail trials explicit and limited to the current session. GUI and slash commands share the same saved choices and apply path.
+- Fixed a stale pending flag after a module had already recovered to the default UI outside combat.
+- Passed 32 offline regression cases and loaded all 30 Lua files. Reviewed normal, trial and combat layout previews. Actual in-game rendering and interaction remain untested.
+
 ## 0.3.0-alpha — 17 September 2026
 
 - Added a separate SpellBook module with original Classic parchment, metal trim, book icon and spell-slot borders.

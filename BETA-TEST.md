@@ -1,6 +1,6 @@
-# Forever beta test: 0.3.0-alpha
+# Forever beta test: 0.4.0-alpha
 
-Allow about 50 minutes. This is the first in-game test, not a confirmed compatible release.
+Allow about 55 minutes. This is the first in-game test, not a confirmed compatible release.
 
 ## 1. Install and collect the build (5 minutes)
 
@@ -42,7 +42,20 @@ If modules say `CLIENT_NOT_ENABLED`, use:
 
 This opts into visual trials for the current session. Unknown and Classic clients return to diagnostic-only mode on the next login. Recognized Retail defaults to applying the layout.
 
-## 3. Check artwork (5 minutes)
+## 3. Settings window (5 minutes)
+
+1. Type `/cf`. Check the main switch and ten feature rows. Labels should be readable at your UI scale.
+2. Turn the minimap off and on using its row. Check both the saved checkbox and the visible border. Turn another feature off, then turn the main switch off and on; your individual choices should stay saved.
+3. Type `/cf module Minimap off` while settings is open. Its checkbox and status should update. Turn it back on in the window.
+4. Drag the window, close it with Escape, and reopen it with `/cf config`. Check that it fits your screen.
+5. Try **View textures**, **Open report**, and **Retry changes**. The report should support Ctrl+A, Ctrl+C.
+6. If available, open **Settings > AddOns > ClassicForeverUI > Open settings**. It should open the same window.
+7. Turn one feature off, `/reload`, and check that it is still off. Restore your preferred choice.
+8. During the later combat test, change a checkbox. It should show **Queued** and apply after combat ends.
+
+On an unrecognized client, changing the main switch does not start a trial. Use **Try this session** or `/cf enable` explicitly. A trial must be started again after `/reload`.
+
+## 4. Check artwork (5 minutes)
 
 ```text
 /cf gallery
@@ -52,7 +65,7 @@ Use **Next page** to inspect every texture. Check the original stone, both gryph
 
 The gryphon path ends in **EndCap-Dwarf**. **EndCap-Human** is a lion. No modern gryphon atlas is used as a hidden fallback.
 
-## 4. Test the main controls (10 minutes)
+## 5. Test the main controls (10 minutes)
 
 - Click each main action button and try its normal keybind. Check cooldowns, counts and hotkey labels.
 - Drag a spell onto a slot outside combat. Change action pages with the arrows and keybinds.
@@ -64,7 +77,7 @@ The gryphon path ends in **EndCap-Dwarf**. **EndCap-Human** is a lion. No modern
 - On a character that can gain XP, check rested XP and the XP tooltip. Track a faction and check its bar. Native tracking rules decide which bars are shown.
 - Cast, interrupt and channel a spell. Test an empowered spell if your class has one.
 
-## 5. Spellbook (5 minutes)
+## 6. Spellbook (5 minutes)
 
 1. Open the spellbook. Its module may report `UNAVAILABLE` until this loads Blizzard's spellbook addon.
 2. Check the parchment, metal edges, book icon and spell-slot borders. Try both small and large views and check text at your normal UI scale.
@@ -76,7 +89,7 @@ The gryphon path ends in **EndCap-Dwarf**. **EndCap-Human** is a lion. No modern
 
 The skin keeps Retail's spell layout and controls. It does not rebuild Vanilla's twelve-spell pages.
 
-## 6. Combat, vehicles and Edit Mode (10 minutes)
+## 7. Combat, vehicles and Edit Mode (10 minutes)
 
 1. Enter a short fight. Use action keybinds, change target, and watch both unit bars.
 2. During combat run `/cf off`. It should queue restoration without moving protected frames.
@@ -89,7 +102,7 @@ The skin keeps Retail's spell layout and controls. It does not rebuild Vanilla's
 
 Combat taint cannot be proved by offline mocks. If a protected action is blocked, keep the exact error, activity and client build. Test again with only this addon enabled.
 
-## 7. Report and recover (5 minutes)
+## 8. Report and recover (5 minutes)
 
 ```text
 /cf report

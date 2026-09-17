@@ -296,6 +296,144 @@ assert(ClassicForeverUI.Modules.SpellBook.State=="UNAVAILABLE")
 assert(PlayerSpellsFrame.SpellBookFrame.TopBar:GetAlpha()==1)
 """, "Mock.LoadSpellBook(); PlayerSpellsFrame.SpellBookFrame.ForEachDisplayedSpell=nil")
 
+run("settings open through all aliases, show only supported controls and reuse the window", """
+Mock.Event("PLAYER_LOGIN")
+SlashCmdList.CLASSICFOREVERUI("")
+local o=ClassicForeverUI.Options
+assert(o.Frame:IsShown() and not o.LastError and o.Frame.clamped)
+local count=0
+for name,row in pairs(o.Rows) do
+  count=count+1
+  assert(not ClassicForeverUI.Modules[name].Deferred and row:GetChecked())
+end
+assert(count==10 and not o.Rows.Panels and not o.Rows.Tooltips)
+assert(o.Rows.SpellBook.Status.text=="Open book")
+assert(o.Rows.Minimap.Status.text=="Applied")
+local frames=#Mock.frames
+Mock.Click(o.Frame.Close); assert(not o.Frame:IsShown())
+SlashCmdList.CLASSICFOREVERUI("config"); assert(o.Frame:IsShown())
+Mock.Escape(); assert(not o.Frame:IsShown())
+SlashCmdList.CLASSICFOREVERUI("options")
+assert(#Mock.frames==frames and #UISpecialFrames==1)
+Mock.Escape(); SlashCmdList.CLASSICFOREVERUI("help")
+assert(not o.Frame:IsShown())
+""")
+
+run("settings preserve saved choices and report data across master switches", """
+Mock.Event("PLAYER_LOGIN"); SlashCmdList.CLASSICFOREVERUI("")
+local cf=ClassicForeverUI; local o=cf.Options
+assert(not o.Frame.Master:GetChecked() and not o.Rows.Minimap:GetChecked())
+assert(o.Rows.ActionBars:GetChecked() and o.Rows.ActionBars.Status.text=="Paused")
+Mock.Click(o.Rows.SpellBook)
+assert(ClassicForeverUIDB.modules.SpellBook==false and not cf.Modules.ActionBars.Active)
+Mock.Click(o.Frame.Master)
+assert(cf.Modules.ActionBars.Active and not cf.Modules.Minimap.Active)
+Mock.Click(o.Rows.Minimap)
+assert(ClassicForeverUIDB.modules.Minimap and cf.Modules.Minimap.Active)
+Mock.Click(o.Frame.Master); Mock.Click(o.Frame.Master)
+assert(not cf.Modules.SpellBook.Active and ClassicForeverUIDB.modules.SpellBook==false)
+assert(ClassicForeverUIDB.lastReport=="keep this report" and ClassicForeverUIDB.extra==42)
+""", 'ClassicForeverUIDB={enabled=false,modules={Minimap=false},lastReport="keep this report",extra=42}')
+
+run("settings queue combat changes and stay synchronized with slash controls", """
+Mock.Event("PLAYER_LOGIN"); SlashCmdList.CLASSICFOREVERUI("")
+local cf=ClassicForeverUI; local o=cf.Options
+Mock.combat=true
+local writes=Mock.nativeWrites
+Mock.Click(o.Rows.Minimap)
+assert(not o.Rows.Minimap:GetChecked() and cf.Modules.Minimap.Active)
+assert(o.Rows.Minimap.Status.text=="Queued" and o.Frame.Notice.text:find("Waiting for combat"))
+assert(Mock.nativeWrites==writes and cf.Pending)
+Mock.combat=false; Mock.Event("PLAYER_REGEN_ENABLED")
+assert(not cf.Modules.Minimap.Active and o.Rows.Minimap.Status.text=="Off")
+SlashCmdList.CLASSICFOREVERUI("module Minimap on"); Mock.Flush()
+assert(o.Rows.Minimap:GetChecked() and o.Rows.Minimap.Status.text=="Applied")
+SlashCmdList.CLASSICFOREVERUI("off"); Mock.Flush()
+assert(not o.Frame.Master:GetChecked() and o.Rows.Minimap.Status.text=="Paused")
+SlashCmdList.CLASSICFOREVERUI("on"); Mock.Flush()
+Mock.Callback("EditMode.Enter")
+assert(o.Rows.Minimap.Status.text=="Edit Mode" and o.Frame.Notice.text:find("Paused"))
+Mock.Callback("EditMode.Exit")
+assert(o.Rows.Minimap.Status.text=="Applied")
+""")
+
+run("settings retain explicit session-only opt-in on unknown clients", """
+Mock.Event("PLAYER_LOGIN"); SlashCmdList.CLASSICFOREVERUI("")
+local cf=ClassicForeverUI; local o=cf.Options
+assert(o.Frame.Trial:IsShown() and o.Rows.ActionBars.Status.text=="Needs trial")
+Mock.Click(o.Frame.Master); Mock.Click(o.Frame.Master)
+assert(not cf.Modules.ActionBars.Active and not cf.AllowUnverified)
+Mock.Click(o.Frame.Trial)
+assert(cf.Modules.ActionBars.Active and not o.Frame.Trial:IsShown())
+assert(not ClassicForeverUIDB.AllowUnverified and not ClassicForeverUIDB.allowUnverified)
+""", 'WOW_PROJECT_ID=999')
+
+run("settings launcher registers once when Blizzard Settings loads later", """
+Mock.Event("PLAYER_LOGIN")
+local cf=ClassicForeverUI; local o=cf.Options
+assert(not o.Category and cf.Modules.ActionBars.Active)
+Mock.SettingsAPI(); Mock.Event("ADDON_LOADED","Blizzard_Settings")
+assert(#Mock.categories==1 and Mock.categoryCalls==1)
+local panel=o.Launcher; panel:Show(); Mock.Click(panel.Open)
+assert(o.Frame:IsShown())
+SlashCmdList.CLASSICFOREVERUI("refresh"); Mock.Flush()
+assert(#Mock.categories==1 and Mock.categoryCalls==1)
+""")
+
+run("settings registration failure leaves standalone options and layout usable", """
+Mock.Event("PLAYER_LOGIN")
+local cf=ClassicForeverUI; local o=cf.Options
+assert(o.RegistrationFailed and cf.Modules.ActionBars.Active)
+SlashCmdList.CLASSICFOREVERUI("")
+assert(o.Frame:IsShown() and cf.Diagnostics:Collect():find("Settings error"))
+Mock.Click(o.Rows.Minimap)
+assert(not cf.Modules.Minimap.Active and Mock.categoryCalls==1)
+""", 'Mock.SettingsAPI(); Settings.RegisterAddOnCategory=function() error("settings rejected") end')
+
+run("settings fit a smaller display and tools open usable report and gallery", """
+Mock.Event("PLAYER_LOGIN"); SlashCmdList.CLASSICFOREVERUI("")
+local cf=ClassicForeverUI; local f=cf.Options.Frame
+UIParent:SetSize(800,600); Mock.Event("DISPLAY_SIZE_CHANGED")
+assert(f:GetWidth()*f:GetScale()<=768 and f:GetHeight()*f:GetScale()<=568)
+Mock.Click(f.Report)
+assert(cf.Diagnostics.ReportFrame:IsShown() and cf.Diagnostics.ReportFrame.Edit.text:find("ClassicForeverUI"))
+cf.Diagnostics.ReportFrame:Hide()
+Mock.Click(f.Gallery)
+assert(cf.Diagnostics.GalleryFrame:IsShown())
+""")
+
+run("settings reflect runtime faults and Retry changes recovers the module", """
+Mock.Event("PLAYER_LOGIN"); SlashCmdList.CLASSICFOREVERUI("")
+local cf=ClassicForeverUI; local o=cf.Options
+local original=UnitHealth
+UnitHealth=function() error("temporary fault") end
+Mock.Event("UNIT_HEALTH","player")
+assert(o.Rows.PlayerFrame.Status.text=="Needs retry")
+assert(not cf.Pending)
+UnitHealth=original; Mock.Click(o.Frame.Retry)
+assert(cf.Modules.PlayerFrame.Active and o.Rows.PlayerFrame.Status.text=="Applied")
+""")
+
+run("settings refresh failures cannot block native restoration", """
+Mock.Event("PLAYER_LOGIN"); SlashCmdList.CLASSICFOREVERUI("")
+local cf=ClassicForeverUI
+cf.Options.Refresh=function() error("options render error") end
+SlashCmdList.CLASSICFOREVERUI("off"); Mock.Flush()
+assert(not cf.Modules.ActionBars.Active and MainActionBar:GetWidth()==232)
+assert(cf.Diagnostics:Collect():find("options render error"))
+""")
+
+run("settings remain usable when the client cannot report combat state", """
+Mock.Event("PLAYER_LOGIN")
+local before=Mock.nativeWrites
+SlashCmdList.CLASSICFOREVERUI("")
+local o=ClassicForeverUI.Options
+assert(o.Frame:IsShown() and o.Frame.Notice.text:find("cannot apply"))
+Mock.Click(o.Rows.Minimap)
+assert(ClassicForeverUIDB.modules.Minimap==false and ClassicForeverUI.Pending)
+assert(Mock.nativeWrites==before)
+""", "InCombatLockdown=nil")
+
 print(f"PASS: all {len(FILES)} TOC files compiled and executed by Lua 5.1")
 with (ROOT / "Research/LocalAssetInventory.csv").open(newline="", encoding="utf-8") as f:
     extracted = {row["path"] for row in csv.DictReader(f) if row["status"] == "extracted"}

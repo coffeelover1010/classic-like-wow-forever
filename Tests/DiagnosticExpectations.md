@@ -17,6 +17,8 @@
 - A registered event may never be delivered in a different client. The report must not call registration proof of behavior.
 - /cf report contains no unit names, health values or account data. It saves only its latest report to the addon's SavedVariables.
 - No asset automatically becomes visually verified. Check all gallery pages in the client.
+- Settings checkboxes show saved choices, while labels show applied, queued, paused or unavailable state. No label is a compatibility certificate.
+- Missing Blizzard Settings registration does not disable `/cf`. A caught settings error is included in the report without blocking layout restoration.
 
 Offline runner: python Tests/run_tests.py (requires lupa with Lua 5.1).
 Actual client procedure: BETA-TEST.md.

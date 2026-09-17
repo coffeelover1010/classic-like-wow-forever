@@ -1,4 +1,4 @@
-# Implementation and source evidence: 0.3 alpha
+# Implementation and source evidence: 0.4 alpha
 
 All addon implementation is independently authored. No ClassicUI, Classic Frames, KeyUI or DragonflightUI code was copied.
 
@@ -25,6 +25,8 @@ Paths below are under Interface/AddOns in those snapshots.
 | Original spellbook art | Classic Blizzard_UIPanels_Game/Vanilla/SpellBookFrame.xml | Crop the four original panel sheets into fixed corners, stretched edges and parchment; use Spellbook-Icon and UI-Quickslot2 |
 | Edit Mode | Blizzard_EditMode/Shared/EditModeManager.lua | Listen to EditMode.Enter/Exit callbacks; restore before editing, snapshot and reapply after exiting |
 | Asset status | Blizzard_APIDocumentationGenerated/SimpleTextureBaseAPIDocumentation.lua | SetTexture returns a success boolean on this baseline; nil on another client stays REQUESTED, not verified |
+| Settings window | Blizzard_APIDocumentationGenerated/SimpleCheckboxAPIDocumentation.lua; SimpleFrameAPIDocumentation.lua; SimpleRegionAPIDocumentation.lua; Blizzard_SharedXML/Shared/Button/CheckButtonTemplates.xml | Addon-owned frames, checkboxes, font strings and color fills; native checkbox mark; no third-party configuration library |
+| Settings entry and Escape | Blizzard_Settings_Shared/Blizzard_Settings.lua and Blizzard_SettingsInbound.lua; Blizzard_UIParentPanelManager/Shared/UIParentPanelManager.lua | Optional canvas category with a launcher button; standalone window name in UISpecialFrames |
 
 Frame geometry and crops are implementation choices. This alpha does not claim pixel parity with the 2004 or 1.12 UI.
 
@@ -54,10 +56,20 @@ The spellbook keeps Retail's native spell grid, spell-state artwork, category ta
 
 The core's Blizzard ADDON_LOADED handling activates the module after Blizzard_PlayerSpells loads. The source-defined PlayerSpellsFrame.SpellBookFrame.Show and PlayerSpellsFrame.SpellBookFrame.DisplayedSpellsChanged callbacks refresh borders for displayed pooled entries via ForEachDisplayedSpell. Registration happens once and callbacks are gated by module state. There are no method or script replacements. Border textures sit below icons and native state overlays. In combat, new borders defer to the existing post-combat apply path. Callback errors stop and restore only this module until an explicit retry.
 
+## Settings
+
+Core/Options.lua presents only the ten implemented features. The whole row is a check button. The main switch, feature rows, session trial and retry button call the same controllers as slash commands. These update the existing SavedVariables table without replacing unrelated report data, then use RequestApply and its existing combat/Edit Mode rules. Opening the window does not enable the addon or opt into an unknown client trial.
+
+Apply completion, queued requests and runtime faults refresh visible controls directly; there is no per-frame polling. Checkbox state shows saved intent, while the status label shows application state. Disabling the main switch preserves the selected features. The window uses addon-owned geometry only, supports dragging and UISpecialFrames/Escape, and shrinks to fit UIParent. Both missing Settings APIs and failed optional category registration leave the standalone `/cf` window usable. UI errors are isolated from layout restoration and included in `/cf report`.
+
+Settings registration happens outside combat after application, so a Blizzard addon loaded later can provide the APIs. There is one registration per session. No Ace3 or other runtime dependency was added. Native checkbox marks are referenced by the same original path used in Blizzard's check button template.
+
 ## Test scope
 
 Tests/run_tests.py compiles and executes all TOC Lua with Lua 5.1 via the test-only lupa runtime. It checks native-frame restoration, combat deferral, Edit Mode snapshots, module isolation, rejected assets/events, missing APIs, unknown clients, opaque values, late-loaded frames, reports and gallery creation.
 
-The 0.3 suite has 22 cases and loads 29 Lua files. Spellbook cases cover lazy loading, untouched interaction scripts, tab visibility, both widths, restoration after native state changes, pooled-entry reuse, combat deferral, missing art, changed hierarchy and failure isolation/retry. An offline composition made from the module's actual crops and anchors was visually checked at both widths; it is not a game screenshot or an interaction test.
+The 0.4 suite has 32 cases and loads 30 Lua files. Spellbook cases cover lazy loading, untouched interaction scripts, tab visibility, both widths, restoration after native state changes, pooled-entry reuse, combat deferral, missing art, changed hierarchy and failure isolation/retry. Settings cases cover aliases, singleton lifetime, saved preferences, shared slash-command state, combat and Edit Mode, explicit trials, optional category registration, display fitting, tools and error isolation.
+
+Tests/preview_options.py reads the actual mocked Lua frame tree to render an offline layout preview using test-only Pillow. Normal, trial and combat layouts were inspected without text-width overflow. Font metrics and checkbox marks are approximate. The previews and earlier spellbook compositions are not game screenshots or interaction tests and are excluded from install packages.
 
 Mock behavior is deliberately labeled and cannot prove WoW's taint propagation, protected operations, rendered pixels, actual event delivery or SavedVariables persistence. The next required validation is the user's beta session in BETA-TEST.md.

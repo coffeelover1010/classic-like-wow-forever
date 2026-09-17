@@ -27,11 +27,32 @@ function Methods:GetFrameLevel() return self.level end
 function Methods:SetFrameStrata(s) self.strata=s end
 function Methods:IsProtected() return self.native or false end
 function Methods:GetParent() return self.parent end
-function Methods:Show() self.shown=true end
-function Methods:Hide() self.shown=false end
+function Methods:Show()
+  local changed=not self.shown; self.shown=true
+  if changed and self.scripts.OnShow then self.scripts.OnShow(self) end
+end
+function Methods:Hide()
+  local changed=self.shown; self.shown=false
+  if changed and self.scripts.OnHide then self.scripts.OnHide(self) end
+end
 function Methods:IsShown() return self.shown end
 function Methods:IsVisible() return self.shown and (not self.parent or self.parent:IsVisible()) end
-function Methods:SetShown(value) self.shown=value end
+function Methods:SetShown(value) if value then self:Show() else self:Hide() end end
+function Methods:SetClampedToScreen(value) self.clamped=value end
+function Methods:SetJustifyH(value) self.justify=value end
+function Methods:SetTextColor(...) self.textColor={...} end
+function Methods:SetDrawLayer(layer, sublevel) self.layer=layer; self.sublevel=sublevel or 0 end
+function Methods:SetChecked(value)
+  self.checked=value==true
+  if self.checkedTexture then self.checkedTexture:SetShown(self.checked) end
+end
+function Methods:GetChecked() return self.checked==true end
+function Methods:SetCheckedTexture(path)
+  self.checkedTexture=self.checkedTexture or self:CreateTexture(nil,"OVERLAY")
+  self.checkedTexture:SetTexture(path); self.checkedTexture:SetShown(self.checked==true)
+end
+function Methods:GetCheckedTexture() return self.checkedTexture end
+function Methods:SetHighlightTexture(texture) self.highlight=texture; texture:Hide() end
 function Methods:EnableMouse(value) self.mouse=value end
 function Methods:SetMovable(value) self.movable=value end
 function Methods:RegisterForDrag(...) end
@@ -82,7 +103,28 @@ end
 function Methods:CreateTexture(name,layer,template,sublevel)
   local t=CreateFrame("Texture",name,self); t.layer=layer; t.sublevel=sublevel or 0; return t
 end
-function Methods:CreateFontString(name,layer,font) return CreateFrame("FontString",name,self) end
+function Methods:CreateFontString(name,layer,font)
+  local f=CreateFrame("FontString",name,self); f.font=font; f.layer=layer; return f
+end
+function Mock.Click(button)
+  assert(button:IsVisible(),"clicked hidden button")
+  if button.kind=="CheckButton" then button:SetChecked(not button:GetChecked()) end
+  if button.scripts.OnClick then button.scripts.OnClick(button,"LeftButton") end
+  Mock.Flush()
+end
+function Mock.Escape()
+  for _,name in ipairs(UISpecialFrames) do if _G[name] then _G[name]:Hide() end end
+end
+function Mock.SettingsAPI()
+  Mock.categories={}; Mock.categoryCalls=0
+  Settings={
+    RegisterCanvasLayoutCategory=function(frame,name)
+      Mock.categoryCalls=Mock.categoryCalls+1
+      return {frame=frame,name=name}
+    end,
+    RegisterAddOnCategory=function(category) Mock.categories[#Mock.categories+1]=category end,
+  }
+end
 function Mock.Native(name,parent)
   local f=CreateFrame("Frame",name,parent or UIParent)
   f.native=true
@@ -165,6 +207,7 @@ C_Texture={GetAtlasInfo=function() return {} end}
 EventRegistry={RegisterCallback=function(_,name,func,owner) Mock.callbacks[name]={func=func,owner=owner} end}
 DEFAULT_CHAT_FRAME={AddMessage=function(_,text) Mock.messages[#Mock.messages+1]=text end}
 SlashCmdList={}
+UISpecialFrames={}
 WOW_PROJECT_ID,WOW_PROJECT_MAINLINE,WOW_PROJECT_CLASSIC=1,1,2
 UIParent=CreateFrame("Frame","UIParent"); UIParent:SetSize(1920,1080)
 MainActionBar=Mock.Native("MainActionBar")

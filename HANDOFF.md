@@ -1,4 +1,4 @@
-# 0.3.0-alpha engineering handoff
+# 0.4.0-alpha engineering handoff
 
 ## Repository and package
 
@@ -7,7 +7,7 @@ The Git repository is classic-like-wow-forever. The install folder is **ClassicF
 ```text
 classic-like-wow-forever/
   ClassicForeverUI.toc
-  Core/             lifecycle, environment, rollback, assets, visual helpers, reports
+  Core/             lifecycle, environment, rollback, assets, visual helpers, settings, reports
   Modules/          ten implemented modules; six explicit deferred modules
   Data/             asset/API/frame/event catalogues
   Research/         pinned sources, licensing, local asset inventory and implementation
@@ -18,19 +18,19 @@ classic-like-wow-forever/
   LICENSE / LICENSE-NOTES.md
   dist/             generated; ignored by Git
     ClassicForeverUI/
-    ClassicForeverUI-0.3.0-alpha.zip
-    ClassicForeverUI-0.3.0-alpha.zip.sha256
+    ClassicForeverUI-0.4.0-alpha.zip
+    ClassicForeverUI-0.4.0-alpha.zip.sha256
 ```
 
 ## Implemented
 
 Original stone action bar, original mirrored gryphons, classic action-slot borders, player/target visual skins, original minimap border, native XP/reputation fill and trim, native micro menu/bag placement, original cast border, and original parchment/trim/icon/slot borders for the native spellbook. The real action buttons, unit buttons, casting engine and tracking logic remain Blizzard-owned.
 
-Module failures are isolated and partially applied changes roll back. Missing combat API blocks writes. Edit Mode temporarily suspends the layout. Commands include off/on, per-module controls, retry, asset gallery and a copyable report.
+Module failures are isolated and partially applied changes roll back. Missing combat API blocks writes. Edit Mode temporarily suspends the layout. The /cf settings window has a main switch, ten feature toggles, saved choices and live status. It shares the slash-command apply path and includes texture, report and retry buttons. An optional Blizzard Settings > AddOns entry opens the same window. Unknown-client trials remain explicit and session-only.
 
 ## What works versus what is untested
 
-The implemented behaviors passed 22 offline Lua 5.1 regression cases, including seven spellbook cases. All 29 packaged Lua files load in the mock, and the ZIP is checked against the exact TOC/document allowlist.
+The implemented behaviors passed 32 offline Lua 5.1 regression cases, including seven spellbook cases and ten settings cases. All 30 packaged Lua files load in the mock, and the ZIP is checked against the exact TOC/document allowlist.
 
 **Nothing is claimed tested in a running Retail, Classic or Forever client.** Original artwork was freshly extracted from Era 1.15.9.69722 and Anniversary 2.5.6.69795, decoded and inspected locally. The gryphon is EndCap-Dwarf; EndCap-Human is a lion.
 
@@ -42,7 +42,7 @@ The real build/Interface number, loading rules, API lineage, frame hierarchy, ev
 
 ## Main APIs and frames
 
-APIs: CreateFrame, GetBuildInfo, InCombatLockdown, issecretvalue, UnitHealth/UnitHealthMax, UnitPower/UnitPowerMax, UnitName, UnitLevel, UnitPowerType, UnitClassification, SetPortraitTexture, C_Timer.After and EventRegistry callbacks.
+APIs: CreateFrame, GetBuildInfo, InCombatLockdown, issecretvalue, UnitHealth/UnitHealthMax, UnitPower/UnitPowerMax, UnitName, UnitLevel, UnitPowerType, UnitClassification, SetPortraitTexture, C_Timer.After, EventRegistry callbacks and optional Settings.RegisterCanvasLayoutCategory/RegisterAddOnCategory.
 
 Frames: MainActionBar, ActionButton1-12 and their native containers, PlayerFrame, TargetFrame, Minimap/MinimapCluster, MicroMenuContainer, BagsBar, PlayerCastingBarFrame, MainStatusTrackingBarContainer, SecondaryStatusTrackingBarContainer, and PlayerSpellsFrame.SpellBookFrame (loaded on demand).
 
@@ -56,7 +56,7 @@ Project code is MIT. Blizzard artwork rights are separate. No blanket redistribu
 
 ## Exact Day One procedure
 
-Follow [BETA-TEST.md](BETA-TEST.md): install the correctly named folder, record build/Interface, run all five required diagnostic commands, inspect every gallery page, test clicks/bindings/targets/bags/casts and the spellbook in both sizes, exercise combat deferral and vehicles, test Edit Mode, reload, and copy /cf report. Allow 50 minutes. Disable the addon if it blocks controls.
+Follow [BETA-TEST.md](BETA-TEST.md): install the correctly named folder, record build/Interface, run all five required diagnostic commands, inspect every gallery page, test settings and saved choices, clicks/bindings/targets/bags/casts and the spellbook in both sizes, exercise combat deferral and vehicles, test Edit Mode, reload, and copy /cf report. Allow 55 minutes. Disable the addon if it blocks controls.
 
 ## Next ten engineering tasks
 

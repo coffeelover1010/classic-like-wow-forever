@@ -80,13 +80,14 @@ end
 
 function M:OnDisplayedSpellsChanged()
   if not self.Active or self.Faulted then return end
-  if CF.API.IsInCombatLockdown() then CF.Pending = true; return end
+  if CF.API.IsInCombatLockdown() then CF.Pending = true; CF:RefreshOptions(); return end
   local ok = CF:Call(self, "RefreshSlots")
   if not ok then
     self.Faulted = true
     CF:StopModule(self)
     if self.State ~= "RESTORE_FAILED_RELOAD_REQUIRED" then self.State = "UPDATE_FAILED" end
     CF:Print("SpellBook stopped after an update error. /cf report; /cf refresh to retry.")
+    CF:RefreshOptions()
   end
 end
 

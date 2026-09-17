@@ -1,5 +1,7 @@
 local _, CF = ...
 CF.APIManifest = {
+  { name="Settings.RegisterCanvasLayoutCategory", module="Options", purpose="optional Settings launcher", retail="source-confirmed; runtime untested", classic="unverified", secure="registration deferred during combat", forever="FOREVER_VALIDATION_REQUIRED", fallback="standalone /cf window" },
+  { name="Settings.RegisterAddOnCategory", module="Options", purpose="optional AddOns category", retail="source-confirmed; runtime untested", classic="unverified", secure="registration deferred during combat", forever="FOREVER_VALIDATION_REQUIRED", fallback="standalone /cf window" },
   { name="CreateFrame", module="Core", purpose="frames and passive visual overlays", retail="source-confirmed; runtime untested", classic="unverified", secure="see Research/Implementation.md", forever="FOREVER_VALIDATION_REQUIRED", fallback="retain stock module or omit optional feature" },
   { name="GetBuildInfo", module="Environment", purpose="client metadata", retail="source-confirmed; runtime untested", classic="unverified", secure="see Research/Implementation.md", forever="FOREVER_VALIDATION_REQUIRED", fallback="retain stock module or omit optional feature" },
   { name="InCombatLockdown", module="Core", purpose="defer layout writes", retail="source-confirmed; runtime untested", classic="unverified", secure="see Research/Implementation.md", forever="FOREVER_VALIDATION_REQUIRED", fallback="retain stock module or omit optional feature" },

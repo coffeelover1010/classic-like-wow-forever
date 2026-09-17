@@ -1,5 +1,5 @@
 local addonName, CF = ...
-CF.Name, CF.Version = addonName, "0.3.0-alpha"
+CF.Name, CF.Version = addonName, "0.4.0-alpha"
 CF.Modules, CF.ModuleOrder = {}, {}
 _G.ClassicForeverUI = CF
 
@@ -37,7 +37,7 @@ function CF:StopModule(module)
 end
 
 function CF:Apply()
-  if CF.API.IsInCombatLockdown() then self.Pending = true; return end
+  if CF.API.IsInCombatLockdown() then self.Pending = true; self:RefreshOptions(); return end
   self.Pending = false
   local supported = self.Environment.IsMainline or self.AllowUnverified
   for _, module in ipairs(self.ModuleOrder) do
@@ -76,10 +76,13 @@ function CF:Apply()
       end
     end
   end
+  self:RefreshOptions()
+  self.Options:TryRegister()
 end
 
 function CF:RequestApply()
   self.Pending = true
+  self:RefreshOptions()
   if not self.Started or self.Scheduled then return end
   self.Scheduled = true
   CF.API.NextFrame(function()
@@ -109,7 +112,7 @@ function CF:Start()
     end, self)
   end
   self:RequestApply()
-  self:Print("0.3 alpha loaded. /cf help | /cf off restores the default UI. In-game testing is pending.")
+  self:Print("0.4 alpha loaded. /cf opens settings. /cf off restores the default UI. In-game testing is pending.")
 end
 
 local bootstrap = CreateFrame("Frame")

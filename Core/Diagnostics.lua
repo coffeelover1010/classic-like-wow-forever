@@ -64,6 +64,7 @@ function CF.Diagnostics:Collect()
     "Combat/missing API: " .. tostring(CF.API.IsInCombatLockdown()) .. "; Pending: " .. tostring(CF.Pending),
     "Edit Mode: " .. tostring(CF.EditMode == true)}
   if CF.BootError then lines[#lines+1] = "Bootstrap error: " .. CF.BootError end
+  if CF.Options.LastError then lines[#lines+1] = "Settings error: " .. CF.Options.LastError end
   for _,section in ipairs({{"MODULES",self:ModuleLines()},{"ASSETS",self:AssetLines()},
     {"APIS",self:APILines()},{"FRAMES",self:FrameLines()}}) do
     lines[#lines+1] = section[1]
@@ -170,29 +171,30 @@ SlashCmdList.CLASSICFOREVERUI = function(message)
   local cmd,arg,setting = (message or ""):match("^%s*(%S*)%s*(%S*)%s*(%S*)")
   cmd = (cmd or ""):lower()
   local actions = {diagnostic="Full",assets="Assets",api="API",frames="Frames",environment="Environment",report="Report",gallery="Gallery"}
-  if actions[cmd] then
+  if cmd == "" or cmd == "config" or cmd == "options" then
+    CF.Options:Show()
+  elseif actions[cmd] then
     local ok,err = pcall(CF.Diagnostics[actions[cmd]],CF.Diagnostics)
     if not ok then say("Diagnostic failed: " .. CF.API.SafeText(err)) end
   elseif cmd == "off" or cmd == "on" or cmd == "enable" then
     if not CF.DB then say("Wait until PLAYER_LOGIN."); return end
-    CF.DB.enabled = cmd ~= "off"
-    if cmd == "enable" then CF.AllowUnverified = true end
-    CF:RequestApply()
+    if cmd == "enable" then CF:EnableTrial() else CF:SetEnabled(cmd ~= "off") end
     say(cmd == "off" and "Default UI restoration requested." or "Layout requested; /cf diagnostic for results.")
     if CF.API.IsInCombatLockdown() then say("Queued until combat ends (or the combat API is available).") end
     if CF.Environment.IsUnknown and cmd == "on" then say("Unknown client: /cf enable opts into layout trials for this session.") end
   elseif cmd == "module" then
+    if not CF.DB then say("Wait until PLAYER_LOGIN."); return end
     local found
     for name in pairs(CF.Modules) do if name:lower() == arg:lower() then found = name end end
     if not found or (setting ~= "on" and setting ~= "off") then
       say("Usage: /cf module ActionBars off (or on); names in /cf diagnostic"); return
     end
-    CF.DB.modules[found] = setting == "on"; CF:RequestApply()
+    CF:SetModuleEnabled(found,setting == "on")
     say(found .. " set " .. setting .. ". Changes wait for combat to end.")
   elseif cmd == "refresh" then
-    for _,module in ipairs(CF.ModuleOrder) do module.Faulted = nil end
-    CF:RequestApply()
+    CF:RetryModules()
   else
+    say("/cf | config | options opens settings. Choices save automatically.")
     say("/cf on | off | enable (trial on unknown/Classic client) | refresh")
     say("/cf diagnostic | environment | assets | api | frames | gallery | report")
     say("/cf module <name> on|off. Edit Mode temporarily restores the default layout.")

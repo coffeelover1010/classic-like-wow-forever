@@ -1,6 +1,6 @@
 # ClassicForeverUI
 
-A Retail addon that puts original Blizzard Classic artwork around a Classic-style layout. Version **0.3.0-alpha** adds a Classic spellbook skin and is ready to install for testing. It has **not been tested inside WoW**. Forever support is unverified.
+A Retail addon that puts original Blizzard Classic artwork around a Classic-style layout. Version **0.4.0-alpha** adds a simple settings window and is ready to install for testing. It has **not been tested inside WoW**. Forever support is unverified.
 
 ## Install
 
@@ -30,8 +30,16 @@ Open the spellbook once to load its skin. Before that, its module can report `UN
 
 ## Controls
 
+Type **`/cf`** to open settings. There is one main switch and ten feature checkboxes. Click anywhere on a feature row to change it. Choices save automatically and apply outside combat. Turning the main switch off keeps your feature choices for next time.
+
+The window shows which features have applied, which are off, and which need attention. **Open book** means the spellbook must be opened once to load. **View textures**, **Open report**, and **Retry changes** give quick access to troubleshooting. The report provides text to copy with Ctrl+A, Ctrl+C.
+
+Drag the window to move it. Close it with **Close** or **Escape**. It scales down to fit smaller screens. On clients with Blizzard's Settings API, **Settings > AddOns > ClassicForeverUI** also has an **Open settings** button. `/cf` works without that API.
+
 | Command | Use |
 |---|---|
+| `/cf`, `/cf config`, `/cf options` | Open the settings window |
+| `/cf help` | List commands |
 | `/cf off` / `/cf on` | Restore default / apply addon layout |
 | `/cf module Minimap off` | Disable one module; use `on` to enable it |
 | `/cf refresh` | Recheck and retry modules, outside combat |
@@ -41,7 +49,7 @@ Open the spellbook once to load its skin. Before that, its module can report `UN
 | `/cf environment`, `assets`, `api`, `frames` | Print one report section |
 | `/cf enable` | Try the layout on an unknown or Classic client for this session |
 
-On recognized Retail, the layout applies at login. Other project IDs default to diagnostics until `/cf enable`. A Retail ID is not proof that a future client has the same API. Edit Mode temporarily restores the stock layout and reapplies the addon after closing.
+On recognized Retail, the layout applies at login. Other project IDs default to diagnostics until `/cf enable` or **Try this session** in settings. That trial is not saved between sessions. A Retail ID is not proof that a future client has the same API. Edit Mode temporarily restores the stock layout and reapplies the addon after closing.
 
 ## Test status and limits
 
@@ -61,7 +69,7 @@ python Tests/run_tests.py
 python Tools/package_addon.py
 ```
 
-Output: `dist/ClassicForeverUI/` and `dist/ClassicForeverUI-0.3.0-alpha.zip`. Packaging uses the TOC and a small document allowlist. It excludes research checkouts, test tools, extracted images and native libraries.
+Output: `dist/ClassicForeverUI/` and `dist/ClassicForeverUI-0.4.0-alpha.zip`. Packaging uses the TOC and a small document allowlist. It excludes research checkouts, test tools, previews, extracted images and native libraries.
 
 If the beta rejects the TOC, first read its actual Interface number. Then build a separate package:
 
